@@ -1,33 +1,32 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace MyGardenPatch.Commands
+namespace MyGardenPatch.Commands;
+
+public interface ICommandExecutor
 {
-    public interface ICommandExecutor
+    Task HandleAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default) where TCommand : ICommand;
+}
+
+public class CommandExecutor : ICommandExecutor
+{
+    private readonly IServiceProvider _serviceProvider;
+
+    public CommandExecutor(IServiceProvider serviceProvider)
     {
-        Task HandleAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default) where TCommand : ICommand;
+        _serviceProvider = serviceProvider;
     }
 
-    public class CommandExecutor : ICommandExecutor
+    public async Task HandleAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default) where TCommand : ICommand
     {
-        private readonly IServiceProvider _serviceProvider;
+        var validator = _serviceProvider.GetRequiredService<ICommandValidator<TCommand>>() ?? throw new CommandValidatorNotFoundException<TCommand>();
 
-        public CommandExecutor(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+        var result = await validator.ValidateAsync(command, cancellationToken);
 
-        public async Task HandleAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default) where TCommand : ICommand
-        {
-            var validator = _serviceProvider.GetRequiredService<ICommandValidator<TCommand>>() ?? throw new CommandValidatorNotFoundException<TCommand>();
+        if (!result.IsValid)
+            throw new InvalidCommandException<TCommand>(command, result.Errors);
 
-            var result = await validator.ValidateAsync(command, cancellationToken);
+        var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>() ?? throw new CommandHandlerNotFoundException<TCommand>();
 
-            if (!result.IsValid)
-                throw new InvalidCommandException<TCommand>(command, result.Errors);
-
-            var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>() ?? throw new CommandHandlerNotFoundException<TCommand>();
-
-            await handler.HandleAsync(command, cancellationToken);
-        }
+        await handler.HandleAsync(command, cancellationToken);
     }
 }

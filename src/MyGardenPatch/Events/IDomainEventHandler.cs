@@ -1,7 +1,6 @@
-﻿namespace MyGardenPatch.Events
+﻿namespace MyGardenPatch.Events;
+
+public interface IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
 {
-    public interface IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
-    {
-        Task HandleAsync(TDomainEvent domainEvent, CancellationToken cancellationToken);
-    }
+    Task HandleAsync(TDomainEvent domainEvent, CancellationToken cancellationToken);
 }

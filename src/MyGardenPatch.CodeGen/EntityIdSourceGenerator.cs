@@ -1,9 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace MyGardenPatch.CodeGen
@@ -37,17 +33,22 @@ namespace MyGardenPatch.CodeGen
 //            }
 //#endif
 
-            var assembly = Assembly.GetExecutingAssembly();
+            template = @"using System;
 
-            var resourceName = assembly
-                .GetManifestResourceNames()
-                .Single(str => str.EndsWith("EntityId.cs.template"));
+namespace ${Namespace}
+{
+    public partial record struct ${Name}
+    {
+        public ${Name} (Guid value) { Value = value; }
 
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
-            using (var reader = new StreamReader(stream))
-            {
-                template = reader.ReadToEnd();
-            }
+        public ${Name} () : this(Guid.NewGuid()) { }
+
+        public Guid Value { get; }
+
+        public static implicit operator ${Name}(Guid value) => new ${Name} (value);
+    }
+}
+";
 
             context.RegisterForSyntaxNotifications(() => new EntityIdReceiver());
         }

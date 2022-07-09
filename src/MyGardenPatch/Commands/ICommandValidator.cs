@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 
-namespace MyGardenPatch.Commands
+namespace MyGardenPatch.Commands;
+
+public interface ICommandValidator<TCommand> : IValidator<TCommand> where TCommand : ICommand
 {
-    public interface ICommandValidator<TCommand> : IValidator<TCommand> where TCommand : ICommand
-    {
-    }
 }

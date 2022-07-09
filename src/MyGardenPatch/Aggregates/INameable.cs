@@ -1,7 +1,6 @@
-﻿namespace MyGardenPatch.Aggregates
+﻿namespace MyGardenPatch.Aggregates;
+
+public interface INameable
 {
-    public interface INameable
-    {
-        public string Name { get; }
-    }
+    public string Name { get; }
 }

@@ -5,13 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Templates\EntityId.cs.template" />
+    <Compile Remove="Templates\EntityId.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Templates\EntityId.cs.template" />
+    <EmbeddedResource Include="Templates\EntityId.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Templates\EntityId.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.1.0" />

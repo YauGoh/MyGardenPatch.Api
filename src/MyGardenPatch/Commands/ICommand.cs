@@ -1,4 +1,3 @@
-﻿namespace MyGardenPatch.Commands
-{
-    public interface ICommand { }
-}
+﻿namespace MyGardenPatch.Commands;
+
+public interface ICommand { }

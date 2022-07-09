@@ -1,11 +1,10 @@
 ﻿using MyGardenPatch.Common;
 
-namespace MyGardenPatch.Aggregates
-{
-    public interface ILocateable
-    {
-        public Location Location { get; }
+namespace MyGardenPatch.Aggregates;
 
-        void SetLocation(Location location);
-    }
+public interface ILocateable
+{
+    public Location Location { get; }
+
+    void SetLocation(Location location);
 }

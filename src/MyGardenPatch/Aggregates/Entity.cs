@@ -1,14 +1,13 @@
-﻿namespace MyGardenPatch.Aggregates
+﻿namespace MyGardenPatch.Aggregates;
+
+public interface IEntityId { }
+
+public abstract class Entity<TKey> where TKey : struct, IEquatable<TKey>, IEntityId
 {
-    public interface IEntityId { }
-
-    public abstract class Entity<TKey> where TKey : struct, IEquatable<TKey>, IEntityId
+    public Entity(TKey id)
     {
-        public Entity(TKey id)
-        {
-            Id = id;
-        }
-
-        public TKey Id { get; private set; } = new TKey();
+        Id = id;
     }
+
+    public TKey Id { get; private set; } = new TKey();
 }

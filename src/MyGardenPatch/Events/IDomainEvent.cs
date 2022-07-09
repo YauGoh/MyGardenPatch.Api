@@ -1,6 +1,5 @@
-﻿namespace MyGardenPatch.Events
+﻿namespace MyGardenPatch.Events;
+
+public interface IDomainEvent
 {
-    public interface IDomainEvent
-    {
-    }
 }

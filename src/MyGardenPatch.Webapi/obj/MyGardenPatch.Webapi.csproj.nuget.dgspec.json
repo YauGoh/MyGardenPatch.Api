@@ -4,6 +4,230 @@
     "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.Webapi\\MyGardenPatch.Webapi.csproj": {}
   },
   "projects": {
+    "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.LocalIdentity\\MyGardenPatch.LocalIdentity.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.LocalIdentity\\MyGardenPatch.LocalIdentity.csproj",
+        "projectName": "MyGardenPatch.LocalIdentity",
+        "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.LocalIdentity\\MyGardenPatch.LocalIdentity.csproj",
+        "packagesPath": "C:\\Users\\yau_\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.LocalIdentity\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\yau_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj": {
+                "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "DotLiquid": {
+              "target": "Package",
+              "version": "[2.2.656, )"
+            },
+            "Microsoft.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Microsoft.Extensions.Identity.Core": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.SqlServer\\MyGardenPatch.SqlServer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.SqlServer\\MyGardenPatch.SqlServer.csproj",
+        "projectName": "MyGardenPatch.SqlServer",
+        "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.SqlServer\\MyGardenPatch.SqlServer.csproj",
+        "packagesPath": "C:\\Users\\yau_\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.SqlServer\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\yau_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj": {
+                "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.WebApiExtensions\\MyGardenPatch.WebApiExtensions.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.WebApiExtensions\\MyGardenPatch.WebApiExtensions.csproj",
+        "projectName": "MyGardenPatch.WebApiExtensions",
+        "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.WebApiExtensions\\MyGardenPatch.WebApiExtensions.csproj",
+        "packagesPath": "C:\\Users\\yau_\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.WebApiExtensions\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\yau_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj": {
+                "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.Webapi\\MyGardenPatch.Webapi.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -12,6 +236,96 @@
         "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.Webapi\\MyGardenPatch.Webapi.csproj",
         "packagesPath": "C:\\Users\\yau_\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.Webapi\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\yau_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.LocalIdentity\\MyGardenPatch.LocalIdentity.csproj": {
+                "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.LocalIdentity\\MyGardenPatch.LocalIdentity.csproj"
+              },
+              "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.SqlServer\\MyGardenPatch.SqlServer.csproj": {
+                "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.SqlServer\\MyGardenPatch.SqlServer.csproj"
+              },
+              "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.WebApiExtensions\\MyGardenPatch.WebApiExtensions.csproj": {
+                "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.WebApiExtensions\\MyGardenPatch.WebApiExtensions.csproj"
+              },
+              "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj": {
+                "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
+            "Microsoft.Identity.Web": {
+              "target": "Package",
+              "version": "[1.25.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj",
+        "projectName": "MyGardenPatch",
+        "projectPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\MyGardenPatch.csproj",
+        "packagesPath": "C:\\Users\\yau_\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\yau_\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,9 +354,17 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Swashbuckle.AspNetCore": {
+            "FluentValidation": {
               "target": "Package",
-              "version": "[6.2.3, )"
+              "version": "[11.1.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Microsoft.Extensions.Options.ConfigurationExtensions": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
@@ -56,9 +378,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
