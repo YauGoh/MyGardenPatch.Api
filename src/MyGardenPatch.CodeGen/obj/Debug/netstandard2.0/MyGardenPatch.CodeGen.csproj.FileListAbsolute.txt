@@ -1,0 +1,12 @@
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\bin\Debug\netstandard2.0\MyGardenPatch.CodeGen.deps.json
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\bin\Debug\netstandard2.0\MyGardenPatch.CodeGen.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\bin\Debug\netstandard2.0\MyGardenPatch.CodeGen.pdb
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\bin\Debug\netstandard2.0\cs\MyGardenPatch.CodeGen.resources.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\MyGardenPatch.CodeGen.csproj.AssemblyReference.cache
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\MyGardenPatch.CodeGen.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\MyGardenPatch.CodeGen.AssemblyInfoInputs.cache
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\MyGardenPatch.CodeGen.AssemblyInfo.cs
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\MyGardenPatch.CodeGen.csproj.CoreCompileInputs.cache
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\cs\MyGardenPatch.CodeGen.resources.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\MyGardenPatch.CodeGen.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.CodeGen\obj\Debug\netstandard2.0\MyGardenPatch.CodeGen.pdb

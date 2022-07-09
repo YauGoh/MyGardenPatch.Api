@@ -1,0 +1,15 @@
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.csproj.AssemblyReference.cache
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.AssemblyInfoInputs.cache
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.AssemblyInfo.cs
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.csproj.CoreCompileInputs.cache
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\bin\Debug\net6.0\MyGardenPatch.WebApiExtensions.deps.json
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\bin\Debug\net6.0\MyGardenPatch.WebApiExtensions.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\bin\Debug\net6.0\MyGardenPatch.WebApiExtensions.pdb
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\bin\Debug\net6.0\MyGardenPatch.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\bin\Debug\net6.0\MyGardenPatch.pdb
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.csproj.CopyComplete
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\refint\MyGardenPatch.WebApiExtensions.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\MyGardenPatch.WebApiExtensions.pdb
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.WebApiExtensions\obj\Debug\net6.0\ref\MyGardenPatch.WebApiExtensions.dll
