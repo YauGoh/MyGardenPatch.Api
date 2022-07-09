@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyGardenPatch.Users.Exceptions
+namespace MyGardenPatch.Users.Exceptions;
+
+public class UserNotAuthenticatedException : Exception
 {
-    public class UserNotAuthenticatedException : Exception
-    {
-        public override string Message => "User not authenticated";
-    }
+    public override string Message => "User not authenticated";
 }

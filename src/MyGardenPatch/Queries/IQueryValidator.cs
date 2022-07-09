@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 
-namespace MyGardenPatch.Queries
+namespace MyGardenPatch.Queries;
+
+public interface IQueryValidator<TQuery> : IValidator<TQuery>
 {
-    public interface IQueryValidator<TQuery> : IValidator<TQuery>
-    {
-    }
 }

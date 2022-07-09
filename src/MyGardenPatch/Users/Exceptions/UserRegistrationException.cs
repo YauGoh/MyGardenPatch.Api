@@ -1,6 +1,5 @@
-﻿namespace MyGardenPatch.Users.Exceptions
+﻿namespace MyGardenPatch.Users.Exceptions;
+
+public class UserRegistrationException : Exception
 {
-    public class UserRegistrationException : Exception
-    {
-    }
 }

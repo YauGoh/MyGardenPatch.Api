@@ -1,7 +1,6 @@
-﻿namespace MyGardenPatch.Queries
+﻿namespace MyGardenPatch.Queries;
+
+public interface IQueryHandler<TQuery, TResult>
 {
-    public interface IQueryHandler<TQuery, TResult>
-    {
-        Task<TResult> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
-    }
+    Task<TResult> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
 }

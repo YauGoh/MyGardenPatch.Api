@@ -72,7 +72,6 @@ public static class QueryExecutorExtensions
                     query, 
                     cancellationToken 
                 })!;
-
     }
 
     private static Dictionary<Type, Type> ResolveQueryLookup()

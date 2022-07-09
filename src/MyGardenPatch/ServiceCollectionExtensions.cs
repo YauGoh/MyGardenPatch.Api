@@ -6,146 +6,145 @@ using MyGardenPatch.Events;
 using MyGardenPatch.Queries;
 using System.Reflection;
 
-namespace MyGardenPatch
+namespace MyGardenPatch;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static IServiceCollection AddMyVegePatch(this IServiceCollection services, IConfiguration config)
     {
-        public static IServiceCollection AddMyVegePatch(this IServiceCollection services, IConfiguration config)
+        services.AddScoped<IDomainEventBus, InMemoryDomainEventBus>();
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+        services.AddSingleton<IEmailSender, SmtpEmailSender>();
+        services.Configure<Email>(config.GetSection(nameof(Email)));
+
+        RegisterQueries(services);
+
+        RegisterCommands(services);
+
+        return services;
+    }
+
+    private static void RegisterCommands(IServiceCollection services)
+    {
+        services.AddScoped<ICommandExecutor, CommandExecutor>();
+
+        var assembly = Assembly.GetExecutingAssembly();
+
+        var commandHandlers = assembly
+            .GetTypes()
+            .Where(handler => !handler.IsAbstract &&
+                              IsCommandHandler(handler))
+            .SelectMany(
+                handler => GetCommandTypeFromHandler(handler),
+                (handler, command) => (handler, command))
+            .ToList();
+
+        foreach (var (handler, command) in commandHandlers)
         {
-            services.AddScoped<IDomainEventBus, InMemoryDomainEventBus>();
-            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-            services.AddSingleton<IEmailSender, SmtpEmailSender>();
-            services.Configure<Email>(config.GetSection(nameof(Email)));
+            var @interface = typeof(ICommandHandler<>).MakeGenericType(command);
 
-            RegisterQueries(services);
-
-            RegisterCommands(services);
-
-            return services;
+            services.AddScoped(@interface, handler);
         }
 
-        private static void RegisterCommands(IServiceCollection services)
+        var commandValidators = assembly
+            .GetTypes()
+            .Where(validator => !validator.IsAbstract &&
+                                IsCommandValidator(validator))
+            .SelectMany(
+                validator => GetCommandTypeFromValidator(validator),
+                (validator, command) => (validator, command))
+            .ToList();
+
+        foreach (var (validator, command) in commandValidators)
         {
-            services.AddScoped<ICommandExecutor, CommandExecutor>();
+            var @interface = typeof(ICommandValidator<>).MakeGenericType(command);
 
-            var assembly = Assembly.GetExecutingAssembly();
+            services.AddScoped(@interface, validator);
+        }
+    }
 
-            var commandHandlers = assembly
-                .GetTypes()
-                .Where(handler => !handler.IsAbstract &&
-                                  IsCommandHandler(handler))
-                .SelectMany(
-                    handler => GetCommandTypeFromHandler(handler),
-                    (handler, command) => (handler, command))
-                .ToList();
+    private static void RegisterQueries(IServiceCollection services)
+    {
+        services.AddScoped<IQueryExecutor, QueryExecutor>();
 
-            foreach (var (handler, command) in commandHandlers)
-            {
-                var @interface = typeof(ICommandHandler<>).MakeGenericType(command);
+        var assembly = Assembly.GetExecutingAssembly();
 
-                services.AddScoped(@interface, handler);
-            }
+        var queryHandlerInfos = assembly
+            .GetTypes()
+            .Where(t => !t.IsAbstract &&
+                        IsQueryHandler(t))
+            .SelectMany(
+                handler => GetQueryHandlerTypes(handler),
+                (handler, args) => (handler, args.query, args.result))
+            .ToList();
 
-            var commandValidators = assembly
-                .GetTypes()
-                .Where(validator => !validator.IsAbstract &&
-                                    IsCommandValidator(validator))
-                .SelectMany(
-                    validator => GetCommandTypeFromValidator(validator),
-                    (validator, command) => (validator, command))
-                .ToList();
+        foreach (var (handler, query, result) in queryHandlerInfos)
+        {
+            var @interface = typeof(IQueryHandler<,>).MakeGenericType(query, result);
 
-            foreach (var (validator, command) in commandValidators)
-            {
-                var @interface = typeof(ICommandValidator<>).MakeGenericType(command);
-
-                services.AddScoped(@interface, validator);
-            }
+            services.AddScoped(@interface, handler);
         }
 
-        private static void RegisterQueries(IServiceCollection services)
+        var queryValidators = assembly
+            .GetTypes()
+            .Where(t => !t.IsAbstract &&
+                        IsQueryValidator(t))
+            .SelectMany(
+                validator => GetQueryTypeFromValidator(validator),
+                (validator, query) => (validator, query))
+            .ToList();
+
+        foreach (var (validator, query) in queryValidators)
         {
-            services.AddScoped<IQueryExecutor, QueryExecutor>();
+            var @interface = typeof(IQueryValidator<>).MakeGenericType(query);
 
-            var assembly = Assembly.GetExecutingAssembly();
-
-            var queryHandlerInfos = assembly
-                .GetTypes()
-                .Where(t => !t.IsAbstract &&
-                            IsQueryHandler(t))
-                .SelectMany(
-                    handler => GetQueryHandlerTypes(handler),
-                    (handler, args) => (handler, args.query, args.result))
-                .ToList();
-
-            foreach (var (handler, query, result) in queryHandlerInfos)
-            {
-                var @interface = typeof(IQueryHandler<,>).MakeGenericType(query, result);
-
-                services.AddScoped(@interface, handler);
-            }
-
-            var queryValidators = assembly
-                .GetTypes()
-                .Where(t => !t.IsAbstract &&
-                            IsQueryValidator(t))
-                .SelectMany(
-                    validator => GetQueryTypeFromValidator(validator),
-                    (validator, query) => (validator, query))
-                .ToList();
-
-            foreach (var (validator, query) in queryValidators)
-            {
-                var @interface = typeof(IQueryValidator<>).MakeGenericType(query);
-
-                services.AddScoped(@interface, validator);
-            }
+            services.AddScoped(@interface, validator);
         }
+    }
 
-        private static bool IsCommandHandler(Type type) =>
-            type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandHandler<>));
+    private static bool IsCommandHandler(Type type) =>
+        type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandHandler<>));
 
-        private static IEnumerable<Type> GetCommandTypeFromHandler(Type type)
+    private static IEnumerable<Type> GetCommandTypeFromHandler(Type type)
+    {
+        var handlers = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandHandler<>));
+
+        return handlers.Select(h => h.GetGenericArguments()[0]);
+    }
+
+    private static bool IsCommandValidator(Type type) =>
+        type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandValidator<>));
+
+    private static IEnumerable<Type> GetCommandTypeFromValidator(Type type)
+    {
+        var handlers = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandValidator<>));
+
+        return handlers.Select(h => h.GetGenericArguments()[0]);
+    }
+
+    private static bool IsQueryHandler(Type type) =>
+        type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryHandler<,>));
+
+
+    private static IEnumerable<(Type query, Type result)> GetQueryHandlerTypes(Type type)
+    {
+        var queries = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryHandler<,>));
+
+        return queries.Select(q =>
         {
-            var handlers = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandHandler<>));
+            var genericArgs = q.GetGenericArguments();
 
-            return handlers.Select(h => h.GetGenericArguments()[0]);
-        }
+            return (genericArgs[0], genericArgs[1]);
+        });
+    }
 
-        private static bool IsCommandValidator(Type type) =>
-            type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandValidator<>));
+    private static bool IsQueryValidator(Type type) =>
+        type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryValidator<>));
 
-        private static IEnumerable<Type> GetCommandTypeFromValidator(Type type)
-        {
-            var handlers = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandValidator<>));
+    private static IEnumerable<Type> GetQueryTypeFromValidator(Type type)
+    {
+        var handlers = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryValidator<>));
 
-            return handlers.Select(h => h.GetGenericArguments()[0]);
-        }
-
-        private static bool IsQueryHandler(Type type) =>
-            type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryHandler<,>));
-
-
-        private static IEnumerable<(Type query, Type result)> GetQueryHandlerTypes(Type type)
-        {
-            var queries = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryHandler<,>));
-
-            return queries.Select(q =>
-            {
-                var genericArgs = q.GetGenericArguments();
-
-                return (genericArgs[0], genericArgs[1]);
-            });
-        }
-
-        private static bool IsQueryValidator(Type type) =>
-            type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryValidator<>));
-
-        private static IEnumerable<Type> GetQueryTypeFromValidator(Type type)
-        {
-            var handlers = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryValidator<>));
-
-            return handlers.Select(h => h.GetGenericArguments()[0]);
-        }
+        return handlers.Select(h => h.GetGenericArguments()[0]);
     }
 }
