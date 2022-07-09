@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGardenPatch.Webapi", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGardenPatch.WebApiExtensions", "src\MyGardenPatch.WebApiExtensions\MyGardenPatch.WebApiExtensions.csproj", "{7DDB1B33-38B9-4577-99B7-45124076EA45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGardenPatch.LocalIdentity", "src\MyGardenPatch.LocalIdentity\MyGardenPatch.LocalIdentity.csproj", "{1EB03014-F7B7-47AE-951A-0BB66DAE67EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{7DDB1B33-38B9-4577-99B7-45124076EA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DDB1B33-38B9-4577-99B7-45124076EA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DDB1B33-38B9-4577-99B7-45124076EA45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB03014-F7B7-47AE-951A-0BB66DAE67EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB03014-F7B7-47AE-951A-0BB66DAE67EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB03014-F7B7-47AE-951A-0BB66DAE67EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB03014-F7B7-47AE-951A-0BB66DAE67EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{90D59103-9ABE-4D4F-BF06-2EEDC139D2D3} = {4F44B171-F984-4167-A252-610C48045834}
@@ -58,5 +64,6 @@ Global
 		{DA126FB2-102D-4277-AC2D-48C5C849C6DF} = {4F44B171-F984-4167-A252-610C48045834}
 		{A3BB5886-5546-40D1-B3AF-6B5BBDC47B2B} = {4F44B171-F984-4167-A252-610C48045834}
 		{7DDB1B33-38B9-4577-99B7-45124076EA45} = {4F44B171-F984-4167-A252-610C48045834}
+		{1EB03014-F7B7-47AE-951A-0BB66DAE67EF} = {4F44B171-F984-4167-A252-610C48045834}
 	EndGlobalSection
 EndGlobal
