@@ -31,15 +31,31 @@ namespace MyGardenPatch.CodeGen
 
             if (recordDeclarationSyntax.BaseList?.Types.Any(t => t.ToFullString().Trim() == "IEntityId") != true) return;
 
-            var @namespace = recordDeclarationSyntax
-                .Ancestors()
-                .OfType<NamespaceDeclarationSyntax>()
-                .First()
-                .DescendantNodes()
-                .OfType<QualifiedNameSyntax>()
-                .First()
-                .ToFullString()
-                .Trim();
+            string @namespace = "";
+
+            if (recordDeclarationSyntax.Ancestors().OfType<NamespaceDeclarationSyntax>().Any())
+            {
+                // Using namespace with braces
+                @namespace = recordDeclarationSyntax
+                    .Ancestors()
+                    .OfType<NamespaceDeclarationSyntax>()
+                    .First()
+                    .DescendantNodes()
+                    .OfType<QualifiedNameSyntax>()
+                    .First()
+                    .ToFullString()
+                    .Trim();
+            }
+            else
+            {
+                // using top level namespace declaration, no braces
+                @namespace = recordDeclarationSyntax.Parent
+                    .ChildNodes()
+                    .OfType<QualifiedNameSyntax>()
+                    .First()
+                    .ToFullString()
+                    .Trim();
+            }
 
             var name = (string)recordDeclarationSyntax.Identifier.Value;
 

@@ -10,7 +10,7 @@ namespace MyGardenPatch;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddMyVegePatch(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddMyGardenPatch(this IServiceCollection services, IConfiguration config)
     {
         services.AddScoped<IDomainEventBus, InMemoryDomainEventBus>();
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();

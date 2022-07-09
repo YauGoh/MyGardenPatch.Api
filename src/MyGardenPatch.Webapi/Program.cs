@@ -1,3 +1,4 @@
+using MyGardenPatch.Webapi;
 using MyGardenPatch.WebApiExtensions;
 using System.Text.Json.Serialization;
 
@@ -17,6 +18,8 @@ builder.Services
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMyGardenPatchWebApi(builder.Configuration);
 
 var app = builder.Build();
 

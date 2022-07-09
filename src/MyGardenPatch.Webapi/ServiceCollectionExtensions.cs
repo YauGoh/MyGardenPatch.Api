@@ -8,13 +8,13 @@ namespace MyGardenPatch.Webapi;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddVegePatchWebApi(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddMyGardenPatchWebApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMicrosoftIdentityWebApiAuthentication(configuration);
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserProvider, HttpCurrentUserProvider>();
 
-        services.AddMyVegePatch(configuration);
+        services.AddMyGardenPatch(configuration);
         services.AddMyGardenBedSqlServer(configuration);
 
         services.AddLocalIdentity(configuration);
