@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "3/jAwInKgeq2eiBB3azy8vkT2O9zmPZBzVL08S6pB04smc9rCP3Vns7+ebzxiIpl+UJn6on3W9gXpfeqcSNRlA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.Webapi\\MyGardenPatch.Webapi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\yau_\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\yau_\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\yau_\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\yau_\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\yau_\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\yau_\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
