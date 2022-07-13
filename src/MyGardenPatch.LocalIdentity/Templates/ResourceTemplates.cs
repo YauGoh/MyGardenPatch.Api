@@ -1,7 +1,4 @@
-﻿using DotLiquid;
-using System.Reflection;
-
-namespace MyGardenPatch.LocalIdentity.Templates;
+﻿namespace MyGardenPatch.LocalIdentity.Templates;
 
 internal class ResourceTemplates
 {

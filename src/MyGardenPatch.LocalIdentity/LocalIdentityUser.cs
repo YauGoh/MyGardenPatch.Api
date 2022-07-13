@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace MyGardenPatch.LocalIdentity;
+﻿namespace MyGardenPatch.LocalIdentity;
 
 internal class LocalIdentityUser : IdentityUser
 {

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "g6nqG+JeXiCl5sE3Mu8MAsTQ7EmAhcUS7AkA+4stPhpiH268N0m4CDv41Q6U4OaZXSHj9WETkfjA+6UHibjKxA==",
+  "dgSpecHash": "AjstTMbLZJj61HQDxW7H8B+cPEXVHBXZ5jz8SwfJjB3dO8Q5qWDqDR11xFE5Bp7uQmGXkb+LRxEax7Xcdqb3aw==",
   "success": true,
   "projectFilePath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.WebApiExtensions\\MyGardenPatch.WebApiExtensions.csproj",
   "expectedPackageFiles": [

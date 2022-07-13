@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MyGardenPatch.Configurations;
 using System.Net.Mail;
+using System.Text.Json.Serialization;
 
 namespace MyGardenPatch.Common;
 
@@ -9,7 +10,18 @@ public interface IEmailSender
     Task SendAsync(Email email);
 }
 
-public record EmailAddress(string Address, string Name);
+public record EmailAddress
+{
+    [JsonConstructor]
+    public EmailAddress(string address, string name)
+    {
+        Address = address;
+        Name = name;
+    }
+
+    public string Address { get; }
+    public string Name { get; }
+}
 
 public record Email(IEnumerable<EmailAddress> To, IEnumerable<EmailAddress> Cc, IEnumerable<EmailAddress> Bcc, EmailAddress From, string Subject, string HtmlBody, string? TextBody)
 {

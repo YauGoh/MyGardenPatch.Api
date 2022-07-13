@@ -2,9 +2,17 @@
 
 public interface ILocalIdentityManager
 {
-    Task<bool> DoesEmailExist(string emailAddress);
+    Task<bool> DoesEmailExistAsync(string emailAddress);
 
-    Task RegisterAsync(string fullName, string emailAddress, string password);
+    Task StartLocalIdentityRegistrationAsync(string fullName, string emailAddress, CancellationToken cancellationToken);
 
-    Task LoginAsync(string emailAddress, string password);
+    Task<bool> IsEmailAddressVerifiedAsync(string emailAddress);
+
+    Task VerifyEmailAddressAsync(string emailAddress, string password, string verificationToken);
+
+    Task SignInAsync(string emailAddress, string password);
+
+    Task RequestPasswordResetAsync(string emailAddress);
+
+    Task ResetPasswordAsync(string emailAddress, string passwordResetToken, string password);
 }

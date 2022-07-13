@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-
-namespace MyGardenPatch.Users.Commands;
+﻿namespace MyGardenPatch.Users.Commands;
 
 public interface IUserCommand : ICommand
 {

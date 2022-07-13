@@ -1,4 +1,8 @@
-﻿namespace MyGardenPatch.Tests;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+
+namespace MyGardenPatch.Tests;
 
 public class TestBase
 {
@@ -13,14 +17,26 @@ public class TestBase
 
     protected Mock<IEmailSender> MockEmailSender { get; private set; }
 
+    protected Mock<IHttpContextAccessor> MockHttpContextAccessor { get; private set; }
+
+    protected EmailAssertions EmailAssertions { get; private set; }
+
+    protected HttpContext HttpContext { get; private set; }
+
     public TestBase()
     {
         var services = new ServiceCollection();
         var mockConfiguration = new Mock<IConfiguration>();
+        var mockEmailConfig = new Mock<IOptions<EmailConfig>>();
+        mockEmailConfig.Setup(c => c.Value).Returns(new EmailConfig("0.0.0.0", 0, new EmailAddress("testing@email.com", "testing")));
+
+        mockConfiguration
+            .Setup(c => c.GetSection(nameof(Email)))
+            .Returns(new Mock<IConfigurationSection>().Object);
+
+        services.AddTransient<IOptions<EmailConfig>>(src => mockEmailConfig.Object);
 
         services.AddMyGardenPatchWebApi(mockConfiguration.Object);
-        services.AddLocalIdentity(mockConfiguration.Object);
-        services.AddAuthentication();
 
         ReplaceMyVegePatchDbContextWithInmemoryDatabase(services);
         ReplaceLocalIdentityDbContextWithInmemoryDatabase(services);
@@ -33,11 +49,19 @@ public class TestBase
 
         MockEmailSender = ReplaceWithMock<IEmailSender>(services);
 
-        var mockEmailConfig = new Mock<IOptions<EmailConfig>>();
-        mockEmailConfig.Setup(c => c.Value).Returns(new EmailConfig("0.0.0.0", 0, new EmailAddress("testing@email.com", "testing")));
-        services.AddTransient<IOptions<EmailConfig>>(src => mockEmailConfig.Object);
+        EmailAssertions = new EmailAssertions(MockEmailSender);
+
+        HttpContext = new DefaultHttpContext();
+
+        MockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        MockHttpContextAccessor.Setup(a => a.HttpContext)
+            .Returns(HttpContext);
+
+        services.AddSingleton<IHttpContextAccessor>(src => MockHttpContextAccessor.Object);
 
         _serviceProvider = services.BuildServiceProvider();
+
+        HttpContext.RequestServices = _serviceProvider;
     }
 
     protected async Task ExecuteCommandAsync<TCommand>(TCommand command) where TCommand : ICommand

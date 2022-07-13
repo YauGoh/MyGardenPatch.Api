@@ -1,0 +1,16 @@
+﻿global using DotLiquid;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
+global using MyGardenPatch.Common;
+global using MyGardenPatch.Configurations;
+global using MyGardenPatch.LocalIdentity.Templates;
+global using MyGardenPatch.Users.Exceptions;
+global using MyGardenPatch.Users.Services;
+global using System.Reflection;
+global using System.Transactions;
+global using System.Web;

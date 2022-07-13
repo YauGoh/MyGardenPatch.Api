@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace MyGardenPatch.LocalIdentity;
+﻿namespace MyGardenPatch.LocalIdentity;
 
 internal class LocalIdentityDbContext : IdentityDbContext<LocalIdentityUser>
 {

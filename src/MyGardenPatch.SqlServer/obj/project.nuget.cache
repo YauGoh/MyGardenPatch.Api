@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Vs6OpsTV4H/TdhcWnzCVU82O/n2mkz9AkA6NX2dDo8ToMXhKuLMwkljiX3Yt30m8BjoDZpGpTCNGq8Ca2B5fCA==",
+  "dgSpecHash": "xas0UPKISUFYRB0/ahITVdE6T2ccFY/WO5NTS1BEb04ImXT07mcVku9RgvJvNm9zEUpka1XTFG5k31AgXpEUtA==",
   "success": true,
   "projectFilePath": "C:\\Users\\yau_\\dev\\MyGardenPatch.Api\\src\\MyGardenPatch.SqlServer\\MyGardenPatch.SqlServer.csproj",
   "expectedPackageFiles": [

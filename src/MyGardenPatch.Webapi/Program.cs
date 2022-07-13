@@ -1,3 +1,4 @@
+using Microsoft.Identity.Web;
 using MyGardenPatch.Webapi;
 using MyGardenPatch.WebApiExtensions;
 using System.Text.Json.Serialization;
@@ -19,7 +20,10 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 builder.Services.AddMyGardenPatchWebApi(builder.Configuration);
+builder.Services.AddAuthentication();
+
 
 var app = builder.Build();
 
@@ -32,8 +36,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().RequireAuthorization();
 
 app.Run();
