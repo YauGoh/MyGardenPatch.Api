@@ -2,9 +2,9 @@
 
 namespace MyGardenPatch.Users.Commands
 {
-    public record ChangePasswordCommand() : ICommand;
+    public record RequestChangePasswordCommand() : ICommand;
 
-    public class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordCommand>
+    public class ChangePasswordCommandHandler : ICommandHandler<RequestChangePasswordCommand>
     {
         private readonly ICurrentUserProvider _currentUser;
         private readonly ILocalIdentityManager _localIdentityManager;
@@ -15,13 +15,13 @@ namespace MyGardenPatch.Users.Commands
             _localIdentityManager = localIdentityManager;
         }
 
-        public async Task HandleAsync(ChangePasswordCommand command, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(RequestChangePasswordCommand command, CancellationToken cancellationToken = default)
         {
             await _localIdentityManager.RequestPasswordResetAsync(_currentUser.CurrentEmailAddress!);
         }
     }
 
-    public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>, ICommandValidator<ChangePasswordCommand>
+    public class ChangePasswordCommandValidator : AbstractValidator<RequestChangePasswordCommand>, ICommandValidator<RequestChangePasswordCommand>
     {
         public ChangePasswordCommandValidator(ICurrentUserProvider currentUser, ILocalIdentityManager localIdentityManager)
         {
@@ -29,9 +29,9 @@ namespace MyGardenPatch.Users.Commands
                 .Cascade(CascadeMode.Stop)
                 .Must(c => !string.IsNullOrWhiteSpace(currentUser.CurrentEmailAddress))
                     .WithMessage("Not logged in")
-                .MustAsync(async (c, cancellationToken) => await localIdentityManager.DoesEmailExistAsync(currentUser.CurrentEmailAddress))
+                .MustAsync(async (c, cancellationToken) => await localIdentityManager.DoesEmailExistAsync(currentUser.CurrentEmailAddress!))
                     .WithMessage("Not a valid local identity user")
-                .MustAsync(async (c, cancellationToken) => await localIdentityManager.IsEmailAddressVerifiedAsync(currentUser.CurrentEmailAddress))
+                .MustAsync(async (c, cancellationToken) => await localIdentityManager.IsEmailAddressVerifiedAsync(currentUser.CurrentEmailAddress!))
                     .WithMessage("Not a verified local identity");
 
         }

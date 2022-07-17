@@ -1,12 +1,9 @@
-﻿using MyGardenPatch.Common;
-using System.Text.Json.Serialization;
-
-namespace MyGardenPatch.Configurations;
+﻿namespace MyGardenPatch.Configurations;
 
 public record EmailConfig
 {
-
-    [JsonConstructor]
+    public EmailConfig() { }
+    
     public EmailConfig(string smtpServer, int port, EmailAddress systemEmailAddress)
     {
         SmtpServer = smtpServer;
@@ -14,7 +11,7 @@ public record EmailConfig
         SystemEmailAddress = systemEmailAddress;
     }
 
-    public string SmtpServer { get; }
-    public int Port { get; }
-    public EmailAddress SystemEmailAddress { get; }
+    public string SmtpServer { get; init; } = String.Empty;
+    public int Port { get; init; }
+    public EmailAddress SystemEmailAddress { get; init; } = new();
 }

@@ -4,7 +4,9 @@ internal static class UserTestData
 {
     public const string UnknownUserId = "{B0129B1B-AE17-4BB3-BAFC-45448D687EF5}";
 
-    public static User UnregisteredUser => new User("John Doe", "john.doe@email.com");
+    public static User UnregisteredUser => new User("John Doe", UnregisteredEmailAddress);
+
+    public const string UnregisteredEmailAddress = "john.doe@email.com";
 
     /// <summary>
     /// A registered user id

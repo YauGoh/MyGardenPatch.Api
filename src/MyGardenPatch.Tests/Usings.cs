@@ -25,6 +25,7 @@ global using MyGardenPatch.Users;
 global using MyGardenPatch.Users.Commands;
 global using MyGardenPatch.Users.DomainEvents;
 global using MyGardenPatch.Users.Exceptions;
+global using MyGardenPatch.Users.Queries;
 global using MyGardenPatch.Webapi;
 global using System.Linq.Expressions;
 global using System.Text.RegularExpressions;

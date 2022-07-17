@@ -1,6 +1,4 @@
-﻿
-
-namespace MyGardenPatch.LocalIdentity;
+﻿namespace MyGardenPatch.LocalIdentity;
 
 public static class ServiceCollectionExtensions
 {
@@ -34,23 +32,44 @@ public static class ServiceCollectionExtensions
             .AddEntityFrameworkStores<LocalIdentityDbContext>()
             .AddDefaultTokenProviders();
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-            options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-            options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-        })
-       .AddIdentityCookies(options => options.ApplicationCookie.Configure(ac =>
-       {
-           ac.Cookie.Name = ApplicationCookieName;
+        services
+            .AddAuthentication(
+                options =>
+                {
+                    options.DefaultAuthenticateScheme = "AuthenticationSchemaSelect";
+                    options.DefaultChallengeScheme = "AuthenticationSchemaSelect";
+                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                })
+            .AddPolicyScheme(
+                "AuthenticationSchemaSelect", 
+                "Selects between Apikey or Cookie based authentication", 
+                options =>
+                {
+                    options.ForwardDefaultSelector = context =>
+                    {
+                        var hasApiKey = context.Request.Headers[ApiKeyAuthentication.HeaderKey].Any();
 
-         
-           ac.Events.OnRedirectToLogin = context =>
-           {
-               context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-               return Task.CompletedTask;
-           };
-       }));
+                        if (hasApiKey)
+                            return ApiKeyAuthentication.Scheme;
+
+                        return IdentityConstants.ApplicationScheme;
+                    };
+                })
+            .AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(
+                ApiKeyAuthentication.Scheme, 
+                options => options.ApiKey = configuration.GetValue<string>("ApiKey"))
+            .AddIdentityCookies(
+                options => options.ApplicationCookie.Configure(ac =>
+                {
+                    ac.Cookie.Name = ApplicationCookieName;
+
+
+                    ac.Events.OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    };
+                }));
 
         return services;
     }

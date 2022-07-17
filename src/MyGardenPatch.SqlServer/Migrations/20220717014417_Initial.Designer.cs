@@ -12,7 +12,7 @@ using MyGardenPatch.SqlServer;
 namespace MyGardenPatch.SqlServer.Migrations
 {
     [DbContext(typeof(MyGardenPatchDbContext))]
-    [Migration("20220710012414_Initial")]
+    [Migration("20220717014417_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

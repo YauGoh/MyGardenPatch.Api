@@ -209,4 +209,26 @@ public class LocalIdentityUsersTests : TestBase
 
         setCookies.Should().NotContain(cookie => cookie.Contains("my-garden-patch.auth"));
     }
+
+    [Fact]
+    public async Task ChangePassword()
+    {
+        await VerifyEmailAddress();
+
+        MockCurrentUserProvider.Setup(p => p.CurrentEmailAddress).Returns(EmailAddress);
+
+        var command = new RequestChangePasswordCommand();
+
+        await ExecuteCommandAsync(command);
+
+        MockEmailSender.Verify(
+            s => s.SendAsync(
+                It.Is<Email>(e =>
+                    e.To.First().Name == FullName &&
+                    e.To.First().Address == EmailAddress &&
+                    e.Subject.Like(new Regex("Password reset request")) &&
+                    e.HtmlBody.Contains(FullName)
+                    )),
+                Times.Once);
+    }
 }

@@ -1,8 +1,8 @@
 ﻿namespace MyGardenPatch.LocalIdentity;
 
-internal class LocalIdentityDbContext : IdentityDbContext<LocalIdentityUser>
+internal class LocalIdentityDbContext : IdentityDbContext<LocalIdentityUser, LocalIdentityRole, Guid>
 {
-    public LocalIdentityDbContext(DbContextOptions options) : base(options)
+    public LocalIdentityDbContext(DbContextOptions<LocalIdentityDbContext> options) : base(options)
     {
     }
 

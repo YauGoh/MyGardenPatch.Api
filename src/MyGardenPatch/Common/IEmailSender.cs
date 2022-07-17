@@ -12,15 +12,20 @@ public interface IEmailSender
 
 public record EmailAddress
 {
-    [JsonConstructor]
+    public EmailAddress()
+    {
+
+    }
+
     public EmailAddress(string address, string name)
     {
         Address = address;
         Name = name;
     }
 
-    public string Address { get; }
-    public string Name { get; }
+    public string Address { get; init; } = String.Empty;
+
+    public string Name { get; init; } = String.Empty;
 }
 
 public record Email(IEnumerable<EmailAddress> To, IEnumerable<EmailAddress> Cc, IEnumerable<EmailAddress> Bcc, EmailAddress From, string Subject, string HtmlBody, string? TextBody)

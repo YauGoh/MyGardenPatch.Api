@@ -2,13 +2,13 @@
 
 public class InvalidPasswordException : Exception
 {
-    public InvalidPasswordException(string localIdentityUserId, string message)
+    public InvalidPasswordException(Guid localIdentityUserId, string message)
     {
         LocalIdentityUserId = localIdentityUserId;
         Message = message;
     }
 
-    public string LocalIdentityUserId { get; }
+    public Guid LocalIdentityUserId { get; }
 
     public override string Message { get; }
 }
