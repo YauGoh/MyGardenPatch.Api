@@ -41,4 +41,6 @@ app.UseAuthorization();
 
 app.MapControllers().RequireAuthorization();
 
+//app.AddCommands();
+
 app.Run();

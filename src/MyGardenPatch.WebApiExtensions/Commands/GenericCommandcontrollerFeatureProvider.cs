@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using MyGardenPatch.Commands;
-using System.Reflection;
-
-namespace MyGardenPatch.WebApiExtensions.Commands;
+﻿namespace MyGardenPatch.WebApiExtensions.Commands;
 
 internal class GenericCommandControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
 {

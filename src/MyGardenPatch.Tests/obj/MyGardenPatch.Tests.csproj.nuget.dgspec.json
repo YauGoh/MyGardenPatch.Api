@@ -321,9 +321,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Microsoft.AspNet.WebApi.Core": {
+            "Microsoft.AspNetCore": {
               "target": "Package",
-              "version": "[5.2.9, )"
+              "version": "[2.2.0, )"
             },
             "Microsoft.AspNetCore.Mvc.Core": {
               "target": "Package",

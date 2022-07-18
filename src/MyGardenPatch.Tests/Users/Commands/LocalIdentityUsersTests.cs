@@ -217,7 +217,7 @@ public class LocalIdentityUsersTests : TestBase
 
         MockCurrentUserProvider.Setup(p => p.CurrentEmailAddress).Returns(EmailAddress);
 
-        var command = new RequestChangePasswordCommand();
+        var command = new RequestChangePasswordLocalIdentityCommand();
 
         await ExecuteCommandAsync(command);
 

@@ -7,5 +7,8 @@ global using Moq;
 global using MyGardenPatch.Common;
 global using MyGardenPatch.LocalIdentity;
 global using MyGardenPatch.SqlServer;
+global using MyGardenPatch.Users.Queries;
 global using System.Text.RegularExpressions;
 global using Xunit;
+global using Xunit.Abstractions;
+global using Xunit.Sdk;

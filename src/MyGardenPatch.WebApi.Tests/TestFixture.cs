@@ -4,7 +4,7 @@ namespace MyGardenPatch.WebApi.Tests;
 
 public class TestFixture
 {
-    private Mock<IEmailSender> MockEmailSender { get; }
+    public Mock<IEmailSender> MockEmailSender { get; }
     private IConfiguration Configuration { get; }
 
     private List<CreateUser> createUsers = new List<CreateUser>();
@@ -14,6 +14,9 @@ public class TestFixture
     private bool hasLogin = false;
     private string loginEmailAddress = string.Empty;
     private string loginPassword = string.Empty;
+
+    private string userName = string.Empty;
+
 
     public TestFixture()
     {
@@ -55,6 +58,21 @@ public class TestFixture
         return this;
     }
 
+    public TestFixture WithNoLogin()
+    {
+        hasLogin = false;
+        loginCookie = string.Empty;
+
+        return this;
+    }
+
+    internal TestFixture WithPasswordChangeRequest()
+    {
+
+
+        return this;
+    }
+
     public async Task<IScenarioResult> Scenario(Action<Scenario> configure)
     {
         await Setup();
@@ -75,6 +93,8 @@ public class TestFixture
             });
     }
 
+    
+
     public async Task Setup()
     {
         foreach (var user in createUsers)
@@ -88,7 +108,6 @@ public class TestFixture
         {
             await SignInLocalIdentity(loginEmailAddress, loginPassword);
         }
-
     }
 
     private async Task SignInLocalIdentity(string emailAddress, string password)

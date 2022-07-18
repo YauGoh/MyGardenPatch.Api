@@ -121,6 +121,17 @@ public class TestBase
             .Returns(userId);
     }
 
+    protected void SetCurrentUser(User user)
+    {
+        MockCurrentUserProvider
+            .Setup(_ => _.CurrentUserId)
+            .Returns(user.Id);
+
+        MockCurrentUserProvider
+            .Setup(_ => _.CurrentEmailAddress)
+            .Returns(user.EmailAddress);
+    }
+
     protected TestBase SeedWith<TAggregate>(params TAggregate[] aggregates)
         where TAggregate : class
     {

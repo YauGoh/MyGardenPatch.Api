@@ -1,21 +1,19 @@
-﻿using FluentValidation;
-using MyGardenPatch.Aggregates;
-using MyGardenPatch.Commands;
-
-namespace MyGardenPatch.Users.Commands;
+﻿namespace MyGardenPatch.Users.Commands;
 
 public record RegisterUserCommand(
     string Name, 
-    string EmailAddress, 
-    DateTime RegisteredAt, 
     bool ReceivesEmails) : ICommand;
 
 public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
 {
+    private readonly ICurrentUserProvider _userProvider;
+    private readonly IDateTimeProvider _dateTime;
     private readonly IRepository<User, UserId> _users;
 
-    public RegisterUserCommandHandler(IRepository<User, UserId> users)
+    public RegisterUserCommandHandler(ICurrentUserProvider userProvider, IDateTimeProvider dateTime, IRepository<User, UserId> users)
     {
+        _userProvider = userProvider;
+        _dateTime = dateTime;
         _users = users;
     }
 
@@ -23,17 +21,12 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
         RegisterUserCommand command, 
         CancellationToken cancellationToken = default)
     {
-        var user = await _users.GetByExpressionAsync(u => u.EmailAddress == command.EmailAddress);
-
-        if (user == null)
-        {
-            user = new User(
-                command.Name, 
-                command.EmailAddress);
-        }
+        var user = new User(
+                command.Name,
+                _userProvider.CurrentEmailAddress!.ToLower());
 
         user!.Register(
-            command.RegisteredAt, 
+            _dateTime.Now, 
             command.ReceivesEmails);
 
         await _users.AddOrUpdateAsync(user);
@@ -42,18 +35,16 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>, ICommandValidator<RegisterUserCommand>
 {
-    public RegisterUserCommandValidator(IRepository<User, UserId> users)
+    public RegisterUserCommandValidator(ICurrentUserProvider userProvider, IRepository<User, UserId> users)
     {
+        RuleFor(command => command)
+            .Must(command => !string.IsNullOrEmpty(userProvider.CurrentEmailAddress))
+                .WithMessage("Must be logged in with a valid email address")
+            .MustAsync(async(command, cancellationToken) => !(await users.AnyAsync(u => u.EmailAddress.ToLower() == userProvider.CurrentEmailAddress!.ToLower())))
+                .WithMessage("User with email address is already registered");
+
         RuleFor(command => command.Name)
             .NotEmpty().WithMessage("Name is required")
             .MaximumLength(200).WithMessage("Maxmimum length 200 letters");
-
-        RuleFor(command => command.EmailAddress)
-            .Cascade(CascadeMode.Stop)
-            .NotEmpty().WithMessage("Email address is required")
-            .EmailAddress().WithMessage("Invalid Email address")
-            .MaximumLength(200).WithMessage("Maxmimum length 200 letters")
-            .MustAsync(async (emailAddress, cancelationToken) => (await users.GetByExpressionAsync(u => u.EmailAddress == emailAddress)) == null)
-            .WithMessage("User with email address is already registered");
     }
 }

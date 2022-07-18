@@ -82,7 +82,6 @@ C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\My
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.AssemblyInfoInputs.cache
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.AssemblyInfo.cs
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.csproj.CoreCompileInputs.cache
-C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\staticwebassets.development.json
@@ -93,6 +92,6 @@ C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\re
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.pdb
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.genruntimeconfig.cache
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\ref\MyGardenPatch.Webapi.dll
-C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\bin\Debug\net6.0\System.Net.Http.Formatting.dll
-C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\bin\Debug\net6.0\System.Web.Http.dll
-C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Https.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Webapi\obj\Debug\net6.0\MyGardenPatch.Webapi.MvcApplicationPartsAssemblyInfo.cs

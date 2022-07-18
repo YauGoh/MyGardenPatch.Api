@@ -1,6 +1,7 @@
 ﻿using MyGardenPatch.Aggregates;
 using MyGardenPatch.Common;
 using MyGardenPatch.Users;
+using System.Security.Claims;
 
 namespace MyGardenPatch.Webapi.Services;
 
@@ -22,7 +23,7 @@ internal class HttpCurrentUserProvider : ICurrentUserProvider
 
     public string? CurrentEmailAddress => _emailAddress ?? (_emailAddress = _httpContextAccessor.HttpContext!.User.Identities!
             .SelectMany(i => i.Claims)
-            .Where(c => c.Type == "preferred_username")
+            .Where(c => c.Type == ClaimTypes.Email)
             .Select(c => c.Value)
             .FirstOrDefault());
 

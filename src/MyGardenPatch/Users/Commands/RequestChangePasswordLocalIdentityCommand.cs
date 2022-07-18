@@ -2,28 +2,34 @@
 
 namespace MyGardenPatch.Users.Commands
 {
-    public record RequestChangePasswordCommand() : ICommand;
+    public record RequestChangePasswordLocalIdentityCommand() : ICommand;
 
-    public class ChangePasswordCommandHandler : ICommandHandler<RequestChangePasswordCommand>
+    public class RequestChangePasswordLocalIdentityCommandHandler : ICommandHandler<RequestChangePasswordLocalIdentityCommand>
     {
         private readonly ICurrentUserProvider _currentUser;
         private readonly ILocalIdentityManager _localIdentityManager;
 
-        public ChangePasswordCommandHandler(ICurrentUserProvider currentUser, ILocalIdentityManager localIdentityManager)
+        public RequestChangePasswordLocalIdentityCommandHandler(
+            ICurrentUserProvider currentUser, 
+            ILocalIdentityManager localIdentityManager)
         {
             _currentUser = currentUser;
             _localIdentityManager = localIdentityManager;
         }
 
-        public async Task HandleAsync(RequestChangePasswordCommand command, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(
+            RequestChangePasswordLocalIdentityCommand command, 
+            CancellationToken cancellationToken = default)
         {
             await _localIdentityManager.RequestPasswordResetAsync(_currentUser.CurrentEmailAddress!);
         }
     }
 
-    public class ChangePasswordCommandValidator : AbstractValidator<RequestChangePasswordCommand>, ICommandValidator<RequestChangePasswordCommand>
+    public class RequestChangePasswordLocalIdentityCommandValidator : 
+        AbstractValidator<RequestChangePasswordLocalIdentityCommand>, 
+        ICommandValidator<RequestChangePasswordLocalIdentityCommand>
     {
-        public ChangePasswordCommandValidator(ICurrentUserProvider currentUser, ILocalIdentityManager localIdentityManager)
+        public RequestChangePasswordLocalIdentityCommandValidator(ICurrentUserProvider currentUser, ILocalIdentityManager localIdentityManager)
         {
             RuleFor(c => c)
                 .Cascade(CascadeMode.Stop)

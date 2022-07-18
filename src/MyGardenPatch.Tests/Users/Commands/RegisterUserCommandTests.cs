@@ -5,8 +5,14 @@ public class RegisterUserCommandTests : TestBase
     [Fact]
     public async Task RegisterNewUsers()
     {
+        SetCurrentUser(UserTestData.UnregisteredUser);
+
         var date = new DateTime(2022, 1, 1);
-        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, UserTestData.UnregisteredUser.EmailAddress, date, true));
+        MockDateTimeProvider
+            .Setup(p => p.Now)
+            .Returns(date);
+
+        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true));
 
         var user = await GetAsync<User, UserId>(u => u.EmailAddress == UserTestData.UnregisteredUser.EmailAddress);
 
@@ -19,8 +25,14 @@ public class RegisterUserCommandTests : TestBase
     [Fact]
     public async Task RegisterNewUsersRaisesNewUserRegisteredEvent()
     {
+        SetCurrentUser(UserTestData.UnregisteredUser);
+
         var date = new DateTime(2022, 1, 1);
-        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, UserTestData.UnregisteredUser.EmailAddress, date, true));
+        MockDateTimeProvider
+           .Setup(p => p.Now)
+           .Returns(date);
+
+        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true));
 
         MockDomainEventBus.Verify(
             _ => _.PublishAsync(
@@ -30,24 +42,24 @@ public class RegisterUserCommandTests : TestBase
     }
 
     [Theory]
-    [InlineData("", "john.doe@email.com.au", "2022/1/1", true, "Name is required", "Name")]
-    [InlineData(Strings.Long201, "john.doe@email.com.au", "2022/1/1", true, "Maxmimum length 200 letters", "Name")]
-    [InlineData("John Doe", "", "2022/1/1", true, "Email address is required", "EmailAddress")]
-    [InlineData("John Doe", "not an email address", "2022/1/1", true, "Invalid Email address", "EmailAddress")]
-    [InlineData("John Doe", Strings.LongEmail201, "2022/1/1", true, "Maxmimum length 200 letters", "EmailAddress")]
-    [InlineData("John Doe", UserTestData.PeterParkerEmailAddress, "2022/1/1", true, "User with email address is already registered", "EmailAddress", "User is already registered")]
+    [InlineData("", true, "Name is required", "Name")]
+    [InlineData(Strings.Long201, true, "Maxmimum length 200 letters", "Name")]
     public async Task InvalidCommand(
         string name,
-        string emailAddress,
-        DateTime registeredAt,
         bool receivesEmails,
         string expectedErrorMessage,
         string expectedErrorPropertyPath,
         string because = "")
     {
+        SetCurrentUser(UserTestData.UnregisteredUser);
         SeedWith(UserTestData.PeterParker);
 
-        Func<Task> task = () => ExecuteCommandAsync(new RegisterUserCommand(name, emailAddress, registeredAt, receivesEmails));
+        var date = new DateTime(2022, 1, 1);
+        MockDateTimeProvider
+            .Setup(p => p.Now)
+            .Returns(date);
+
+        Func<Task> task = () => ExecuteCommandAsync(new RegisterUserCommand(name, receivesEmails));
 
         await task.Should()
             .ThrowAsync<InvalidCommandException<RegisterUserCommand>>()

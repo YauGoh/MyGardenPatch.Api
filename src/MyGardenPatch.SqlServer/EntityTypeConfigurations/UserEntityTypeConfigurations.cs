@@ -16,6 +16,8 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(e => e.EmailAddress).HasMaxLength(200);
 
-        builder.HasIndex(e => e.EmailAddress);
+        builder
+            .HasIndex(e => e.EmailAddress)
+            .IsUnique();
     }
 }

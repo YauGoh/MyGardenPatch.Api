@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using MyGardenPatch.Commands;
-
-namespace MyGardenPatch.WebApiExtensions.Commands;
+﻿namespace MyGardenPatch.WebApiExtensions.Commands;
 
 [ApiController]
 [GenericCommandController]
@@ -20,4 +16,3 @@ internal class GenericCommandController<TCommand> : ControllerBase
     [HttpPost]
     public Task PostAsync(TCommand command, CancellationToken cancellationToken) => _commander.HandleAsync(command, cancellationToken);
 }
-

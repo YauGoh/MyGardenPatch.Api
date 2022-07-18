@@ -178,6 +178,5 @@ C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\MyG
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\MyGardenPatch.Webapi.pdb
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\MyGardenPatch.pdb
 C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\MyGardenPatch.WebApiExtensions.pdb
-C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\System.Net.Http.Formatting.dll
-C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\System.Web.Http.dll
-C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Https.dll
+C:\Users\yau_\dev\MyGardenPatch.Api\src\MyGardenPatch.Tests\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll

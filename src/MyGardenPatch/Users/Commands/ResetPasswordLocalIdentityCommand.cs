@@ -1,6 +1,10 @@
 ﻿namespace MyGardenPatch.Users.Commands;
 
-public record ResetPasswordLocalIdentityCommand(string EmailAddress, string PasswordResetToken, string Password, string PasswordConfirm) : ICommand;
+public record ResetPasswordLocalIdentityCommand(
+    string EmailAddress, 
+    string PasswordResetToken, 
+    string Password, 
+    string PasswordConfirm) : ICommand;
 
 public class ResetPasswordLocalIdentityCommandHandler : ICommandHandler<ResetPasswordLocalIdentityCommand>
 {
