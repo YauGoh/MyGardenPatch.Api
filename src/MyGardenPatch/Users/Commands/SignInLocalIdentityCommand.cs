@@ -1,5 +1,6 @@
 ﻿namespace MyGardenPatch.Users.Commands
 {
+    [Role(WellKnownRoles.Api)]
     public record SignInLocalIdentityCommand(string EmailAddress, string Password) : ICommand;
 
     public class SignInLocalIdentityCommandHandler : ICommandHandler<SignInLocalIdentityCommand>

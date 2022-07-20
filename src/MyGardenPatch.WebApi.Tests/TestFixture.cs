@@ -15,7 +15,7 @@ public class TestFixture
     private string loginEmailAddress = string.Empty;
     private string loginPassword = string.Empty;
 
-    private string userName = string.Empty;
+    private bool useApiKey = true;
 
 
     public TestFixture()
@@ -36,9 +36,21 @@ public class TestFixture
         }).Result;
 
         Configuration = Sut.Services.GetRequiredService<IConfiguration>();
+
+        EnsureSeedData(Sut.Services);
     }
 
     internal IAlbaHost Sut { get; private set; }
+
+    public TestFixture UseApiKey()
+    {
+        useApiKey = true;
+
+        hasLogin = false;
+
+
+        return this;
+    }
 
     public TestFixture WithUser(string fullName, string emailAddress, string password)
     {
@@ -62,6 +74,14 @@ public class TestFixture
     {
         hasLogin = false;
         loginCookie = string.Empty;
+        useApiKey = false;
+
+        return this;
+    }
+
+    public TestFixture WithApiKey()
+    {
+        useApiKey = true;
 
         return this;
     }
@@ -84,7 +104,7 @@ public class TestFixture
                 {
                     _.WithRequestHeader("Cookie", "my-garden-patch.auth=" + loginCookie);
                 }
-                else
+                else if (useApiKey)
                 {
                     _.WithRequestHeader("x-api-key", Configuration.GetValue<string>("ApiKey"));
                 }
@@ -196,6 +216,18 @@ public class TestFixture
 
         services.AddDbContext<TDbContext>(options => options.UseInMemoryDatabase(databaseName));
 
+    }
+
+    private void EnsureSeedData(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+
+        var localIdentityDbContext = scope.ServiceProvider.GetRequiredService<LocalIdentityDbContext>();
+        localIdentityDbContext.Database.EnsureCreated();
+
+       
+        var myGardenDbContext = scope.ServiceProvider.GetRequiredService<MyGardenPatchDbContext>();
+        myGardenDbContext.Database.EnsureCreated();
     }
 
     record CreateUser(string FullName, string EmailAddress, string Password);

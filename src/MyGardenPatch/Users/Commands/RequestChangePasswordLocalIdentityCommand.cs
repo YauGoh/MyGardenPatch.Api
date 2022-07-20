@@ -2,6 +2,7 @@
 
 namespace MyGardenPatch.Users.Commands
 {
+    [Role(WellKnownRoles.Gardener)]
     public record RequestChangePasswordLocalIdentityCommand() : ICommand;
 
     public class RequestChangePasswordLocalIdentityCommandHandler : ICommandHandler<RequestChangePasswordLocalIdentityCommand>

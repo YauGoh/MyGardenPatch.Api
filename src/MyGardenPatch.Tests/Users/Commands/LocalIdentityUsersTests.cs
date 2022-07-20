@@ -12,6 +12,8 @@ public class LocalIdentityUsersTests : TestBase
     [Fact]
     public async Task StartNewLocalIdentity()
     {
+        var identity2 = await GetIdentityAsync<LocalIdentityUser>(u => u.Email == EmailAddress);
+
         var command = new StartNewLocalIdentityCommand(
             FullName,
             EmailAddress);

@@ -64,6 +64,8 @@ internal class LocalIdentityMananger : ILocalIdentityManager
 
         if (!passwordResult.Succeeded) throw new InvalidPasswordException(user.Id, string.Join("; ", passwordResult.Errors.Select(e => e.Description)));
 
+        await _userManager.AddToRoleAsync(user, WellKnownRoles.Gardener);
+
         transactionScope.Complete();
     }
 

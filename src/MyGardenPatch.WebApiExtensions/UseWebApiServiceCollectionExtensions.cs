@@ -1,25 +1,39 @@
-﻿using MyGardenPatch.Users.Commands;
-
-namespace MyGardenPatch.WebApiExtensions;
+﻿namespace MyGardenPatch.WebApiExtensions;
 public static class UseWebapiServiceCollectionExtensions
 {
-    public static TMvcBuilder AddCommandControllers<TMvcBuilder>(
-        this TMvcBuilder builder) where TMvcBuilder : IMvcBuilder
+    public static IServiceCollection AddRoleBasedAuthorization(this IServiceCollection services)
     {
-        builder.ConfigureApplicationPartManager(
-            manager =>
-            {
-                manager.FeatureProviders.Add(
-                    new GenericCommandControllerFeatureProvider());
-                manager.FeatureProviders.Add(
-                    new GenericQueryControllerFeatureProvider());
-            });
+        services.AddAuthorization(configure =>
+        {
+            configure.AddPolicy(WellKnownRoles.Gardener, policy => policy.RequireRole(WellKnownRoles.Gardener));
+            configure.AddPolicy(WellKnownRoles.Api, policy => policy.RequireRole(WellKnownRoles.Api));
+        });
 
-        return builder;
+        return services;
     }
 
-    //public static void AddCommands(this WebApplication app)
-    //{
-    //    app.MapPost("/commands/test", CommandDelegateFactory.GetDelegate<RegisterUserCommand>());
-    //}
+    public static void AddQueries(this IEndpointRouteBuilder app)
+    {
+        foreach (var query in QueryDelegateFactory.ResolveQueryRoutes())
+        {
+            app
+                .MapPost(
+                    query.Route,
+                    query.Delegate)
+                .RequireAuthorization(query.Roles);
+        }
+    }
+
+    public static void AddCommands(this IEndpointRouteBuilder app)
+    {
+        foreach(var command in CommandDelegateFactory.ResolveCommandRoutes())
+        {
+            app
+                .MapPost(
+                    command.Route, 
+                    command.Delegate)
+                .RequireAuthorization(command.Roles);
+        }
+        
+    }
 }

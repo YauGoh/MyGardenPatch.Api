@@ -1,5 +1,6 @@
 ﻿namespace MyGardenPatch.Users.Commands;
 
+[Role(WellKnownRoles.Api)]
 public record ResetPasswordLocalIdentityCommand(
     string EmailAddress, 
     string PasswordResetToken, 

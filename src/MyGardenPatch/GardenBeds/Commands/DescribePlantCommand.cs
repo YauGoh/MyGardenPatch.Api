@@ -1,10 +1,6 @@
-﻿using MyGardenPatch.Aggregates;
-using MyGardenPatch.Commands;
-using MyGardenPatch.Common;
-using MyGardenPatch.Gardens;
+﻿namespace MyGardenPatch.GardenBeds.Commands;
 
-namespace MyGardenPatch.GardenBeds.Commands;
-
+[Role(WellKnownRoles.Gardener)]
 public record DescribePlantCommand(
     GardenId GardenId, 
     GardenBedId GardenBedId, 

@@ -1,5 +1,6 @@
 ﻿namespace MyGardenPatch.Users.Commands;
 
+[Role(WellKnownRoles.Api)]
 public record StartNewLocalIdentityCommand(string FullName, string EmailAddress) : ICommand;
 
 public class StartNewLocalIdentityCommandHandler : ICommandHandler<StartNewLocalIdentityCommand>

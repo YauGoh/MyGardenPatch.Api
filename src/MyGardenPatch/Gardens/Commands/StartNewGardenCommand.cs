@@ -1,11 +1,8 @@
-﻿using FluentValidation;
-using MyGardenPatch.Aggregates;
-using MyGardenPatch.Commands;
-using MyGardenPatch.Common;
-using MyGardenPatch.Users.Exceptions;
+﻿
 
 namespace MyGardenPatch.Gardens.Commands;
 
+[Role(WellKnownRoles.Gardener)]
 public record StartNewGardenCommand(
     string Name, 
     string Description, 

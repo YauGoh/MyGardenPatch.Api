@@ -10,6 +10,8 @@ internal class LocalIdentityDbContext : IdentityDbContext<LocalIdentityUser, Loc
     {
         base.OnModelCreating(builder);
 
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         builder.HasDefaultSchema("identity");
     }
 }

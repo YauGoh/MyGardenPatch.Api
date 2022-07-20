@@ -13,8 +13,7 @@ builder.Services
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull; // = true;
-    })
-    .AddCommandControllers();
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -23,6 +22,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 builder.Services.AddMyGardenPatchWebApi(builder.Configuration);
 builder.Services.AddAuthentication();
+builder.Services.AddRoleBasedAuthorization();
 
 
 var app = builder.Build();
@@ -39,8 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers().RequireAuthorization();
-
-//app.AddCommands();
+app.AddQueries();
+app.AddCommands();
 
 app.Run();

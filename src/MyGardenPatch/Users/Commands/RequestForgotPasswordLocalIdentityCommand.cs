@@ -1,5 +1,6 @@
 ﻿namespace MyGardenPatch.Users.Commands;
 
+[Role(WellKnownRoles.Api)]
 public record RequestForgotPasswordLocalIdentityCommand(string EmailAddress) : ICommand;
 
 public class RequestForgotPasswordLocalIdentityCommandHandler : ICommandHandler<RequestForgotPasswordLocalIdentityCommand>

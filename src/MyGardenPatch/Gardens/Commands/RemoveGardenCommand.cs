@@ -1,9 +1,6 @@
-﻿using MyGardenPatch.Aggregates;
-using MyGardenPatch.Commands;
-using MyGardenPatch.Common;
+﻿namespace MyGardenPatch.Gardens.Commands;
 
-namespace MyGardenPatch.Gardens.Commands;
-
+[Role(WellKnownRoles.Gardener)]
 public record RemoveGardenCommand(GardenId GardenId) : IGardenCommand;
 
 public class RemoveGardenCommandHandler : ICommandHandler<RemoveGardenCommand>

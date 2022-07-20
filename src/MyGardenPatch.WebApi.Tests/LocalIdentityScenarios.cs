@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch.WebApi.Tests;
+﻿using System.Net;
+
+namespace MyGardenPatch.WebApi.Tests;
 
 [TestCaseOrderer("MyGardenPatch.WebApi.Tests.OrderedByDependantTests", "MyGardenPatch.WebApi.Tests")]
 public class LocalIdentityScenarios : IClassFixture<TestFixture>
@@ -8,12 +10,29 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
     public LocalIdentityScenarios(TestFixture fixture)
     {
         _fixture = fixture;
-    }        
+    }
+
+    [Fact, Order(0)]
+    public async Task NotAuthorised()
+    {
+        var response = await _fixture
+            .WithNoLogin()
+            .Scenario(
+                _ =>
+                {
+                    _.Post
+                        .Json(new { })
+                        .ToUrl("/queries/GetUserRegistrationStatusQuery");
+
+                    _.StatusCodeShouldBe(HttpStatusCode.Unauthorized);
+                });
+    }
 
     [Fact, Order(1)]
     public async Task LoginWithNewIdentity()
     {
         var response = await _fixture
+            .UseApiKey()
             .WithUser("Peter Parker", "peter.parker@email.com", "password1234!")
             .WithLogin("peter.parker@email.com", "password1234!")
             .Scenario(
@@ -89,7 +108,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
         var token = emailTokenExtractor.Token;
 
         response = await _fixture
-            .WithNoLogin()
+            .UseApiKey()
             .Scenario(
                 _ =>
                 {
@@ -135,7 +154,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
             new Regex("<a[^>]*href='.*passwordToken=([^'&]*)'>"));
 
         var response = await _fixture
-           .WithNoLogin()
+           .UseApiKey()
            .Scenario(
                 _ =>
                 {
@@ -152,7 +171,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
         var token = emailTokenExtractor.Token;
 
         response = await _fixture
-            .WithNoLogin()
+            .UseApiKey()
             .Scenario(
                 _ =>
                 {

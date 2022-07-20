@@ -1,5 +1,6 @@
 ﻿namespace MyGardenPatch.Users.Commands;
 
+[Role(WellKnownRoles.Gardener)]
 public record RegisterUserCommand(
     string Name, 
     bool ReceivesEmails) : ICommand;

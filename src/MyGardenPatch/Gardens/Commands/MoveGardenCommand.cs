@@ -4,6 +4,7 @@ using MyGardenPatch.Common;
 
 namespace MyGardenPatch.Gardens.Commands;
 
+[Role(WellKnownRoles.Gardener)]
 public record MoveGardenCommand(
     GardenId GardenId, 
     Transformation Transformation, 

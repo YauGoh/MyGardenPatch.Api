@@ -63,7 +63,7 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GardenBeds");
+                    b.ToTable("GardenBeds", (string)null);
                 });
 
             modelBuilder.Entity("MyGardenPatch.GardenBeds.Plant", b =>
@@ -102,7 +102,7 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasIndex("GardenBedId");
 
-                    b.ToTable("Plant");
+                    b.ToTable("Plant", (string)null);
                 });
 
             modelBuilder.Entity("MyGardenPatch.Gardens.Garden", b =>
@@ -141,7 +141,7 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Gardens");
+                    b.ToTable("Gardens", (string)null);
                 });
 
             modelBuilder.Entity("MyGardenPatch.Users.User", b =>
@@ -169,7 +169,7 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasIndex("EmailAddress");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("MyGardenPatch.GardenBeds.Plant", b =>

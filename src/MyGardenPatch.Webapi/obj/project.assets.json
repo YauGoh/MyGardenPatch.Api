@@ -2430,7 +2430,10 @@
         },
         "runtime": {
           "bin/placeholder/MyGardenPatch.WebApiExtensions.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },

@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-
-namespace MyGardenPatch.Tests;
+﻿namespace MyGardenPatch.Tests;
 
 public class TestBase
 {
@@ -60,6 +56,8 @@ public class TestBase
         services.AddSingleton<IHttpContextAccessor>(src => MockHttpContextAccessor.Object);
 
         _serviceProvider = services.BuildServiceProvider();
+
+        EnsureSeedData();
 
         HttpContext.RequestServices = _serviceProvider;
     }
@@ -213,5 +211,11 @@ public class TestBase
         services.AddSingleton<T>(_ => mock.Object);
 
         return mock;
+    }
+
+    private void EnsureSeedData()
+    {
+        _serviceProvider.GetRequiredService<LocalIdentityDbContext>().Database.EnsureCreated();
+        _serviceProvider.GetRequiredService<MyGardenPatchDbContext>().Database.EnsureCreated();
     }
 }

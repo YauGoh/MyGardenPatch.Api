@@ -1,10 +1,4 @@
-﻿using FluentValidation;
-using MyGardenPatch.Aggregates;
-using MyGardenPatch.Commands;
-using MyGardenPatch.Common;
-using MyGardenPatch.Gardens;
-
-namespace MyGardenPatch.GardenBeds.Commands;
+﻿namespace MyGardenPatch.GardenBeds.Commands;
 
 public interface IGardenBedCommand : ICommand
 {

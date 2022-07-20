@@ -1,11 +1,8 @@
-﻿using FluentValidation;
-using MyGardenPatch.Aggregates;
-using MyGardenPatch.Commands;
-using MyGardenPatch.Common;
-using MyGardenPatch.Gardens;
+﻿
 
 namespace MyGardenPatch.GardenBeds.Commands;
 
+[Role(WellKnownRoles.Gardener)]
 public record AddGardenBedCommand(
     GardenId GardenId, 
     string Name, 

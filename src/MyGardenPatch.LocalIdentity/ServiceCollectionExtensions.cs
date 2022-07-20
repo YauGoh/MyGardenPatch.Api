@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
 
                 options.SignIn.RequireConfirmedEmail = true;
             })
+            .AddRoles<LocalIdentityRole>()
             .AddSignInManager<SignInManager<LocalIdentityUser>>()
             .AddEntityFrameworkStores<LocalIdentityDbContext>()
             .AddDefaultTokenProviders();
