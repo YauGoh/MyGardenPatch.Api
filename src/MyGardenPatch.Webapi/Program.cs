@@ -39,7 +39,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.AddQueries();
-app.AddCommands();
+app.AddCommandsAndQueries();
 
 app.Run();

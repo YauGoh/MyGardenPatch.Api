@@ -12,6 +12,12 @@ public static class UseWebapiServiceCollectionExtensions
         return services;
     }
 
+    public static void AddCommandsAndQueries(this WebApplication webApplication)
+    {
+        webApplication.AddQueries();
+        webApplication.AddCommands();
+    }
+
     public static void AddQueries(this IEndpointRouteBuilder app)
     {
         foreach (var query in QueryDelegateFactory.ResolveQueryRoutes())

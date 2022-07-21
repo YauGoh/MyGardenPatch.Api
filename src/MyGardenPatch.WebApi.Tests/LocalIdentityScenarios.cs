@@ -83,7 +83,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                         })
                         .ToUrl("/commands/RegisterUserCommand");
 
-                    _.StatusCodeShouldBe(500);
+                    _.StatusCodeShouldBe(400);
                 });
     }
 

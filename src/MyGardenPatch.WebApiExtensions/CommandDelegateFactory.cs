@@ -24,9 +24,12 @@ internal static class CommandDelegateFactory
     internal static Delegate GetDelegate<TCommand>() where TCommand : ICommand
         => async (HttpRequest request, ICommandExecutor commandExecutor, CancellationToken cancellationToken) =>
         {
-            var command = await request.ReadFromJsonAsync<TCommand>(cancellationToken);
+            return await ExceptionHandler.Try<TCommand>(async () =>
+            {
+                var command = await request.ReadFromJsonAsync<TCommand>(cancellationToken);
 
-            await commandExecutor.HandleAsync(command!, cancellationToken);
+                await commandExecutor.HandleAsync(command!, cancellationToken);
+            });
         };
 
     private static string[] GetRoles(Type command) 

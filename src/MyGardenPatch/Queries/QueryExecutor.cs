@@ -33,7 +33,13 @@ internal class QueryExecutor : IQueryExecutor
         if (!result.IsValid)
             throw new InvalidQueryException<TQuery>(
                 query, 
-                result.Errors);
+                result.Errors
+                    .GroupBy(
+                        e => e.PropertyName,
+                        e => e.ErrorMessage)
+                    .ToDictionary(
+                        group => group.Key,
+                        group => group.AsEnumerable()));
 
         var handler = _serviceProvider.GetRequiredService<IQueryHandler<TQuery, TResult>>() 
             ?? throw new QueryHandlerNotFoundException<TQuery>();

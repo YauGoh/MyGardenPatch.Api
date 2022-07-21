@@ -2,17 +2,17 @@
 
 namespace MyGardenPatch.Commands;
 
-internal class InvalidCommandException<TCommand> : Exception
+public class InvalidCommandException<TCommand> : Exception
 {
-    public InvalidCommandException(TCommand command, List<ValidationFailure> validationErrors)
+    public InvalidCommandException(TCommand command, IDictionary<string, string[]> errors)
     {
         Command = command;
-        ValidationErrors = validationErrors;
+        Errors = errors;
     }
 
     public TCommand Command { get; }
 
-    public List<ValidationFailure> ValidationErrors { get; }
+    public IDictionary<string, string[]> Errors { get; }
 
     override public string Message => $"Validation errors encountered with {typeof(TCommand).FullName}";
 }

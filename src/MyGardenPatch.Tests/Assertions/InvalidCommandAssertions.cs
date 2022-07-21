@@ -11,19 +11,25 @@ internal static class InvalidCommandExtensions
     {
         return exceptionAssertion
             .Where(
-                ex => ShouldMatch(ex, validationError, validaionPropertyPath),
+                ex => ShouldMatch(
+                    ex, 
+                    validationError, 
+                    validaionPropertyPath),
                 because,
                 becauseArgs);
     }
 
     private static bool ShouldMatch<T>(InvalidCommandException<T> ex, string validationError, string validaionPropertyPath)
     {
-        var error = ex.ValidationErrors.SingleOrDefault(e => e.PropertyName == validaionPropertyPath);
+        string? error = null;
+
+        if (ex.Errors.TryGetValue(validaionPropertyPath, out var errors))
+            error = errors.First();
 
         error.Should().NotBeNull(
-            $"Expected error with Property path: {validaionPropertyPath}\r\nFound: {string.Join("; ", ex.ValidationErrors.Select(e => e.PropertyName))}");
+            $"Expected error with Property path: {validaionPropertyPath}\r\nFound: {string.Join("; ", ex.Errors.SelectMany(e => e.Value))}");
 
-        error!.ErrorMessage.Should().Be(validationError);
+        error.Should().Be(validationError);
 
         return true;
     }
@@ -37,7 +43,9 @@ internal static class InvalidCommandExtensions
     {
         return exceptionAssertion
             .Where(
-                ex => ex.ValidationErrors.Any(e => e.ErrorMessage == validationError && e.PropertyName == validaionPropertyPath),
+                ex => ex.Errors
+                    .Any(e => e.Key == validaionPropertyPath && 
+                              e.Value.Contains(validationError)),
                 because,
                 becauseArgs);
     }

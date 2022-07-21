@@ -5,15 +5,15 @@ namespace MyGardenPatch.Queries;
 [Serializable]
 internal class InvalidQueryException<TQuery> : Exception
 {
-    public InvalidQueryException(TQuery query, List<ValidationFailure> validationErrors)
+    public InvalidQueryException(TQuery query, Dictionary<string, IEnumerable<string>> errors)
     {
         Query = query;
-        ValidationErrors = validationErrors;
+        Errors = errors;
     }
 
     public TQuery Query { get; }
 
-    public List<ValidationFailure> ValidationErrors { get; }
+    public Dictionary<string, IEnumerable<string>> Errors { get; }
 
     override public string Message => $"Validation errors encountered with ${typeof(TQuery).FullName}";
 }

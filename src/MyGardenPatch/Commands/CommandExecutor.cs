@@ -23,7 +23,15 @@ public class CommandExecutor : ICommandExecutor
         var result = await validator.ValidateAsync(command, cancellationToken);
 
         if (!result.IsValid)
-            throw new InvalidCommandException<TCommand>(command, result.Errors);
+            throw new InvalidCommandException<TCommand>(
+                command, 
+                result.Errors
+                    .GroupBy(
+                        e => e.PropertyName, 
+                        e => e.ErrorMessage)
+                    .ToDictionary(
+                        group => group.Key, 
+                        group => group.ToArray()));
 
         var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>() ?? throw new CommandHandlerNotFoundException<TCommand>();
 
