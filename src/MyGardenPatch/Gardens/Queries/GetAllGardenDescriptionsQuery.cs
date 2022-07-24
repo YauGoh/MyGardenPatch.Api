@@ -1,17 +1,19 @@
-﻿namespace MyGardenPatch.Gardens.Queries;
+﻿
+namespace MyGardenPatch.Gardens.Queries;
 
 [Role(WellKnownRoles.Gardener)]
-public record GetAllGardenDescriptionsQuery() : IQuery<IEnumerable<GardenDescription>>;
+public record GetAllGardenDescriptionsQuery() : IQuery<IEnumerable<GardenDescriptor>>;
 
-public record GardenDescription(
+public record GardenDescriptor(
     GardenId GardenId, 
     string Name, 
     string Description, 
     Point Center,
+    Location Location,
     Uri? ImageUri, 
-    string? ImageDescription);
+    string? ImageDescription) : Descriptor(Name, Description, Center, Location, ImageUri, ImageDescription);
 
-public class GetAllGardenDescriptionsQueryHandler : IQueryHandler<GetAllGardenDescriptionsQuery, IEnumerable<GardenDescription>>
+public class GetAllGardenDescriptionsQueryHandler : IQueryHandler<GetAllGardenDescriptionsQuery, IEnumerable<GardenDescriptor>>
 {
     private readonly ICurrentUserProvider _currentUser;
     private readonly IRepository<Garden, GardenId> _gardens;
@@ -24,7 +26,7 @@ public class GetAllGardenDescriptionsQueryHandler : IQueryHandler<GetAllGardenDe
         _gardens = gardens;
     }
 
-    public async Task<IEnumerable<GardenDescription>> HandleAsync(
+    public async Task<IEnumerable<GardenDescriptor>> HandleAsync(
         GetAllGardenDescriptionsQuery query, 
         CancellationToken cancellationToken = default)
     {
@@ -34,11 +36,12 @@ public class GetAllGardenDescriptionsQueryHandler : IQueryHandler<GetAllGardenDe
                 cancellationToken);
 
         return gardens
-            .Select(g => new GardenDescription(
+            .Select(g => new GardenDescriptor(
                 g.Id,
                 g.Name,
                 g.Description,
                 g.Location.Center,
+                g.Location,
                 g.ImageUri,
                 g.ImageDescription))
             .AsEnumerable();

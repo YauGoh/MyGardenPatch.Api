@@ -1,17 +1,18 @@
 ﻿namespace MyGardenPatch.GardenBeds.Queries;
 
 [Role(WellKnownRoles.Gardener)]
-public record GetAllGardenBedDescriptionsQuery(GardenId GardenId) : IQuery<IEnumerable<GardenBedDescription>>;
+public record GetAllGardenBedDescriptionsQuery(GardenId GardenId) : IQuery<IEnumerable<GardenBedDescriptor>>;
 
-public record GardenBedDescription(
+public record GardenBedDescriptor(
     GardenBedId GardenBedId, 
     string Name, 
     string Description, 
     Point Center,
+    Location Location,
     Uri? ImageUri, 
-    string? ImageDescription);
+    string? ImageDescription) : Descriptor(Name, Description, Center, Location, ImageUri, ImageDescription);
 
-public class GetAllGardenBedDescriptionsQueryHandler : IQueryHandler<GetAllGardenBedDescriptionsQuery, IEnumerable<GardenBedDescription>>
+public class GetAllGardenBedDescriptionsQueryHandler : IQueryHandler<GetAllGardenBedDescriptionsQuery, IEnumerable<GardenBedDescriptor>>
 {
     private readonly ICurrentUserProvider _currentUser;
     private readonly IRepository<GardenBed, GardenBedId> _gardenBeds;
@@ -24,17 +25,18 @@ public class GetAllGardenBedDescriptionsQueryHandler : IQueryHandler<GetAllGarde
         _gardenBeds = gardenBeds;
     }
 
-    public async Task<IEnumerable<GardenBedDescription>> HandleAsync(GetAllGardenBedDescriptionsQuery query, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<GardenBedDescriptor>> HandleAsync(GetAllGardenBedDescriptionsQuery query, CancellationToken cancellationToken = default)
     {
         var gardenBeds = await _gardenBeds.WhereAsync(g => g.GardenId == query.GardenId &&
                                                            g.UserId == _currentUser.CurrentUserId);
 
         return gardenBeds
-            .Select(gb => new GardenBedDescription(
+            .Select(gb => new GardenBedDescriptor(
                 gb.Id,
                 gb.Name,
                 gb.Description,
                 gb.Location.Center,
+                gb.Location,
                 gb.ImageUri,
                 gb.ImageDescription))
             .AsEnumerable();

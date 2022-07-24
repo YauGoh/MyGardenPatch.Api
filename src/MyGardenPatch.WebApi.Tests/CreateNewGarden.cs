@@ -48,7 +48,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
     public async Task T002_GetAllGardens()
     {
         var gardens = await _fixture
-            .Query<IEnumerable<GardenDescription>>(
+            .Query<IEnumerable<GardenDescriptor>>(
                 "/queries/GetAllGardenDescriptionsQuery");
 
         gardens
@@ -94,7 +94,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
     public async Task T004_GetAllGardens_AfterDescribe()
     {
         var gardens = await _fixture
-            .Query<IEnumerable<GardenDescription>>(
+            .Query<IEnumerable<GardenDescriptor>>(
                 "/queries/GetAllGardenDescriptionsQuery");
 
         gardens
@@ -140,7 +140,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
     {
         var gardenBeds =
             await _fixture
-                .Query<IEnumerable<GardenBedDescription>>(
+                .Query<IEnumerable<GardenBedDescriptor>>(
                     "/queries/GetAllGardenBedDescriptionsQuery",
                     new { GardenId = _fixture.GardenId });
 
@@ -183,7 +183,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
     {
         var gardenBeds =
             await _fixture
-                .Query<IEnumerable<GardenBedDescription>>(
+                .Query<IEnumerable<GardenBedDescriptor>>(
                     "/queries/GetAllGardenBedDescriptionsQuery",
                     new { GardenId = _fixture.GardenId });
 
@@ -269,4 +269,44 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     ImageDescription = "Just planted"
                 });
     }
+
+    [Fact, Order(12)]
+    public async Task T012_GetAllPlants_AfterDescribe()
+    {
+        var plants =
+            await _fixture
+                .Query<IEnumerable<PlantDescription>>(
+                    "/queries/GetAllPlantDescriptionsQuery",
+                    new
+                    {
+                        GardenId = _fixture.GardenId,
+                        GardenBedId = _fixture.GardenBedId,
+                    });
+
+        plants
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    _fixture.WithPlantId(first.PlantId);
+
+                    first.Name.Should().Be("Dutch Carrots");
+                    first.Description.Should().Be("Seedling purchased from bunnings");
+                    first.ImageUri.Should().BeEquivalentTo(new Uri("https://cdn/images/plant.jpg"));
+                    first.ImageDescription.Should().Be("Just planted");
+                });
+    }
+
+    // todo ..
+    // transform Garden assert everything moved
+
+    // transform GardenBed assert everthing moved
+
+    // transform Pkant assert plant moved
+
+    // Delete Plant
+
+    // Delete GardenBed
+
+    // Delete Garden
 }
