@@ -24,7 +24,7 @@ public class TestFixture
 
     private GardenId gardenId;
     private GardenBedId gardenBedId;
-
+    private PlantId plantId;
 
     public TestFixture()
     {
@@ -118,6 +118,14 @@ public class TestFixture
     }
 
     public GardenBedId GardenBedId => gardenBedId;
+
+    public TestFixture WithPlantId(PlantId plantId)
+    {
+        this.plantId = plantId;
+        return this;
+    }
+
+    public PlantId PlantId => plantId;
 
     public async Task<IScenarioResult> Scenario(Action<Scenario> configure)
     {

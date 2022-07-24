@@ -209,8 +209,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 {
                     GardenId = _fixture.GardenId.Value,
                     GardenBedId = _fixture.GardenBedId.Value,
-                    Name = "Dutch Carrots",
-                    Description = "Seedling purchased from bunnings",
+                    Name = "Carrots",
+                    Description = "Seedling",
                     Location = new
                     {
                         Type = 0,
@@ -219,6 +219,54 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                             new { X = 0, Y = 0 }
                         }
                     }
+                });
+    }
+
+    [Fact, Order(10)]
+    public async Task T010_GetAllPlants()
+    {
+        var plants =
+            await _fixture
+                .Query<IEnumerable<PlantDescription>>(
+                    "/queries/GetAllPlantDescriptionsQuery",
+                    new 
+                    { 
+                        GardenId = _fixture.GardenId,
+                        GardenBedId = _fixture.GardenBedId,
+                    });
+
+        plants
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    _fixture.WithPlantId(first.PlantId);
+
+                    first.PlantId.Should().NotBeNull();
+                    first.PlantId.Value.Should().NotBeEmpty();
+                    first.Name.Should().Be("Carrots");
+                    first.Description.Should().Be("Seedling");
+                    first.Center.Should().BeEquivalentTo(new { X = 0, Y = 0 });
+                    first.ImageUri.Should().BeNull();
+                    first.ImageDescription.Should().BeNull();
+                });
+    }
+
+    [Fact, Order(11)]
+    public async Task T011_DescribePlant()
+    {
+        await _fixture
+            .Command(
+                "/commands/DescribePlantCommand",
+                new
+                {
+                    GardenId = _fixture.GardenId.Value,
+                    GardenBedId = _fixture.GardenBedId.Value,
+                    PlantId = _fixture.PlantId.Value,
+                    Name = "Dutch Carrots",
+                    Description = "Seedling purchased from bunnings",
+                    ImageUri = "https://cdn/images/plant.jpg",
+                    ImageDescription = "Just planted"
                 });
     }
 }
