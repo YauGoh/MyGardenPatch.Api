@@ -6,8 +6,8 @@ public record DescribeGardenBedCommand(
     GardenBedId GardenBedId, 
     string Name, 
     string Description, 
-    Uri ImageUri, 
-    string ImageDescription) : IGardenBedCommand,
+    Uri? ImageUri, 
+    string? ImageDescription) : IGardenBedCommand,
                                INameableCommand,
                                IImageableCommand;
 

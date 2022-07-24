@@ -10,7 +10,22 @@ public class StartNewGardenCommandTests : TestBase
         SeedWith(UserTestData.PeterParker);
 
         var createdAt = new DateTime(2022, 1, 1);
-        await ExecuteCommandAsync(new StartNewGardenCommand("A New Garden", "Going to grow lots of potatos", new Location(LocationType.Point, new[] { new Point(20.0, 30.0) }), new Uri("https://cdn/image.jpg"), "", createdAt));
+        MockDateTimeProvider
+            .Setup(_ => _.Now)
+            .Returns(createdAt);
+
+        await ExecuteCommandAsync(
+            new StartNewGardenCommand(
+                "A New Garden", 
+                "Going to grow lots of potatos", 
+                new Location(
+                    LocationType.Point, 
+                    new[] 
+                    { 
+                        new Point(20.0, 30.0) 
+                    }), 
+                new Uri("https://cdn/image.jpg"), 
+                ""));
 
         var garden = await GetAsync<Garden, GardenId>(g => g.Name == "A New Garden");
 
@@ -37,7 +52,11 @@ public class StartNewGardenCommandTests : TestBase
         SetCurrentUser(UserTestData.PeterParker.Id);
         SeedWith(UserTestData.PeterParker);
 
-        Func<Task> task = () => ExecuteCommandAsync(new StartNewGardenCommand(name, description, new Location(lat, lng), new Uri("https://cdn/image.jpg"), "", createdAt));
+        MockDateTimeProvider
+            .Setup(_ => _.Now)
+            .Returns(createdAt);
+
+        Func<Task> task = () => ExecuteCommandAsync(new StartNewGardenCommand(name, description, new Location(lat, lng), new Uri("https://cdn/image.jpg"), ""));
 
         await task.Should()
             .ThrowAsync<InvalidCommandException<StartNewGardenCommand>>()

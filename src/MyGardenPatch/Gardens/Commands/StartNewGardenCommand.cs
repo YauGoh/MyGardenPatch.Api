@@ -1,27 +1,30 @@
-﻿
-
-namespace MyGardenPatch.Gardens.Commands;
+﻿namespace MyGardenPatch.Gardens.Commands;
 
 [Role(WellKnownRoles.Gardener)]
 public record StartNewGardenCommand(
     string Name, 
     string Description, 
     Location Location, 
-    Uri ImageUri, 
-    string ImageDescription, 
-    DateTime CreatedAt) : ICommand, INameableCommand, IImageableCommand;
+    Uri? ImageUri, 
+    string? ImageDescription) : 
+        ICommand, 
+        INameableCommand, 
+        IImageableCommand;
 
 public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenCommand>
 {
     private readonly IRepository<Garden, GardenId> _gardens;
     private readonly ICurrentUserProvider _currentUserProvider;
+    private readonly IDateTimeProvider _dateTime;
 
     public StartNewGardenCommandHandler(
         IRepository<Garden, GardenId> gardens, 
-        ICurrentUserProvider currentUserProvider)
+        ICurrentUserProvider currentUserProvider,
+        IDateTimeProvider dateTime)
     {
         _gardens = gardens;
         _currentUserProvider = currentUserProvider;
+        _dateTime = dateTime;
     }
 
     public async Task HandleAsync(
@@ -34,7 +37,7 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
             command.Description,
             command.ImageUri,
             command.ImageDescription,
-            command.CreatedAt);
+            _dateTime.Now);
 
         garden.SetLocation(command.Location);
 
@@ -44,7 +47,9 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
     }
 }
 
-public class StartNewGardenCommandValidator : AbstractValidator<StartNewGardenCommand>, ICommandValidator<StartNewGardenCommand>
+public class StartNewGardenCommandValidator : 
+    AbstractValidator<StartNewGardenCommand>, 
+    ICommandValidator<StartNewGardenCommand>
 {
     public StartNewGardenCommandValidator()
     {

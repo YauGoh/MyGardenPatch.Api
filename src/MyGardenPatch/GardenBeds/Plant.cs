@@ -7,7 +7,7 @@ public partial record struct PlantId : IEntityId { }
 
 public class Plant : Entity<PlantId>, INameable, ILocateable
 {
-    public Plant(PlantId id, string name, string description, Uri imageUri, string imageDescription, DateTime createdAt) : base(id)
+    public Plant(PlantId id, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt) : base(id)
     {
         Name = name;
         Description = description;
@@ -16,7 +16,7 @@ public class Plant : Entity<PlantId>, INameable, ILocateable
         CreatedAt = createdAt;
     }
 
-    public Plant(string name, string description, Uri imageUri, string imageDescription, DateTime createdAt)
+    public Plant(string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
         : this(new(), name, description, imageUri, imageDescription, createdAt)
     {
     }
@@ -27,9 +27,9 @@ public class Plant : Entity<PlantId>, INameable, ILocateable
 
     public Location Location { get; private set; } = Location.Default;
 
-    public Uri ImageUri { get; private set; }
+    public Uri? ImageUri { get; private set; }
 
-    public string ImageDescription { get; private set; }
+    public string? ImageDescription { get; private set; }
 
     public DateTime CreatedAt { get; set; }
 

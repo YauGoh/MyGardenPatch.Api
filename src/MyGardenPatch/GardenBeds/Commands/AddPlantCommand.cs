@@ -8,15 +8,18 @@ public record AddPlantCommand(
     string Description,
     Location Location,
     Uri ImageUri,
-    string ImageDescription,
-    DateTime CreatedAt) : IGardenBedCommand, INameableCommand, ILocateableCommand, IImageableCommand;
+    string ImageDescription) : IGardenBedCommand, INameableCommand, ILocateableCommand, IImageableCommand;
 
 public class AddPlantCommandHandler : ICommandHandler<AddPlantCommand>
 {
+    private readonly IDateTimeProvider _dateTime;
     private readonly IRepository<GardenBed, GardenBedId> _gardenBeds;
 
-    public AddPlantCommandHandler(IRepository<GardenBed, GardenBedId> gardenBeds)
+    public AddPlantCommandHandler(
+        IDateTimeProvider dateTime,
+        IRepository<GardenBed, GardenBedId> gardenBeds)
     {
+        _dateTime = dateTime;
         _gardenBeds = gardenBeds;
     }
 
@@ -34,7 +37,7 @@ public class AddPlantCommandHandler : ICommandHandler<AddPlantCommand>
             command.Location,
             command.ImageUri,
             command.ImageDescription,
-            command.CreatedAt);
+            _dateTime.Now);
 
         await _gardenBeds.AddOrUpdateAsync(
             gardenBed, 

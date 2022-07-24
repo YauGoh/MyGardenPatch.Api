@@ -11,7 +11,7 @@ public interface IRepository<TAggregate, TKey>
 
     Task<TAggregate?> GetByExpressionAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<TAggregate>> WhereAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
+    Task<List<TAggregate>> WhereAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
 
     Task<bool> AnyAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
 
@@ -49,7 +49,7 @@ public abstract class AbstractRepository<TAggregate, TKey> : IRepository<TAggreg
 
     public abstract Task<TAggregate?> GetByExpressionAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
 
-    public abstract Task<IEnumerable<TAggregate>> WhereAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
+    public abstract Task<List<TAggregate>> WhereAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
 
     public abstract Task<bool> AnyAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default);
 

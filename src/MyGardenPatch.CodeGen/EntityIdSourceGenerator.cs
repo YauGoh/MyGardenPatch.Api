@@ -37,6 +37,7 @@ namespace MyGardenPatch.CodeGen
 
 namespace ${Namespace}
 {
+    [System.Text.Json.Serialization.JsonConverter(typeof(${Name}Converter))]
     public partial record struct ${Name}
     {
         public ${Name} (Guid value) { Value = value; }
@@ -45,10 +46,30 @@ namespace ${Namespace}
 
         public Guid Value { get; }
 
-        public static implicit operator ${Name}(Guid value) => new ${Name} (value);
+        public static implicit operator ${Name}(Guid value) => new ${Name}(value);
     }
-}
-";
+
+    public class ${Name}Converter : System.Text.Json.Serialization.JsonConverter<${Name}>
+    {
+        public override ${Name} Read(
+            ref System.Text.Json.Utf8JsonReader reader, 
+            Type typeToConvert, 
+            System.Text.Json.JsonSerializerOptions options)
+        {
+            var str = reader.GetString() ?? throw new InvalidOperationException(""Guid string expected"");
+
+            return new ${Name}(new Guid(str));
+            }
+
+            public override void Write(
+                System.Text.Json.Utf8JsonWriter writer, 
+                ${Name} value, 
+                System.Text.Json.JsonSerializerOptions options)
+            {
+                writer.WriteStringValue(value.Value.ToString());
+            }
+        }
+    }";
 
             context.RegisterForSyntaxNotifications(() => new EntityIdReceiver());
         }

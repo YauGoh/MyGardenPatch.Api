@@ -27,7 +27,7 @@ internal static class GardenBedTestData
         get
         {
             var plant = new Plant(new Guid(CarrotId), "Carrots", "Trying dutch carrots", new Uri("https://cdn/image.jpg"), "looking good", new DateTime(2022, 1, 1));
-            plant.SetLocation(new Location(LocationType.Point, new Point(1, 2)));
+            plant.SetLocation(new Location(LocationType.Point, new[] { new Point(1, 2) }));
 
             var gardenBed = new GardenBed(
                 new Guid(PeterGardenBedWithCarrotsId),

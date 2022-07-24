@@ -31,7 +31,7 @@ internal class EntityFrameworkRepository<TAggregate, TKey> : AbstractRepository<
                 AggregateExtensions.AggregateSet(_dbContext, (dynamic)expression),
                 cancellationToken);
 
-    public override Task<IEnumerable<TAggregate>> WhereAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default)
+    public override Task<List<TAggregate>> WhereAsync(Expression<Func<TAggregate, bool>> expression, CancellationToken cancellationToken = default)
         => EntityFrameworkQueryableExtensions.ToListAsync(
             AggregateExtensions.AggregateSet(_dbContext, (dynamic)expression),
             cancellationToken);

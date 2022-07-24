@@ -1,15 +1,10 @@
-﻿using MyGardenPatch.Aggregates;
-using MyGardenPatch.Common;
-using MyGardenPatch.Gardens.DomainEvents;
-using MyGardenPatch.Users;
-
-namespace MyGardenPatch.Gardens;
+﻿namespace MyGardenPatch.Gardens;
 
 public partial record struct GardenId : IEntityId { }
 
 public class Garden : UserOwnedAggregate<GardenId>, INameable, ILocateable
 {
-    public Garden(GardenId id, UserId userId, string name, string description, Uri imageUri, string imageDescription, DateTime createdAt)
+    public Garden(GardenId id, UserId userId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
         : base(id, userId)
     {
         Name = name;
@@ -19,15 +14,15 @@ public class Garden : UserOwnedAggregate<GardenId>, INameable, ILocateable
         CreatedAt = createdAt;
     }
 
-    public Garden(UserId userId, string name, string description, Uri imageUri, string imageDescription, DateTime createdAt)
+    public Garden(UserId userId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
         : this(new(), userId, name, description, imageUri, imageDescription, createdAt)
     { }
 
 
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public Uri ImageUri { get; private set; }
-    public string ImageDescription { get; private set; }
+    public Uri? ImageUri { get; private set; }
+    public string? ImageDescription { get; private set; }
     public Location Location { get; private set; } = Location.Default;
 
     public DateTime CreatedAt { get; private set; }

@@ -5,6 +5,8 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Moq;
 global using MyGardenPatch.Common;
+global using MyGardenPatch.Gardens;
+global using MyGardenPatch.Gardens.Queries;
 global using MyGardenPatch.LocalIdentity;
 global using MyGardenPatch.SqlServer;
 global using MyGardenPatch.Users.Queries;

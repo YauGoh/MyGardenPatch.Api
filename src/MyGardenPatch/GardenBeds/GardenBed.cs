@@ -1,8 +1,4 @@
-﻿using MyGardenPatch.Aggregates;
-using MyGardenPatch.Common;
-using MyGardenPatch.GardenBeds.DomainEvents;
-using MyGardenPatch.Gardens;
-using MyGardenPatch.Users;
+﻿
 
 namespace MyGardenPatch.GardenBeds;
 
@@ -10,7 +6,7 @@ public partial record struct GardenBedId : IEntityId { }
 
 public class GardenBed : UserOwnedAggregate<GardenBedId>, INameable, ILocateable
 {
-    public GardenBed(GardenBedId id, UserId userId, GardenId gardenId, string name, string description, Uri imageUri, string imageDescription, DateTime createdAt)
+    public GardenBed(GardenBedId id, UserId userId, GardenId gardenId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
         : base(id, userId)
     {
         GardenId = gardenId;
@@ -23,7 +19,7 @@ public class GardenBed : UserOwnedAggregate<GardenBedId>, INameable, ILocateable
         Plants = new HashSet<Plant>();
     }
 
-    public GardenBed(UserId userId, GardenId gardenId, string name, string description, Uri imageUri, string imageDescription, DateTime createdAt)
+    public GardenBed(UserId userId, GardenId gardenId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
         : this(new(), userId, gardenId, name, description, imageUri, imageDescription, createdAt)
     {
         Raise(new GardenBedAdded(userId, gardenId, Id, createdAt));
@@ -37,9 +33,9 @@ public class GardenBed : UserOwnedAggregate<GardenBedId>, INameable, ILocateable
 
     public Location Location { get; private set; } = Location.Default;
 
-    public Uri ImageUri { get; private set; }
+    public Uri? ImageUri { get; private set; }
 
-    public string ImageDescription { get; private set; }
+    public string? ImageDescription { get; private set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -49,7 +45,7 @@ public class GardenBed : UserOwnedAggregate<GardenBedId>, INameable, ILocateable
 
     public void SetLocation(Location location) => Location = location;
 
-    public void AddPlant(string name, string description, Location location, Uri imageUri, string imageDescription, DateTime createdAt)
+    public void AddPlant(string name, string description, Location location, Uri? imageUri, string? imageDescription, DateTime createdAt)
     {
         var plant = new Plant(name, description, imageUri, imageDescription, createdAt);
         plant.SetLocation(location);
@@ -59,7 +55,7 @@ public class GardenBed : UserOwnedAggregate<GardenBedId>, INameable, ILocateable
         Raise(new PlantAdded(GardenId, Id, plant.Id, createdAt));
     }
 
-    internal void Describe(string name, string description, Uri imageUri, string imageDescription)
+    internal void Describe(string name, string description, Uri? imageUri, string? imageDescription)
     {
         Name = name;
         Description = description;

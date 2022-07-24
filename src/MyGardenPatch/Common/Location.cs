@@ -9,8 +9,18 @@ public enum LocationType
     Boundary
 }
 
-public record Point(double X, double Y)
+public record Point
 {
+    public double X { get; }
+    public double Y { get; }
+
+    [JsonConstructor]
+    public Point(double x, double y)
+    {
+        X = x;
+        Y = y;
+    }
+
     public static implicit operator Point(string str)
     {
         var regex = new Regex(@"(-?\d+(\.\d+)?),(-?\d+(\.\d+)?)");
@@ -37,19 +47,28 @@ public record Point(double X, double Y)
 public record Location
 {
     [JsonConstructor]
-    public Location(LocationType Type, params Point[] Points)
+    public Location(LocationType Type, IEnumerable<Point> Points)
     {
         this.Type = Type;
         this.Points = Points;
     }
 
-    public Location(double lat, double lng) : this(LocationType.Point, new Point(lat, lng)) { }
+    public Location(double lat, double lng) : this(LocationType.Point, new[] { new Point(lat, lng) }) { }
 
     public static Location Default => new Location(LocationType.Point, new[] { new Point(0, 0) });
 
     public LocationType Type { get; }
 
-    public Point[] Points { get; }
+    public IEnumerable<Point> Points { get; }
+    public Point Center => this switch
+    {
+        { Type: LocationType.Point } => Points.First(),
+        { Type: LocationType.Boundary } => new Point(
+            Points.Select(p => p.X).Average(),
+            Points.Select(p => p.Y).Average()),
+
+        _ => throw new NotImplementedException()
+    };
 
     internal Location Transform(Transformation transformation)
     {

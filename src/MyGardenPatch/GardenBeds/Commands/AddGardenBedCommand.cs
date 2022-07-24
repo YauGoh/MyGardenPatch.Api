@@ -1,6 +1,4 @@
-﻿
-
-namespace MyGardenPatch.GardenBeds.Commands;
+﻿namespace MyGardenPatch.GardenBeds.Commands;
 
 [Role(WellKnownRoles.Gardener)]
 public record AddGardenBedCommand(
@@ -8,22 +6,24 @@ public record AddGardenBedCommand(
     string Name, 
     string Description, 
     Location Location, 
-    Uri ImageUri, 
-    string ImageDescription, 
-    DateTime CreatedAt)
+    Uri? ImageUri, 
+    string? ImageDescription)
     : ICommand, INameableCommand, ILocateableCommand, IImageableCommand;
 
 public class AddGardenBedCommandHandler : ICommandHandler<AddGardenBedCommand>
 {
     private readonly IRepository<GardenBed, GardenBedId> _gardenBeds;
     private readonly ICurrentUserProvider _currentUserProvider;
+    private readonly IDateTimeProvider _dateTime;
 
     public AddGardenBedCommandHandler(
         IRepository<GardenBed, GardenBedId> gardenBeds, 
-        ICurrentUserProvider currentUserProvider)
+        ICurrentUserProvider currentUserProvider,
+        IDateTimeProvider dateTime)
     {
         _gardenBeds = gardenBeds;
         _currentUserProvider = currentUserProvider;
+        _dateTime = dateTime;
     }
 
     public async Task HandleAsync(
@@ -37,7 +37,7 @@ public class AddGardenBedCommandHandler : ICommandHandler<AddGardenBedCommand>
             command.Description,
             command.ImageUri,
             command.ImageDescription,
-            command.CreatedAt);
+            _dateTime.Now);
 
         gardenBed.SetLocation(command.Location);
 

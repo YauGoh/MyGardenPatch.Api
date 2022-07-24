@@ -20,8 +20,11 @@ public class AddPlantCommandTest : TestBase
             "Dutch",
             new Location(LocationType.Point, new[] { new Point(0, 0) }),
             new Uri("https://cdn/image.jpg"),
-            "",
-            new DateTime(2022, 1, 1));
+            "");
+
+        MockDateTimeProvider
+            .Setup(dt => dt.Now)
+            .Returns(new DateTime(2022, 1, 1));
 
         await ExecuteCommandAsync(command);
 
@@ -34,7 +37,7 @@ public class AddPlantCommandTest : TestBase
         plant.Location.Should().BeEquivalentTo(command.Location);
         plant.ImageUri.Should().BeEquivalentTo(command.ImageUri);
         plant.ImageDescription.Should().BeEquivalentTo(command.ImageDescription);
-        plant.CreatedAt.Should().Be(command.CreatedAt);
+        plant.CreatedAt.Should().Be(new DateTime(2022, 1, 1));
 
         MockDomainEventBus.Verify(
             bus => bus.PublishAsync<PlantAdded>(
@@ -78,8 +81,11 @@ public class AddPlantCommandTest : TestBase
             description,
             new Location(LocationType.Point, points.Select(p => (Point)p).ToArray()),
             new Uri(imageUri, UriKind.Absolute),
-            imageDescription,
-            createdAt);
+            imageDescription);
+
+        MockDateTimeProvider
+            .Setup(dt => dt.Now)
+            .Returns(createdAt);
 
         Func<Task> task = () => ExecuteCommandAsync(command);
 

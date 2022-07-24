@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using MyGardenPatch.GardenBeds;
+using System.Net;
 
 namespace MyGardenPatch.WebApi.Tests;
 
@@ -16,6 +17,13 @@ public class TestFixture
     private string loginPassword = string.Empty;
 
     private bool useApiKey = true;
+
+    private bool registerUser = false;
+    private string registerUserFullname = string.Empty;
+    private string validateEmailToken = string.Empty;
+
+    private GardenId gardenId;
+    private GardenBedId gardenBedId;
 
 
     public TestFixture()
@@ -59,6 +67,15 @@ public class TestFixture
         return this;
     }
 
+    public TestFixture WithRegisteredUser(string fullName, string emailAddress, string password)
+    {
+        this.registerUser = true;
+        this.registerUserFullname = fullName;
+
+        return WithUser(fullName, emailAddress, password)
+            .WithLogin(emailAddress, password);
+    }
+
     public TestFixture WithLogin(string emailAddress, string password)
     {
         loginEmailAddress = emailAddress;
@@ -86,12 +103,21 @@ public class TestFixture
         return this;
     }
 
-    internal TestFixture WithPasswordChangeRequest()
+    public TestFixture WithGardenId(GardenId gardenId)
     {
-
-
+        this.gardenId = gardenId;
         return this;
     }
+
+    public GardenId GardenId => gardenId;
+
+    internal TestFixture WithGardenBedId(GardenBedId gardenBedId)
+    {
+        this.gardenBedId = gardenBedId;
+        return this;
+    }
+
+    public GardenBedId GardenBedId => gardenBedId;
 
     public async Task<IScenarioResult> Scenario(Action<Scenario> configure)
     {
@@ -113,7 +139,40 @@ public class TestFixture
             });
     }
 
-    
+    public async Task Command(string url, dynamic command = null)
+    {
+        command = command ?? new { };
+
+        await Scenario(
+            _ =>
+            {
+                _.Post
+                    .Json(command)
+                    .ToUrl(url);
+
+                _.StatusCodeShouldBeOk();
+            });
+    }
+
+    public async Task<TResult> Query<TResult>(string url, dynamic? query = null)
+    {
+        query = query ?? new { };
+
+        var response = await Scenario(
+            _ =>
+            {
+                _.Post
+                    .Json(query)
+                    .ToUrl(url);
+
+                _.StatusCodeShouldBeOk();
+            });
+
+        var result = response
+            .ReadAsJson<TResult>()!;
+
+        return result;
+    }
 
     public async Task Setup()
     {
@@ -127,8 +186,17 @@ public class TestFixture
         if (hasLogin && string.IsNullOrEmpty(loginCookie))
         {
             await SignInLocalIdentity(loginEmailAddress, loginPassword);
+
+            if (registerUser)
+            {
+                await RegisterUser(loginEmailAddress, true);
+
+                registerUser = false;
+            }
         }
     }
+
+
 
     private async Task SignInLocalIdentity(string emailAddress, string password)
     {
@@ -198,6 +266,27 @@ public class TestFixture
                            PasswordConfirm = password
                        })
                    .ToUrl("/commands/VerifyLocalIdentityEmailAddressCommand");
+
+               _.StatusCodeShouldBeOk();
+           });
+    }
+
+    private async Task RegisterUser(string emailAddress, bool receivesEmails)
+    {
+        await Sut.Scenario(
+           _ =>
+           {
+               _.WithRequestHeader("Cookie", "my-garden-patch.auth=" + loginCookie);
+
+               _.Post
+                   .Json(
+                       new
+                       {
+                           Name = registerUserFullname,
+                           EmailAddress = emailAddress,
+                           ReceivesEmails = receivesEmails
+                       })
+                   .ToUrl("/commands/RegisterUserCommand");
 
                _.StatusCodeShouldBeOk();
            });

@@ -4,8 +4,8 @@ namespace MyGardenPatch.Commands;
 
 public interface IImageableCommand : ICommand
 {
-    Uri ImageUri { get; }
-    string ImageDescription { get; }
+    Uri? ImageUri { get; }
+    string? ImageDescription { get; }
 }
 
 public static class ImageableCommandValidatorExtensions

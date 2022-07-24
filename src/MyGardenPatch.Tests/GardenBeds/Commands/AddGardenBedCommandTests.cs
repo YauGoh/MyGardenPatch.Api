@@ -18,8 +18,11 @@ public class AddGardenBedCommandTests : TestBase
             "Growing Carrots here",
             new Location(LocationType.Point, new[] { new Point(0, 0) }),
             new Uri("https://cdn/images.jpg"),
-            "A place",
-            new DateTime(2022, 1, 1));
+            "A place");
+
+        MockDateTimeProvider
+            .Setup(dt => dt.Now)
+            .Returns(new DateTime(2022, 1, 1));
 
         await ExecuteCommandAsync(command);
 
@@ -27,7 +30,7 @@ public class AddGardenBedCommandTests : TestBase
 
         gardenBed!.Description.Should().Be("Growing Carrots here");
         gardenBed.Location.Should().BeEquivalentTo(new Location(LocationType.Point, new[] { new Point(0, 0) }));
-        gardenBed.ImageUri.ToString().Should().Be("https://cdn/images.jpg");
+        gardenBed.ImageUri.Should().BeEquivalentTo(new Uri("https://cdn/images.jpg"));
         gardenBed.ImageDescription.Should().Be("A place");
         gardenBed.CreatedAt.Should().Be(new DateTime(2022, 1, 1));
 
@@ -54,6 +57,10 @@ public class AddGardenBedCommandTests : TestBase
         string because,
         params string[] strPoints)
     {
+        MockDateTimeProvider
+            .Setup(dt => dt.Now)
+            .Returns(createdAt);
+
         var points = strPoints
             .Select(str => (Point)str)
             .ToArray();
@@ -64,8 +71,7 @@ public class AddGardenBedCommandTests : TestBase
             description,
             new Location(LocationType.Point, points),
             new Uri(imageUri),
-            imageDescription,
-            createdAt);
+            imageDescription);
 
         Func<Task> task = () => ExecuteCommandAsync(command);
 
