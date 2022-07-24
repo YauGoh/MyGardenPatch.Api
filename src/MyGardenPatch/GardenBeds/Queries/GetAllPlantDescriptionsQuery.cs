@@ -31,11 +31,12 @@ public class GetAllPlantDescriptionsQueryHandler : IQueryHandler<GetAllPlantDesc
         GetAllPlantDescriptionsQuery query, 
         CancellationToken cancellationToken = default)
     {
-        var gardenBed = await _gardenBeds.GetByExpressionAsync(
-            gb => gb.Id == query.GardenBedId &&
-                  gb.GardenId == query.GardenId &&
-                  gb.UserId == _currentUser.CurrentUserId,
-            cancellationToken);
+        var gardenBed = await _gardenBeds
+            .GetByExpressionAsync(
+                gb => gb.Id == query.GardenBedId &&
+                      gb.GardenId == query.GardenId &&
+                      gb.UserId == _currentUser.CurrentUserId,
+                cancellationToken);
 
         return gardenBed!.Plants
             .Select(
@@ -56,7 +57,8 @@ public class GetAllPlantDescriptionQueryValidator : PlantQueryValidator<GetAllPl
     public GetAllPlantDescriptionQueryValidator(
         ICurrentUserProvider currentUser, 
         IRepository<Garden, GardenId> gardens, 
-        IRepository<GardenBed, GardenBedId> gardenBeds) : base(currentUser, gardens, gardenBeds)
+        IRepository<GardenBed, GardenBedId> gardenBeds) 
+            : base(currentUser, gardens, gardenBeds)
     {
 
     }
