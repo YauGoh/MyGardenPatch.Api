@@ -1,12 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using MyGardenPatch.Commands;
-using MyGardenPatch.Common;
-using MyGardenPatch.Events;
-using MyGardenPatch.Queries;
-using System.Reflection;
-
-namespace MyGardenPatch;
+﻿namespace MyGardenPatch;
 
 public static class ServiceCollectionExtensions
 {
@@ -20,6 +12,8 @@ public static class ServiceCollectionExtensions
         RegisterQueries(services);
 
         RegisterCommands(services);
+
+        RegisterDomainEventHandlers(services);
 
         return services;
     }
@@ -146,5 +140,13 @@ public static class ServiceCollectionExtensions
         var handlers = type.GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryValidator<>));
 
         return handlers.Select(h => h.GetGenericArguments()[0]);
+    }
+
+    private static void RegisterDomainEventHandlers(IServiceCollection services)
+    {
+        var domainHandlers = DomainEventHandlers.DiscoverAll();
+
+        foreach (var info in domainHandlers)
+            services.AddScoped(info.Interface, info.Handler);
     }
 }

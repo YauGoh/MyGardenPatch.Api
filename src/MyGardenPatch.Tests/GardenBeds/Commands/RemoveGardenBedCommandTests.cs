@@ -13,7 +13,7 @@ public class RemoveGardenBedCommandTests : TestBase
     [Fact]
     public async Task RemoveGardenBed()
     {
-        var command = new RemoveGardenBebCommand(GardenTestData.PeterGarden.Id, GardenBedTestData.PeterFrontGardenBed.Id);
+        var command = new RemoveGardenBedCommand(GardenTestData.PeterGarden.Id, GardenBedTestData.PeterFrontGardenBed.Id);
 
         await ExecuteCommandAsync(command);
 
@@ -38,14 +38,14 @@ public class RemoveGardenBedCommandTests : TestBase
         string expectedErrorMessage,
         string expectedErrorPropertyPath)
     {
-        var command = new RemoveGardenBebCommand(
+        var command = new RemoveGardenBedCommand(
            gardenId,
            gardenBedId);
 
         Func<Task> task = () => ExecuteCommandAsync(command);
 
         await task.Should()
-            .ThrowAsync<InvalidCommandException<RemoveGardenBebCommand>>()
+            .ThrowAsync<InvalidCommandException<RemoveGardenBedCommand>>()
             .WhereHasError(expectedErrorMessage, expectedErrorPropertyPath);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
 
 namespace MyGardenPatch.Commands;
 
@@ -33,8 +33,12 @@ public class CommandExecutor : ICommandExecutor
                         group => group.Key, 
                         group => group.ToArray()));
 
+        using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
         var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>() ?? throw new CommandHandlerNotFoundException<TCommand>();
 
         await handler.HandleAsync(command, cancellationToken);
+
+        transactionScope.Complete();
     }
 }

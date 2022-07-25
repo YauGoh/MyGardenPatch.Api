@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace MyGardenPatch.Events;
+﻿namespace MyGardenPatch.Events;
 
 internal class InMemoryDomainEventBus : IDomainEventBus
 {

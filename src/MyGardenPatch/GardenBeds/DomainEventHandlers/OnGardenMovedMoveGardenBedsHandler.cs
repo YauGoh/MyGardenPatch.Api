@@ -1,6 +1,4 @@
-﻿using MyGardenPatch.Aggregates;
-using MyGardenPatch.Events;
-using MyGardenPatch.Gardens.DomainEvents;
+﻿using MyGardenPatch.Events;
 
 namespace MyGardenPatch.GardenBeds.DomainEventHandlers;
 

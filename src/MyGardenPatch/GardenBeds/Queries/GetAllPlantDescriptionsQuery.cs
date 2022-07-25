@@ -59,7 +59,5 @@ public class GetAllPlantDescriptionQueryValidator : PlantQueryValidator<GetAllPl
         IRepository<Garden, GardenId> gardens, 
         IRepository<GardenBed, GardenBedId> gardenBeds) 
             : base(currentUser, gardens, gardenBeds)
-    {
-
-    }
+    { }
 }

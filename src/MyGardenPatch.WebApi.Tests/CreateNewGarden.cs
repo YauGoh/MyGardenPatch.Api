@@ -297,16 +297,260 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    // todo ..
-    // transform Garden assert everything moved
+    [Fact, Order(13)]
+    public async Task T013_MoveGarden()
+    {
+        await _fixture
+            .Command(
+                "/commands/MoveGardenCommand",
+                new
+                {
+                    GardenId = _fixture.GardenId.Value,
+                    Transformation = @"1 0 0
+                                       0 1 0
+                                       1 0 1",
+                    MoveGardenBeds = true
+                });
+    }
 
-    // transform GardenBed assert everthing moved
+    [Fact, Order(14)]
+    public async Task T014_GetGardens_AfterMove()
+    {
+        var gardens =
+            await _fixture
+                .Query<IEnumerable<GardenDescriptor>>(
+                    "/queries/GetAllGardenDescriptionsQuery",
+                    new { });
 
-    // transform Pkant assert plant moved
+        gardens
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    first.Center.Should().BeEquivalentTo(new { X = 1.5, Y = 0.5 });
+                });
+    }
 
-    // Delete Plant
+    [Fact, Order(15)]
+    public async Task T015_GetAllGardenBeds_AfterMove()
+    {
+        var gardenBeds =
+            await _fixture
+                .Query<IEnumerable<GardenBedDescriptor>>(
+                    "/queries/GetAllGardenBedDescriptionsQuery",
+                    new { GardenId = _fixture.GardenId.Value });
 
-    // Delete GardenBed
+        gardenBeds
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    first.Center.Should().BeEquivalentTo(new { X = 1.5, Y = 0.5 });
+                });
+    }
 
-    // Delete Garden
+    [Fact, Order(16)]
+    public async Task T016_GetAllPlants_AfterMove()
+    {
+        var plants =
+            await _fixture
+                .Query<IEnumerable<PlantDescription>>(
+                    "/queries/GetAllPlantDescriptionsQuery",
+                    new 
+                    {
+                        GardenId = _fixture.GardenId.Value,
+                        GardenBedId = _fixture.GardenBedId.Value
+                    });
+
+        plants
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    first.Center.Should().BeEquivalentTo(new { X = 1.0, Y = 0.0 });
+                });
+    }
+
+    [Fact, Order(17)]
+    public async Task T017_MoveGardenBed()
+    {
+        await _fixture
+            .Command(
+                "/commands/MoveGardenBedCommand",
+                new
+                {
+                    GardenId = _fixture.GardenId.Value,
+                    GardenBedId = _fixture.GardenBedId.Value,
+                    Transformation = @"1 0 0
+                                       0 1 0
+                                       1 0 1"
+                });
+    }
+
+    [Fact, Order(18)]
+    public async Task T018_GetAllGardenBeds_AfterMoveGardenBed()
+    {
+        var gardenBeds =
+            await _fixture
+                .Query<IEnumerable<GardenBedDescriptor>>(
+                    "/queries/GetAllGardenBedDescriptionsQuery",
+                    new { GardenId = _fixture.GardenId.Value });
+
+        gardenBeds
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    first.Center.Should().BeEquivalentTo(new { X = 2.5, Y = 0.5 });
+                });
+    }
+
+    [Fact, Order(19)]
+    public async Task T019_GetAllPlants_AfterMoveGardenBed()
+    {
+        var plants =
+            await _fixture
+                .Query<IEnumerable<PlantDescription>>(
+                    "/queries/GetAllPlantDescriptionsQuery",
+                    new
+                    {
+                        GardenId = _fixture.GardenId.Value,
+                        GardenBedId = _fixture.GardenBedId.Value
+                    });
+
+        plants
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    first.Center.Should().BeEquivalentTo(new { X = 2.0, Y = 0.0 });
+                });
+    }
+
+    [Fact, Order(20)]
+    public async Task T020_MovePlant()
+    {
+        await _fixture
+            .Command(
+                "/commands/MovePlantCommand",
+                new
+                {
+                    GardenId = _fixture.GardenId.Value,
+                    GardenBedId = _fixture.GardenBedId.Value,
+                    PlantId = _fixture.PlantId.Value,
+                    Transformation = @"1 0 0
+                                       0 1 0
+                                       1 0 1"
+                });
+    }
+
+    [Fact, Order(21)]
+    public async Task T021_GetAllPlants_AfterMovePlant()
+    {
+        var plants =
+            await _fixture
+                .Query<IEnumerable<PlantDescription>>(
+                    "/queries/GetAllPlantDescriptionsQuery",
+                    new
+                    {
+                        GardenId = _fixture.GardenId.Value,
+                        GardenBedId = _fixture.GardenBedId.Value
+                    });
+
+        plants
+            .Should()
+            .SatisfyRespectively(
+                first =>
+                {
+                    first.Center.Should().BeEquivalentTo(new { X = 3.0, Y = 0.0 });
+                });
+    }
+
+    [Fact, Order(22)]
+    public async Task T022_RemovePlant()
+    {
+        await _fixture
+            .Command(
+                "/commands/RemovePlantCommand",
+                new
+                {
+                    GardenId = _fixture.GardenId.Value,
+                    GardenBedId = _fixture.GardenBedId.Value,
+                    PlantId = _fixture.PlantId.Value
+                });
+    }
+
+    [Fact, Order(23)]
+    public async Task T023_GetAllPlants_AfterRemovePlant()
+    {
+        var plants =
+            await _fixture
+                .Query<IEnumerable<PlantDescription>>(
+                    "/queries/GetAllPlantDescriptionsQuery",
+                    new
+                    {
+                        GardenId = _fixture.GardenId.Value,
+                        GardenBedId = _fixture.GardenBedId.Value
+                    });
+
+        plants
+            .Should()
+            .BeEmpty();
+    }
+
+    [Fact, Order(24)]
+    public async Task T024_RemoveGardenBed()
+    {
+        await _fixture
+            .Command(
+                "/commands/RemoveGardenBedCommand",
+                new
+                {
+                    GardenId = _fixture.GardenId.Value,
+                    GardenBedId = _fixture.GardenBedId.Value
+                });
+    }
+
+    [Fact, Order(25)]
+    public async Task T025_GetAllGardenBeds_AfterRemoveGardenBed()
+    {
+        var gardenBeds =
+            await _fixture
+                .Query<IEnumerable<GardenBedDescriptor>>(
+                    "/queries/GetAllGardenBedDescriptionsQuery",
+                    new
+                    {
+                        GardenId = _fixture.GardenId.Value
+                    });
+
+        gardenBeds
+            .Should()
+            .BeEmpty();
+    }
+
+    [Fact, Order(26)]
+    public async Task T026_RemoveGarden()
+    {
+        await _fixture
+            .Command(
+                "/commands/RemoveGardenCommand",
+                new
+                {
+                    GardenId = _fixture.GardenId.Value,
+                });
+    }
+
+    [Fact, Order(27)]
+    public async Task T027_GetAllGardens_AfterRemoveGarden()
+    {
+        var gardens =
+            await _fixture
+                .Query<IEnumerable<GardenBedDescriptor>>(
+                    "/queries/GetAllGardenDescriptionsQuery",
+                    new { });
+
+        gardens
+            .Should()
+            .BeEmpty();
+    }
 }

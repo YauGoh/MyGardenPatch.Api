@@ -1,11 +1,11 @@
 ﻿namespace MyGardenPatch.GardenBeds.Commands;
 
 [Role(WellKnownRoles.Gardener)]
-public record RemoveGardenBebCommand(
+public record RemoveGardenBedCommand(
     GardenId GardenId, 
     GardenBedId GardenBedId) : IGardenBedCommand;
 
-public class RemoveGardenBedCommandHandler : ICommandHandler<RemoveGardenBebCommand>
+public class RemoveGardenBedCommandHandler : ICommandHandler<RemoveGardenBedCommand>
 {
     private readonly IRepository<GardenBed, GardenBedId> _gardenBeds;
 
@@ -16,7 +16,7 @@ public class RemoveGardenBedCommandHandler : ICommandHandler<RemoveGardenBebComm
     }
 
     public async Task HandleAsync(
-        RemoveGardenBebCommand command, 
+        RemoveGardenBedCommand command, 
         CancellationToken cancellationToken = default)
     {
         var gardenBed = await _gardenBeds.GetAsync(
@@ -31,7 +31,7 @@ public class RemoveGardenBedCommandHandler : ICommandHandler<RemoveGardenBebComm
     }
 }
 
-public class RemoveGardenBedCommandValidator : GardenBedCommandValidator<RemoveGardenBebCommand>, ICommandValidator<RemoveGardenBebCommand>
+public class RemoveGardenBedCommandValidator : GardenBedCommandValidator<RemoveGardenBedCommand>, ICommandValidator<RemoveGardenBedCommand>
 {
     public RemoveGardenBedCommandValidator(
         ICurrentUserProvider currentUser,
