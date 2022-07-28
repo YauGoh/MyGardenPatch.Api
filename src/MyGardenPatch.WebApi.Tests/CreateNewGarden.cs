@@ -78,7 +78,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     _.Post
                         .Json(new 
                         {
-                            GardenId = _fixture.GardenId,
+                            GardenId = _fixture.GetGardenId(),
                             Name = "Front",
                             Description = "Planting carrots here",
                             ImageUri = "https://cdn/images/image.jpg",
@@ -102,7 +102,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             .SatisfyRespectively(
                 first =>
                 {
-                    first.GardenId.Should().Be(_fixture.GardenId);
+                    first.GardenId.Should().Be(_fixture.GetGardenId());
                     first.Name.Should().Be("Front");
                     first.Description.Should().Be("Planting carrots here");
                     first.ImageUri.Should().BeEquivalentTo(new Uri("https://cdn/images/image.jpg"));
@@ -118,7 +118,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/AddGardenBedCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
                     Name = "Front",
                     Description = "infront of master bedroom window",
                     Location = new
@@ -142,7 +142,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             await _fixture
                 .Query<IEnumerable<GardenBedDescriptor>>(
                     "/queries/GetAllGardenBedDescriptionsQuery",
-                    new { GardenId = _fixture.GardenId });
+                    new { GardenId = _fixture.GetGardenId() });
 
         gardenBeds
             .Should()
@@ -169,8 +169,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/DescribeGardenBedCommand",
                 new 
                 { 
-                    GardenId = _fixture.GardenId,
-                    GardenBedId = _fixture.GardenBedId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = _fixture.GetGardenBedId().Value,
                     Name = "Carrots",
                     Description = "Starting with dutch carrots",
                     ImageUri = "https://cdn/images.jpg",
@@ -185,7 +185,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             await _fixture
                 .Query<IEnumerable<GardenBedDescriptor>>(
                     "/queries/GetAllGardenBedDescriptionsQuery",
-                    new { GardenId = _fixture.GardenId });
+                    new { GardenId = _fixture.GetGardenId().Value });
 
         gardenBeds
             .Should()
@@ -207,8 +207,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/AddPlantCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
-                    GardenBedId = _fixture.GardenBedId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = _fixture.GetGardenBedId().Value,
                     Name = "Carrots",
                     Description = "Seedling",
                     Location = new
@@ -231,8 +231,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     "/queries/GetAllPlantDescriptionsQuery",
                     new 
                     { 
-                        GardenId = _fixture.GardenId,
-                        GardenBedId = _fixture.GardenBedId,
+                        GardenId = _fixture.GetGardenId().Value,
+                        GardenBedId = _fixture.GetGardenBedId().Value,
                     });
 
         plants
@@ -260,9 +260,9 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/DescribePlantCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
-                    GardenBedId = _fixture.GardenBedId.Value,
-                    PlantId = _fixture.PlantId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = _fixture.GetGardenBedId().Value,
+                    PlantId = _fixture.GetPlantId().Value,
                     Name = "Dutch Carrots",
                     Description = "Seedling purchased from bunnings",
                     ImageUri = "https://cdn/images/plant.jpg",
@@ -279,8 +279,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     "/queries/GetAllPlantDescriptionsQuery",
                     new
                     {
-                        GardenId = _fixture.GardenId,
-                        GardenBedId = _fixture.GardenBedId,
+                        GardenId = _fixture.GetGardenId().Value,
+                        GardenBedId = _fixture.GetGardenBedId().Value,
                     });
 
         plants
@@ -305,7 +305,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/MoveGardenCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
                     Transformation = @"1 0 0
                                        0 1 0
                                        1 0 1",
@@ -338,7 +338,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             await _fixture
                 .Query<IEnumerable<GardenBedDescriptor>>(
                     "/queries/GetAllGardenBedDescriptionsQuery",
-                    new { GardenId = _fixture.GardenId.Value });
+                    new { GardenId = _fixture.GetGardenId().Value });
 
         gardenBeds
             .Should()
@@ -358,8 +358,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     "/queries/GetAllPlantDescriptionsQuery",
                     new 
                     {
-                        GardenId = _fixture.GardenId.Value,
-                        GardenBedId = _fixture.GardenBedId.Value
+                        GardenId = _fixture.GetGardenId().Value,
+                        GardenBedId = _fixture.GetGardenBedId().Value
                     });
 
         plants
@@ -379,8 +379,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/MoveGardenBedCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
-                    GardenBedId = _fixture.GardenBedId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = _fixture.GetGardenBedId().Value,
                     Transformation = @"1 0 0
                                        0 1 0
                                        1 0 1"
@@ -394,7 +394,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             await _fixture
                 .Query<IEnumerable<GardenBedDescriptor>>(
                     "/queries/GetAllGardenBedDescriptionsQuery",
-                    new { GardenId = _fixture.GardenId.Value });
+                    new { GardenId = _fixture.GetGardenId().Value });
 
         gardenBeds
             .Should()
@@ -414,8 +414,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     "/queries/GetAllPlantDescriptionsQuery",
                     new
                     {
-                        GardenId = _fixture.GardenId.Value,
-                        GardenBedId = _fixture.GardenBedId.Value
+                        GardenId = _fixture.GetGardenId().Value,
+                        GardenBedId = _fixture.GetGardenBedId().Value
                     });
 
         plants
@@ -435,9 +435,9 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/MovePlantCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
-                    GardenBedId = _fixture.GardenBedId.Value,
-                    PlantId = _fixture.PlantId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = _fixture.GetGardenBedId().Value,
+                    PlantId = _fixture.GetPlantId().Value,
                     Transformation = @"1 0 0
                                        0 1 0
                                        1 0 1"
@@ -453,8 +453,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     "/queries/GetAllPlantDescriptionsQuery",
                     new
                     {
-                        GardenId = _fixture.GardenId.Value,
-                        GardenBedId = _fixture.GardenBedId.Value
+                        GardenId = _fixture.GetGardenId().Value,
+                        GardenBedId = _fixture.GetGardenBedId().Value
                     });
 
         plants
@@ -474,9 +474,9 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/RemovePlantCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
-                    GardenBedId = _fixture.GardenBedId.Value,
-                    PlantId = _fixture.PlantId.Value
+                    GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = _fixture.GetGardenBedId().Value,
+                    PlantId = _fixture.GetPlantId().Value
                 });
     }
 
@@ -489,8 +489,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     "/queries/GetAllPlantDescriptionsQuery",
                     new
                     {
-                        GardenId = _fixture.GardenId.Value,
-                        GardenBedId = _fixture.GardenBedId.Value
+                        GardenId = _fixture.GetGardenId().Value,
+                        GardenBedId = _fixture.GetGardenBedId().Value
                     });
 
         plants
@@ -506,8 +506,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/RemoveGardenBedCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
-                    GardenBedId = _fixture.GardenBedId.Value
+                    GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = _fixture.GetGardenBedId().Value
                 });
     }
 
@@ -520,7 +520,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     "/queries/GetAllGardenBedDescriptionsQuery",
                     new
                     {
-                        GardenId = _fixture.GardenId.Value
+                        GardenId = _fixture.GetGardenId().Value
                     });
 
         gardenBeds
@@ -536,7 +536,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/RemoveGardenCommand",
                 new
                 {
-                    GardenId = _fixture.GardenId.Value,
+                    GardenId = _fixture.GetGardenId().Value,
                 });
     }
 

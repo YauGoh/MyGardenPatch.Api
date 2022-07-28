@@ -112,7 +112,7 @@ public class TestBase
 
     protected TService GetService<TService>() where TService : notnull => _serviceProvider.GetRequiredService<TService>();
 
-    protected void SetCurrentUser(UserId userId)
+    protected void SetCurrentUser(UserId? userId)
     {
         MockCurrentUserProvider
             .Setup(_ => _.CurrentUserId)

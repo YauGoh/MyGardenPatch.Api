@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace MyGardenPatch.WebApi.Tests;
+﻿namespace MyGardenPatch.WebApi.Tests;
 
 [TestCaseOrderer("MyGardenPatch.WebApi.Tests.OrderedByDependantTests", "MyGardenPatch.WebApi.Tests")]
 public class LocalIdentityScenarios : IClassFixture<TestFixture>
@@ -32,7 +30,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
     public async Task LoginWithNewIdentity()
     {
         var response = await _fixture
-            .UseApiKey()
+            .WithApiKey()
             .WithUser("Peter Parker", "peter.parker@email.com", "password1234!")
             .WithLogin("peter.parker@email.com", "password1234!")
             .Scenario(
@@ -108,7 +106,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
         var token = emailTokenExtractor.Token;
 
         response = await _fixture
-            .UseApiKey()
+            .WithApiKey()
             .Scenario(
                 _ =>
                 {
@@ -154,7 +152,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
             new Regex("<a[^>]*href='.*passwordToken=([^'&]*)'>"));
 
         var response = await _fixture
-           .UseApiKey()
+           .WithApiKey()
            .Scenario(
                 _ =>
                 {
@@ -171,7 +169,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
         var token = emailTokenExtractor.Token;
 
         response = await _fixture
-            .UseApiKey()
+            .WithApiKey()
             .Scenario(
                 _ =>
                 {

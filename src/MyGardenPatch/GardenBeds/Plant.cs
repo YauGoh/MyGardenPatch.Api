@@ -1,7 +1,4 @@
-﻿using MyGardenPatch.Aggregates;
-using MyGardenPatch.Common;
-
-namespace MyGardenPatch.GardenBeds;
+﻿namespace MyGardenPatch.GardenBeds;
 
 public partial record struct PlantId : IEntityId { }
 
