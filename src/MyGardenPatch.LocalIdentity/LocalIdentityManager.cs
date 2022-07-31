@@ -44,8 +44,6 @@ internal class LocalIdentityMananger : ILocalIdentityManager
 
     public async Task VerifyEmailAddressAsync(string emailAddress, string password, string verificationToken)
     {
-        var transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew);
-
         var isVerified = await IsEmailAddressVerifiedAsync(emailAddress);
 
         if (isVerified) throw new EmailAddressHasAlreadyVerifiedException(emailAddress);
@@ -65,8 +63,6 @@ internal class LocalIdentityMananger : ILocalIdentityManager
         if (!passwordResult.Succeeded) throw new InvalidPasswordException(user.Id, string.Join("; ", passwordResult.Errors.Select(e => e.Description)));
 
         await _userManager.AddToRoleAsync(user, WellKnownRoles.Gardener);
-
-        transactionScope.Complete();
     }
 
     public async Task SignInAsync(string emailAddress, string password)

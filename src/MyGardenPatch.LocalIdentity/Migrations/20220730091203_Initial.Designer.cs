@@ -12,8 +12,8 @@ using MyGardenPatch.LocalIdentity;
 namespace MyGardenPatch.LocalIdentity.Migrations
 {
     [DbContext(typeof(LocalIdentityDbContext))]
-    [Migration("20220720105616_SeedDefaultRoles")]
-    partial class SeedDefaultRoles
+    [Migration("20220730091203_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

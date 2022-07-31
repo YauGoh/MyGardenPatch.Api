@@ -17,8 +17,8 @@ namespace MyGardenPatch.SqlServer.Migrations
                     GardenId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -35,8 +35,8 @@ namespace MyGardenPatch.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -68,8 +68,8 @@ namespace MyGardenPatch.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GardenBedId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -108,7 +108,8 @@ namespace MyGardenPatch.SqlServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_EmailAddress",
                 table: "Users",
-                column: "EmailAddress");
+                column: "EmailAddress",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

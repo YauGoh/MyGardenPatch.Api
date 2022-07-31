@@ -12,7 +12,7 @@ using MyGardenPatch.SqlServer;
 namespace MyGardenPatch.SqlServer.Migrations
 {
     [DbContext(typeof(MyGardenPatchDbContext))]
-    [Migration("20220717014417_Initial")]
+    [Migration("20220730091134_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,11 +40,9 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageDescription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -84,11 +82,9 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageDescription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -120,11 +116,9 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageDescription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -169,7 +163,8 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmailAddress");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

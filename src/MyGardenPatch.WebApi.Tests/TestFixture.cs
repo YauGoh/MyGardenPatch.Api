@@ -4,13 +4,9 @@ public record TestFixtureState();
 
 public class TestFixture : IAsyncLifetime
 {
-    //private MsSqlTestcontainer dbContainer;
+    private TestcontainerDatabase dbContainer;
     internal Mock<IEmailSender> MockEmailSender { get; }
-    internal IConfiguration Configuration { get; }
-
-    private GardenId gardenId;
-    private GardenBedId gardenBedId;
-    private PlantId plantId;
+    internal IConfiguration Configuration { get; private set; }
 
     private Dictionary<string, object> state;
 
@@ -20,48 +16,45 @@ public class TestFixture : IAsyncLifetime
     {
         state = new Dictionary<string, object>();
 
-        //dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
-        //    .WithDatabase<MsSqlTestcontainer>(
-        //        new MsSqlTestcontainerConfiguration
-        //        {
-        //            Database = "my-garden-patch",
-        //            Username = "user",
-        //            Password = "password"
-        //        })
-        //    .Build();
+        dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
+            .WithDatabase(
+                new MsSqlTestcontainerConfiguration
+                {
+                    Password = "P@ssw0rd!2345",
+                })
+            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+            .Build();
 
         MockEmailSender = new Mock<IEmailSender>();
-
-        Sut = AlbaHost.For<global::Program>(x =>
-        {
-            x.ConfigureServices((context, services) =>
-            {
-                services.AddTransient<IEmailSender>(s => MockEmailSender.Object);
-
-               
-
-                ReplaceWithTestContainerDb<LocalIdentityDbContext>(services);
-                ReplaceWithTestContainerDb<MyGardenPatchDbContext>(services);
-            });
-        }).Result;
-
-        Configuration = Sut.Services.GetRequiredService<IConfiguration>();
-
-        this.WithApiKey();
     }
 
     internal IAlbaHost Sut { get; private set; }
 
     public async Task InitializeAsync()
     {
-        //await dbContainer.StartAsync();
+        await dbContainer.StartAsync();
+
+        Sut = await AlbaHost.For<global::Program>(x =>
+        {
+            x.ConfigureServices((context, services) =>
+            {
+                services.AddTransient<IEmailSender>(s => MockEmailSender.Object);
+
+                ReplaceWithTestContainerDb<LocalIdentityDbContext>(services);
+                ReplaceWithTestContainerDb<MyGardenPatchDbContext>(services);
+            });
+        });
+
         await EnsureDbMigrated(Sut.Services);
 
+        Configuration = Sut.Services.GetRequiredService<IConfiguration>();
+
+        this.WithApiKey();
     }
 
     public async Task DisposeAsync()
     {
-        //await dbContainer.StopAsync();
+        await dbContainer.StopAsync();
     }
 
     public void SetState<T>(string key, T value) {
@@ -127,7 +120,6 @@ public class TestFixture : IAsyncLifetime
 
     private void ReplaceWithTestContainerDb<TDbContext>(IServiceCollection services) where TDbContext : DbContext
     {
-
         var serviceDescriptions = services.Where(s => s.ServiceType == typeof(TDbContext) ||
                                              s.ServiceType == typeof(DbContextOptions<TDbContext>)).ToList();
         foreach (var serviceDescription in serviceDescriptions)
@@ -135,7 +127,7 @@ public class TestFixture : IAsyncLifetime
             services.Remove(serviceDescription);
         }
 
-        services.AddDbContext<TDbContext>(options => options.UseInMemoryDatabase(databaseName));
+        services.AddDbContext<TDbContext>(options => options.UseSqlServer(dbContainer.ConnectionString));
 
     }
 
@@ -144,14 +136,9 @@ public class TestFixture : IAsyncLifetime
         using var scope = serviceProvider.CreateScope();
 
         var localIdentityDbContext = scope.ServiceProvider.GetRequiredService<LocalIdentityDbContext>();
-        await localIdentityDbContext.Database.EnsureCreatedAsync();
-
+        await localIdentityDbContext.Database.MigrateAsync();
        
         var myGardenDbContext = scope.ServiceProvider.GetRequiredService<MyGardenPatchDbContext>();
-        await myGardenDbContext.Database.EnsureCreatedAsync();
+        await myGardenDbContext.Database.MigrateAsync();
     }
-
-    
-
-    
 }

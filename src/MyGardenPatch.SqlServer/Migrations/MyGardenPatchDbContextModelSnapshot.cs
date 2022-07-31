@@ -38,11 +38,9 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageDescription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -63,7 +61,7 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GardenBeds", (string)null);
+                    b.ToTable("GardenBeds");
                 });
 
             modelBuilder.Entity("MyGardenPatch.GardenBeds.Plant", b =>
@@ -82,11 +80,9 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageDescription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -102,7 +98,7 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasIndex("GardenBedId");
 
-                    b.ToTable("Plant", (string)null);
+                    b.ToTable("Plant");
                 });
 
             modelBuilder.Entity("MyGardenPatch.Gardens.Garden", b =>
@@ -118,11 +114,9 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageDescription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -141,7 +135,7 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Gardens", (string)null);
+                    b.ToTable("Gardens");
                 });
 
             modelBuilder.Entity("MyGardenPatch.Users.User", b =>
@@ -167,9 +161,10 @@ namespace MyGardenPatch.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmailAddress");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MyGardenPatch.GardenBeds.Plant", b =>

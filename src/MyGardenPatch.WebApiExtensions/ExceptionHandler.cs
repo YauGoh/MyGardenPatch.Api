@@ -16,8 +16,24 @@
             }
             catch(Exception ex)
             {
-                return Results.BadRequest(ex);
+                return Results.BadRequest(new
+                {
+                    ex.Message,
+                    InnerException = GetInnerException(ex.InnerException),
+                    ex.StackTrace
+                });
             }
+        }
+
+        private static object? GetInnerException(Exception? ex)
+        {
+            if (ex == null) return null;
+
+            return new
+            {
+                ex.Message,
+                InnerExceptopn = GetInnerException(ex.InnerException)
+            };
         }
     }
 }
