@@ -1,5 +1,6 @@
 ﻿namespace MyGardenPatch.Users.Queries;
 
+[Role(WellKnownRoles.Gardener)]
 public record GetUserRegistrationStatusQuery : IQuery<UserRegistrationStatus>
 {
 }
