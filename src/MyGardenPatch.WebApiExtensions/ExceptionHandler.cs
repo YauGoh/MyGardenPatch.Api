@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch.WebApiExtensions
+﻿using Microsoft.Extensions.Logging;
+
+namespace MyGardenPatch.WebApiExtensions
 {
     internal class ExceptionHandler
     {
@@ -13,15 +15,6 @@
             catch(InvalidCommandException<TCommand> tex)
             {
                 return Results.ValidationProblem(tex.Errors, title:tex.Message);
-            }
-            catch(Exception ex)
-            {
-                return Results.BadRequest(new
-                {
-                    ex.Message,
-                    InnerException = GetInnerException(ex.InnerException),
-                    ex.StackTrace
-                });
             }
         }
 

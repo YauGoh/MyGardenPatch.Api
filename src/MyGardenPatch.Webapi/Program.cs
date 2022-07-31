@@ -1,11 +1,19 @@
 using Microsoft.Identity.Web;
 using MyGardenPatch.Webapi;
 using MyGardenPatch.WebApiExtensions;
+using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 builder.Services
     .AddControllers()
