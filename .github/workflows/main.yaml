@@ -1,0 +1,130 @@
+on:
+   push:
+      branches:
+         - main
+
+env:
+    DATABASE_SERVER: my-garden-patch-dev-sqlserver.database.windows.net
+
+    MY_GARDEN_PATCH_SCRIPT: my-garden-patch.sql
+    MY_GARDEN_PATCH_ARTIFACT: my-garden-patch-migration
+
+    LOCAL_IDENTITY_SCRIPT: local-identity.sql
+    LOCAL_IDENTITY_ARTIFACT: local-identity-migration
+
+jobs:
+   build:
+      runs-on: ubuntu-latest
+
+      steps:
+         - uses: actions/checkout@v3
+         - name: Setup .Net6
+           uses: actions/setup-dotnet@v2
+           with:
+              dotnet-version: '6.0.x'
+         
+         - name: Install Dependencies
+           run: dotnet restore
+         
+         - name: Build
+           run: dotnet build --configuration Release --no-restore
+
+         - name: Log in to registry
+           run: echo "${{ secrets.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+         - name: Pull SqlServer image
+           run: docker pull ghcr.io/yaugoh/sqlserver:latest
+
+         - name: Run Tests
+           run: dotnet test --configuration Release --no-build
+
+         - name: Publish
+           run: dotnet publish ./src/MyGardenPatch.Webapi --configuration Release --no-build -o ${{env.DOTNET_ROOT}}/build
+
+         - name: Install EF tools
+           run: |
+              dotnet new tool-manifest
+              dotnet tool install dotnet-ef
+
+         - name: Generate scripts for MyGardenPatchDbContext
+           run: |
+              dotnet ef migrations script --output ${{env.DOTNET_ROOT}}/scripts/${{ env.MY_GARDEN_PATCH_SCRIPT }} \
+                                          --idempotent --startup-project ./src/MyGardenPatch.Webapi \
+                                          --project ./src/MyGardenPatch.SqlServer \
+                                          --context MyGardenPatch.SqlServer.MyGardenPatchDbContext \
+                                          --configuration Release \
+                                          --no-build
+              
+         - name: Upload MyGardenPatchDbContext scripts
+           uses: actions/upload-artifact@v3
+           with:
+              name: my-garden-patch-migration
+              path: ${{env.DOTNET_ROOT}}/scripts/${{ env.MY_GARDEN_PATCH_SCRIPT }}
+
+         - name: Generate scripts for LocalIdentityDbContext
+           run: |
+              dotnet ef migrations script --output ${{env.DOTNET_ROOT}}/scripts/${{ env.LOCAL_IDENTITY_SCRIPT }} \
+                                          --idempotent --startup-project ./src/MyGardenPatch.Webapi \
+                                          --project ./src/MyGardenPatch.LocalIdentity \
+                                          --context MyGardenPatch.LocalIdentity.LocalIdentityDbContext \
+                                          --configuration Release \
+                                          --no-build
+              
+         - name: Upload LocalIdentityDbContext scripts
+           uses: actions/upload-artifact@v3
+           with:
+              name: ${{ env.LOCAL_IDENTITY_ARTIFACT }}
+              path: ${{env.DOTNET_ROOT}}/scripts/${{ env.LOCAL_IDENTITY_SCRIPT }}
+
+         - name: Upload artifact
+           uses: actions/upload-artifact@v3
+           with:
+              name: web-api
+              path: ${{env.DOTNET_ROOT}}/build
+
+
+   deploy:
+      runs-on: ubuntu-latest
+      needs: build
+         
+      steps:
+         - name: Download artifacts
+           uses: actions/download-artifact@v3
+           with:
+              name: web-api
+
+         - name: Deploy to Azure
+           id: deploy-to-azure
+           uses: azure/webapps-deploy@v2
+           with:
+              app-name: my-garden-patch-dev-webapi
+              publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+              package: .
+
+         - name: Download MyGardenPatchDbContext migration script
+           uses: actions/download-artifact@v3
+           with:
+             name: ${{ env.MY_GARDEN_PATCH_ARTIFACT }}
+             path: ./scripts
+
+         - name: Migrate MyGardenPatchDbContext database
+           uses: azure/sql-action@v1.3
+           with: 
+              server-name: ${{ env.DATABASE_SERVER }}
+              connection-string: ${{ secrets.CONNECTION_STRING }}
+              sql-file: ./scripts/${{ env.MY_GARDEN_PATCH_SCRIPT }}
+              arguments: -I
+
+         - name: Download LocalIdentityDbContext migration script
+           uses: actions/download-artifact@v3
+           with:
+             name: ${{ env.LOCAL_IDENTITY_ARTIFACT }}
+             path: ./scripts
+
+         - name: Migrate LocalIdentityDbContext Database
+           uses: azure/sql-action@v1.3
+           with: 
+              server-name: ${{ env.DATABASE_SERVER }}
+              connection-string: ${{ secrets.CONNECTION_STRING }}
+              sql-file: ./scripts/${{ env.LOCAL_IDENTITY_SCRIPT }}
+              arguments: -I

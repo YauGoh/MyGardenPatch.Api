@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch.WebApi.Tests;
+﻿using DotNet.Testcontainers.Images;
+
+namespace MyGardenPatch.WebApi.Tests;
 
 public record TestFixtureState();
 
@@ -16,13 +18,15 @@ public class TestFixture : IAsyncLifetime
     {
         state = new Dictionary<string, object>();
 
+        TestcontainersSettings.ResourceReaperImage = new DockerImage("ghcr.io/yaugoh/ryuk:latest");
+
         dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
             .WithDatabase(
                 new MsSqlTestcontainerConfiguration
                 {
                     Password = "P@ssw0rd!2345",
                 })
-            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+            .WithImage("ghcr.io/yaugoh/sqlserver:latest")
             .Build();
 
         MockEmailSender = new Mock<IEmailSender>();
