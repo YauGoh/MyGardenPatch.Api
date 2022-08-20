@@ -32,6 +32,20 @@ builder.Services.AddMyGardenPatchWebApi(builder.Configuration);
 builder.Services.AddAuthentication();
 builder.Services.AddRoleBasedAuthorization();
 
+builder.Services.AddCors(
+    options => options.AddPolicy(
+        "WebApp",
+        policy => policy
+            .SetIsOriginAllowed(origin =>
+            {
+                return builder.Configuration.GetValue<IEnumerable<string>>("CorsDomains").Contains(origin);
+            })
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+    )
+);
+
+
 
 var app = builder.Build();
 

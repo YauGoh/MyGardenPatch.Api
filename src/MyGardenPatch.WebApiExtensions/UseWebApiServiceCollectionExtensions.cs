@@ -12,13 +12,13 @@ public static class UseWebapiServiceCollectionExtensions
         return services;
     }
 
-    public static void AddCommandsAndQueries(this WebApplication webApplication)
+    public static void AddCommandsAndQueries(this WebApplication webApplication, string corsPolicyName = "WebApp")
     {
-        webApplication.AddQueries();
-        webApplication.AddCommands();
+        webApplication.AddQueries(corsPolicyName);
+        webApplication.AddCommands(corsPolicyName);
     }
 
-    public static void AddQueries(this IEndpointRouteBuilder app)
+    public static void AddQueries(this IEndpointRouteBuilder app, string corsPolicyName)
     {
         foreach (var query in QueryDelegateFactory.ResolveQueryRoutes())
         {
@@ -26,11 +26,12 @@ public static class UseWebapiServiceCollectionExtensions
                 .MapPost(
                     query.Route,
                     query.Delegate)
-                .RequireAuthorization(query.Roles);
+                .RequireAuthorization(query.Roles)
+                .RequireCors(corsPolicyName);
         }
     }
 
-    public static void AddCommands(this IEndpointRouteBuilder app)
+    public static void AddCommands(this IEndpointRouteBuilder app, string corsPolicyName)
     {
         foreach(var command in CommandDelegateFactory.ResolveCommandRoutes())
         {
@@ -38,7 +39,8 @@ public static class UseWebapiServiceCollectionExtensions
                 .MapPost(
                     command.Route, 
                     command.Delegate)
-                .RequireAuthorization(command.Roles);
+                .RequireAuthorization(command.Roles)
+                .RequireCors(corsPolicyName);
         }
         
     }
