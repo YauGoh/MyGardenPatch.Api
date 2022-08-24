@@ -36,10 +36,7 @@ builder.Services.AddCors(
     options => options.AddPolicy(
         "WebApp",
         policy => policy
-            .SetIsOriginAllowed(origin =>
-            {
-                return builder.Configuration.GetValue<IEnumerable<string>>("CorsDomains").Contains(origin);
-            })
+            .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()
     )
@@ -61,6 +58,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.AddCommandsAndQueries();
+app.UseCors("WebApp");
+
+app.AddCommandsAndQueries("WebApp");
 
 app.Run();

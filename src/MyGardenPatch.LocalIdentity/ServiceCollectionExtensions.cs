@@ -68,6 +68,8 @@ public static class ServiceCollectionExtensions
                     ac.Events.OnRedirectToLogin = context =>
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.Headers["access-control-allow-origin"] = "*";
+
                         return Task.CompletedTask;
                     };
                 }));
