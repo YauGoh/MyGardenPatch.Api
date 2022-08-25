@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch;
+﻿using MyGardenPatch.Configurations;
+
+namespace MyGardenPatch;
 
 public static class ServiceCollectionExtensions
 {
@@ -7,7 +9,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDomainEventBus, InMemoryDomainEventBus>();
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
-        services.Configure<Email>(config.GetSection(nameof(Email)));
+        services.Configure<EmailConfig>(config.GetSection("Email"));
+        services.Configure<FrontEndConfig>(config.GetSection("FrontEnd"));
 
         RegisterQueries(services);
 

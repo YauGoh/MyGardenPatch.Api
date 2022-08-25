@@ -45,7 +45,7 @@
         {
             var tokenExtractor = new EmailTokenExtractor(
                 testFixture.MockEmailSender,
-                new Regex("<a[^>]*href='.*verificationToken=([^'&]*)'>"));
+                new Regex("<a[^>]*href='.*verification-token=([^'&]*)'>"));
 
             await testFixture.Sut.Scenario(
                 _ =>

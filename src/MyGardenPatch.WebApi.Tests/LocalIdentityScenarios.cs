@@ -90,7 +90,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
     {
         var emailTokenExtractor = new EmailTokenExtractor(
             _fixture.MockEmailSender, 
-            new Regex("<a[^>]*href='.*passwordToken=([^'&]*)'>"));
+            new Regex("<a[^>]*href='.*password-token=([^'&]*)'>"));
 
         var response = await _fixture
            .Scenario(
@@ -149,7 +149,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
     {
         var emailTokenExtractor = new EmailTokenExtractor(
             _fixture.MockEmailSender,
-            new Regex("<a[^>]*href='.*passwordToken=([^'&]*)'>"));
+            new Regex("<a[^>]*href='.*password-token=([^'&]*)'>"));
 
         var response = await _fixture
            .WithApiKey()

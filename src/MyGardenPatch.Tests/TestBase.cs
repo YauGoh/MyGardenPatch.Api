@@ -32,6 +32,16 @@ public class TestBase
 
         services.AddTransient<IOptions<EmailConfig>>(src => mockEmailConfig.Object);
 
+        var mockFrontEndConfig = new Mock<IOptions<FrontEndConfig>>();
+        mockFrontEndConfig.Setup(c => c.Value).Returns(new FrontEndConfig());
+
+        mockConfiguration
+            .Setup(c => c.GetSection("FrontEnd"))
+            .Returns(new Mock<IConfigurationSection>().Object);
+
+        services.AddTransient<IOptions<FrontEndConfig>>(src => mockFrontEndConfig.Object);
+
+
         services.AddMyGardenPatchWebApi(mockConfiguration.Object);
 
         ReplaceMyVegePatchDbContextWithInmemoryDatabase(services);

@@ -41,7 +41,7 @@ public class LocalIdentityUsersTests : TestBase
     {
         await StartNewLocalIdentity();
 
-        var regexExtractToken = new Regex("<a[^>]*href='.*verificationToken=([^'&]*)'>");
+        var regexExtractToken = new Regex("<a[^>]*href='.*verification-token=([^'&]*)'>");
 
         var verificationToken = HttpUtility.UrlDecode(regexExtractToken.Match(EmailAssertions.LastEmailBody!).Groups[1].Value);
 
@@ -165,7 +165,7 @@ public class LocalIdentityUsersTests : TestBase
     {
         await RequestForgotPassword();
 
-        var tokenRegex = new Regex("<a[^>]*href='.*passwordToken=([^'&]*)'>");
+        var tokenRegex = new Regex("<a[^>]*href='.*password-token=([^'&]*)'>");
 
         var token = HttpUtility.UrlDecode(tokenRegex.Match(EmailAssertions.LastEmailBody!).Groups[1].Value);
 

@@ -6,17 +6,24 @@ internal class LocalIdentityMananger : ILocalIdentityManager
     private readonly SignInManager<LocalIdentityUser> _signInManager;
     private readonly IEmailSender _emailSender;
     private readonly IOptions<EmailConfig> _emailConfig;
+    private readonly IOptions<FrontEndConfig> _frontEndConfig;
+
+    private readonly Uri _baseUrl;
 
     public LocalIdentityMananger(
         UserManager<LocalIdentityUser> userManager,
         SignInManager<LocalIdentityUser> signInManager,
         IEmailSender emailSender,
-        IOptions<EmailConfig> emailConfig)
+        IOptions<EmailConfig> emailConfig,
+        IOptions<FrontEndConfig> frontEndConfig)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _emailSender = emailSender;
         _emailConfig = emailConfig;
+        _frontEndConfig = frontEndConfig;
+
+        _baseUrl = frontEndConfig?.Value?.BaseUrl ?? throw new ArgumentException("Front end url is required");
     }
 
     public async Task<bool> DoesEmailExistAsync(string emailAddress)
@@ -114,7 +121,7 @@ internal class LocalIdentityMananger : ILocalIdentityManager
         {
             FullName = user.FullName,
             EmailAddress = user.Email,
-            VerificationUrl= $"https://baseurl?emailAddress={HttpUtility.UrlEncode(user.Email)}&verificationToken={HttpUtility.UrlEncode(verificationToken)}"
+            VerificationUrl= $"{_baseUrl.ToString()}/login/local-identity/verify-email?email-address={HttpUtility.UrlEncode(user.Email)}&verification-token={HttpUtility.UrlEncode(verificationToken)}"
         };
 
         var subject = await ResourceTemplates.Render("EmailConfirmation.subject.liquid", emailModel);
@@ -138,7 +145,7 @@ internal class LocalIdentityMananger : ILocalIdentityManager
         {
             FullName = user.FullName,
             EmailAddress = user.Email,
-            PasswordResetUrl = $"https://baseurl?emailAddress={HttpUtility.UrlEncode(user.Email)}&passwordToken={HttpUtility.UrlEncode(passwordToken)}"
+            PasswordResetUrl = $"{_baseUrl.ToString()}/login/local-identity/reset-password?email-address={HttpUtility.UrlEncode(user.Email)}&password-token={HttpUtility.UrlEncode(passwordToken)}"
         };
 
         var subject = await ResourceTemplates.Render("PasswordReset.subject.liquid", emailModel);
