@@ -65,6 +65,8 @@ internal class SmtpEmailSender : IEmailSender
     {
         var message = new MailMessage();
 
+        message.From = new MailAddress(email.From.Address, email.From.Name);
+
         foreach (var to in email.To)
         {
             message.To.Add(new MailAddress(to.Address, to.Name));

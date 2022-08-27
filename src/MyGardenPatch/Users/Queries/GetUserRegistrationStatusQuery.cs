@@ -11,7 +11,9 @@ public enum RegistrationStatus
     Registered
 }
 
-public record UserRegistrationStatus(RegistrationStatus Status) { }
+public record UserInfo(String FullName, string EmailAddress);
+
+public record UserRegistrationStatus(RegistrationStatus Status, UserInfo? User) { }
 
 public class GetUserRegistrationStatusQueryHandler : IQueryHandler<GetUserRegistrationStatusQuery, UserRegistrationStatus>
 {
@@ -30,7 +32,9 @@ public class GetUserRegistrationStatusQueryHandler : IQueryHandler<GetUserRegist
     {
         var user = await _users.GetByExpressionAsync(u => u.EmailAddress == _userProvider.CurrentEmailAddress, cancellationToken);
 
-        return new UserRegistrationStatus(user == null ? RegistrationStatus.NotRegistered : RegistrationStatus.Registered);
+        return new UserRegistrationStatus(
+            user == null ? RegistrationStatus.NotRegistered : RegistrationStatus.Registered, 
+            user == null ? null : new UserInfo(user.Name, user.EmailAddress));
     }
 }
 

@@ -121,7 +121,7 @@ internal class LocalIdentityMananger : ILocalIdentityManager
         {
             FullName = user.FullName,
             EmailAddress = user.Email,
-            VerificationUrl= $"{_baseUrl.ToString()}/login/local-identity/verify-email?email-address={HttpUtility.UrlEncode(user.Email)}&verification-token={HttpUtility.UrlEncode(verificationToken)}"
+            VerificationUrl= $"{_baseUrl.ToString()}login/local-identity/verify-email?email-address={HttpUtility.UrlEncode(user.Email)}&verification-token={HttpUtility.UrlEncode(verificationToken)}"
         };
 
         var subject = await ResourceTemplates.Render("EmailConfirmation.subject.liquid", emailModel);
@@ -145,7 +145,7 @@ internal class LocalIdentityMananger : ILocalIdentityManager
         {
             FullName = user.FullName,
             EmailAddress = user.Email,
-            PasswordResetUrl = $"{_baseUrl.ToString()}/login/local-identity/reset-password?email-address={HttpUtility.UrlEncode(user.Email)}&password-token={HttpUtility.UrlEncode(passwordToken)}"
+            PasswordResetUrl = $"{_baseUrl.ToString()}login/local-identity/reset-password?email-address={HttpUtility.UrlEncode(user.Email)}&password-token={HttpUtility.UrlEncode(passwordToken)}"
         };
 
         var subject = await ResourceTemplates.Render("PasswordReset.subject.liquid", emailModel);
