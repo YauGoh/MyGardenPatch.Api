@@ -10,7 +10,7 @@ public abstract class GardenBedQueryValidator<TQuery> : LoggedInCurrentUserQuery
         RuleFor(q => q.GardenId)
             .MustAsync((gardenId, cancellationToken) => gardens
                 .AnyAsync(g => g.Id == gardenId &&
-                               g.UserId == currentUser.CurrentUserId))
+                               g.UserId == currentUser.UserId))
             .WithMessage("Garden doesn't exist");
     }
 }

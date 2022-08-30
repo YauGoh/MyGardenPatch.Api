@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch.LocalIdentity;
+﻿using System.Security.Claims;
+
+namespace MyGardenPatch.LocalIdentity;
 
 internal class LocalIdentityMananger : ILocalIdentityManager
 {
@@ -70,6 +72,7 @@ internal class LocalIdentityMananger : ILocalIdentityManager
         if (!passwordResult.Succeeded) throw new InvalidPasswordException(user.Id, string.Join("; ", passwordResult.Errors.Select(e => e.Description)));
 
         await _userManager.AddToRoleAsync(user, WellKnownRoles.Gardener);
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.FullName));
     }
 
     public async Task SignInAsync(string emailAddress, string password)

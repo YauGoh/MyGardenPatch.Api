@@ -12,6 +12,7 @@ internal class HttpCurrentUserProvider : ICurrentUserProvider
 
     UserId? _userId = null;
     string? _emailAddress = null;
+    string? _name = null;
 
     public HttpCurrentUserProvider(IHttpContextAccessor httpContextAccessor, IRepository<User, UserId> users)
     {
@@ -19,19 +20,25 @@ internal class HttpCurrentUserProvider : ICurrentUserProvider
         _users = users;
     }
 
-    public UserId? CurrentUserId => _userId ?? (_userId = ResolveUserId());
+    public UserId? UserId => _userId ??= ResolveUserId();
 
-    public string? CurrentEmailAddress => _emailAddress ?? (_emailAddress = _httpContextAccessor.HttpContext!.User.Identities!
+    public string? EmailAddress => _emailAddress ??= _httpContextAccessor.HttpContext!.User.Identities!
             .SelectMany(i => i.Claims)
             .Where(c => c.Type == ClaimTypes.Email)
             .Select(c => c.Value)
-            .FirstOrDefault());
+            .LastOrDefault();
+
+    public string? Name => _name ??= _httpContextAccessor.HttpContext!.User.Identities!
+            .SelectMany(i => i.Claims)
+            .Where(c => c.Type == ClaimTypes.Name)
+            .Select(c => c.Value)
+            .LastOrDefault();
 
     private UserId? ResolveUserId()
     {
-        if (CurrentEmailAddress is null) return null;
+        if (EmailAddress is null) return null;
 
-        var user = _users.GetByExpressionAsync(u => u.EmailAddress == CurrentEmailAddress).Result;
+        var user = _users.GetByExpressionAsync(u => u.EmailAddress == EmailAddress).Result;
 
         return user?.Id;
     }

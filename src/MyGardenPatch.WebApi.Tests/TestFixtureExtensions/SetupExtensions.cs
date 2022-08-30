@@ -56,7 +56,7 @@
                         .Json(
                             new
                             {
-                                FullName = fullName,
+                                Name = fullName,
                                 EmailAddress = emailAddress
                             })
                         .ToUrl("/commands/StartNewLocalIdentityCommand");
@@ -103,8 +103,8 @@
                            new
                            {
                                Name = user.FullName,
-                               EmailAddress = emailAddress,
-                               ReceivesEmails = receivesEmails
+                               ReceivesEmails = receivesEmails,
+                               AcceptsUserAgreement = true
                            })
                        .ToUrl("/commands/RegisterUserCommand");
 

@@ -23,7 +23,7 @@ public abstract class PlantCommandValidator<T> : GardenBedCommandValidator<T>, I
                     g => g.Id == command.GardenBedId &&
                          g.GardenId == command.GardenId &&
                          g.Plants.Any(p => p.Id == plantId) &&
-                         g.UserId == currentUser.CurrentUserId,
+                         g.UserId == currentUser.UserId,
                     cancellationToken))
             .WithMessage("Plant does not exist");
     }

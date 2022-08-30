@@ -7,7 +7,7 @@ public abstract class LoggedInCurrentUserQueryValidator<T> :
     public LoggedInCurrentUserQueryValidator(ICurrentUserProvider currentUser)
     {
         RuleFor(_ => _)
-            .Must(_ => currentUser.CurrentUserId is not null)
+            .Must(_ => currentUser.UserId is not null)
             .WithMessage("A registered logged in user is required");
     }
 }

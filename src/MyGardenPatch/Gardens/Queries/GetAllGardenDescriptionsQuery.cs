@@ -32,7 +32,7 @@ public class GetAllGardenDescriptionsQueryHandler : IQueryHandler<GetAllGardenDe
     {
         var gardens = await _gardens
             .WhereAsync(
-                g => g.UserId == _currentUser.CurrentUserId,
+                g => g.UserId == _currentUser.UserId,
                 cancellationToken);
 
         return gardens

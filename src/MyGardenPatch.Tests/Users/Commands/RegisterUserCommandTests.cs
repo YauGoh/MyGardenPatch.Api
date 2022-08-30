@@ -12,7 +12,7 @@ public class RegisterUserCommandTests : TestBase
             .Setup(p => p.Now)
             .Returns(date);
 
-        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true));
+        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true, true));
 
         var user = await GetAsync<User, UserId>(u => u.EmailAddress == UserTestData.UnregisteredUser.EmailAddress);
 
@@ -32,7 +32,7 @@ public class RegisterUserCommandTests : TestBase
            .Setup(p => p.Now)
            .Returns(date);
 
-        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true));
+        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true, true));
 
         MockDomainEventBus.Verify(
             _ => _.PublishAsync(
@@ -42,11 +42,13 @@ public class RegisterUserCommandTests : TestBase
     }
 
     [Theory]
-    [InlineData("", true, "Name is required", "Name")]
-    [InlineData(Strings.Long201, true, "Maxmimum length 200 letters", "Name")]
+    [InlineData("", true, true, "Name is required", "Name")]
+    [InlineData(Strings.Long201, true, true, "Maxmimum length 200 letters", "Name")]
+    [InlineData("Peter Parker", true, false, "You must agree to the Terms and Conditions", "AcceptsUserAgreement")]
     public async Task InvalidCommand(
         string name,
         bool receivesEmails,
+        bool acceptsUserAgreement,
         string expectedErrorMessage,
         string expectedErrorPropertyPath,
         string because = "")
@@ -59,7 +61,7 @@ public class RegisterUserCommandTests : TestBase
             .Setup(p => p.Now)
             .Returns(date);
 
-        Func<Task> task = () => ExecuteCommandAsync(new RegisterUserCommand(name, receivesEmails));
+        Func<Task> task = () => ExecuteCommandAsync(new RegisterUserCommand(name, receivesEmails, acceptsUserAgreement));
 
         await task.Should()
             .ThrowAsync<InvalidCommandException<RegisterUserCommand>>()

@@ -1,7 +1,7 @@
 ﻿namespace MyGardenPatch.Users.Commands;
 
 [Role(WellKnownRoles.Api)]
-public record StartNewLocalIdentityCommand(string FullName, string EmailAddress) : ICommand;
+public record StartNewLocalIdentityCommand(string Name, string EmailAddress) : ICommand;
 
 public class StartNewLocalIdentityCommandHandler : ICommandHandler<StartNewLocalIdentityCommand>
 {
@@ -17,7 +17,7 @@ public class StartNewLocalIdentityCommandHandler : ICommandHandler<StartNewLocal
         CancellationToken cancellationToken = default)
     {
         await _localIdentityManager.StartLocalIdentityRegistrationAsync(
-            command.FullName, 
+            command.Name, 
             command.EmailAddress, 
             cancellationToken);
     }
@@ -29,7 +29,7 @@ public class StartNewLocalIdentityCommandValidator : AbstractValidator<StartNewL
         ILocalIdentityManager localIdentityManager, 
         IRepository<User, UserId> users)
     {
-        RuleFor(c => c.FullName)
+        RuleFor(c => c.Name)
             .NotEmpty()
                 .WithMessage("A name is required");
 

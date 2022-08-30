@@ -26,9 +26,19 @@ public class TestBase
         var mockEmailConfig = new Mock<IOptions<EmailConfig>>();
         mockEmailConfig.Setup(c => c.Value).Returns(new EmailConfig("0.0.0.0", 0, new EmailAddress("testing@email.com", "testing")));
 
+
+        var mockCorsSection = new Mock<IConfigurationSection>();
+        //mockCorsSection
+        //    .Setup(_ => _.Get<string[]>())
+        //    .Returns(new[] { "https://localhost" });
+
         mockConfiguration
-            .Setup(c => c.GetSection(nameof(Email)))
-            .Returns(new Mock<IConfigurationSection>().Object);
+            .Setup(c => c.GetSection("Cors:AllowedOrigins"))
+            .Returns(mockCorsSection.Object);
+
+        mockConfiguration
+           .Setup(c => c.GetSection(nameof(Email)))
+           .Returns(new Mock<IConfigurationSection>().Object);
 
         services.AddTransient<IOptions<EmailConfig>>(src => mockEmailConfig.Object);
 
@@ -125,19 +135,23 @@ public class TestBase
     protected void SetCurrentUser(UserId? userId)
     {
         MockCurrentUserProvider
-            .Setup(_ => _.CurrentUserId)
+            .Setup(_ => _.UserId)
             .Returns(userId);
     }
 
     protected void SetCurrentUser(User user)
     {
         MockCurrentUserProvider
-            .Setup(_ => _.CurrentUserId)
+            .Setup(_ => _.UserId)
             .Returns(user.Id);
 
         MockCurrentUserProvider
-            .Setup(_ => _.CurrentEmailAddress)
+            .Setup(_ => _.EmailAddress)
             .Returns(user.EmailAddress);
+
+        MockCurrentUserProvider
+            .Setup(_ => _.Name)
+            .Returns(user.Name);
     }
 
     protected TestBase SeedWith<TAggregate>(params TAggregate[] aggregates)

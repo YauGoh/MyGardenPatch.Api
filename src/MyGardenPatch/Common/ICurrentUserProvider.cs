@@ -4,7 +4,9 @@ namespace MyGardenPatch.Common;
 
 public interface ICurrentUserProvider
 {
-    UserId? CurrentUserId { get; }
+    UserId? UserId { get; }
 
-    string? CurrentEmailAddress { get; }
+    string? EmailAddress { get; }
+
+    string? Name { get; }
 }

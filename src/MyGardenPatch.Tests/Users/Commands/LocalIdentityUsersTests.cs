@@ -23,15 +23,15 @@ public class LocalIdentityUsersTests : TestBase
         var identity = await GetIdentityAsync<LocalIdentityUser>(u => u.Email == EmailAddress);
 
         identity!.UserName.Should().Be(command.EmailAddress.ToLower());
-        identity.FullName.Should().Be(command.FullName);
+        identity.FullName.Should().Be(command.Name);
 
         MockEmailSender.Verify(
             s => s.SendAsync(
                 It.Is<Email>(e =>
-                    e.To.First().Name == command.FullName &&
+                    e.To.First().Name == command.Name &&
                     e.To.First().Address == command.EmailAddress &&
                     e.Subject.Like(new Regex("Please verify your email address")) &&
-                    e.HtmlBody.Contains(command.FullName)
+                    e.HtmlBody.Contains(command.Name)
                     )),
                 Times.Once);
     }
@@ -217,7 +217,7 @@ public class LocalIdentityUsersTests : TestBase
     {
         await VerifyEmailAddress();
 
-        MockCurrentUserProvider.Setup(p => p.CurrentEmailAddress).Returns(EmailAddress);
+        MockCurrentUserProvider.Setup(p => p.EmailAddress).Returns(EmailAddress);
 
         var command = new RequestChangePasswordLocalIdentityCommand();
 

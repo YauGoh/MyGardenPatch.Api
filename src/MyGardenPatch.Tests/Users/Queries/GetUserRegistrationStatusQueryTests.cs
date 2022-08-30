@@ -11,7 +11,7 @@ public class GetUserRegistrationStatusQueryTests : TestBase
     public async Task RegisteredUser()
     {
         MockCurrentUserProvider
-            .Setup(p => p.CurrentEmailAddress)
+            .Setup(p => p.EmailAddress)
             .Returns(UserTestData.PeterParkerEmailAddress);
 
         var response = await ExecuteQueryAsync(new GetUserRegistrationStatusQuery());
@@ -23,7 +23,7 @@ public class GetUserRegistrationStatusQueryTests : TestBase
     public async Task UnregisteredUser()
     {
         MockCurrentUserProvider
-            .Setup(p => p.CurrentEmailAddress)
+            .Setup(p => p.EmailAddress)
             .Returns(UserTestData.UnregisteredEmailAddress);
 
         var response = await ExecuteQueryAsync(new GetUserRegistrationStatusQuery());

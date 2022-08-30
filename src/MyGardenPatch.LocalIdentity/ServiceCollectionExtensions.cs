@@ -33,6 +33,8 @@ public static class ServiceCollectionExtensions
             .AddEntityFrameworkStores<LocalIdentityDbContext>()
             .AddDefaultTokenProviders();
 
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
         services
             .AddAuthentication(
                 options =>
@@ -62,13 +64,20 @@ public static class ServiceCollectionExtensions
             .AddIdentityCookies(
                 options => options.ApplicationCookie.Configure(ac =>
                 {
+                    ac.SlidingExpiration = true;
+                    ac.ExpireTimeSpan = TimeSpan.FromDays(1);
+
                     ac.Cookie.Name = ApplicationCookieName;
-
-
+                    ac.Cookie.SameSite = SameSiteMode.None;
+                    ac.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    ac.Cookie.HttpOnly = true;
+                    ac.Cookie.IsEssential = true;
+                    
                     ac.Events.OnRedirectToLogin = context =>
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        context.Response.Headers["access-control-allow-origin"] = "*";
+                        context.Response.Headers["access-control-allow-origin"] = context.Request.Headers["origin"].FirstOrDefault();
+                        context.Response.Headers["access-control-allow-credentials"] = $"true";
 
                         return Task.CompletedTask;
                     };

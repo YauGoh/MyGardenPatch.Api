@@ -11,7 +11,7 @@ public enum RegistrationStatus
     Registered
 }
 
-public record UserInfo(String FullName, string EmailAddress);
+public record UserInfo(UserId? userId, String Name, string EmailAddress);
 
 public record UserRegistrationStatus(RegistrationStatus Status, UserInfo? User) { }
 
@@ -30,11 +30,14 @@ public class GetUserRegistrationStatusQueryHandler : IQueryHandler<GetUserRegist
         GetUserRegistrationStatusQuery query, 
         CancellationToken cancellationToken = default)
     {
-        var user = await _users.GetByExpressionAsync(u => u.EmailAddress == _userProvider.CurrentEmailAddress, cancellationToken);
+        var user = await _users.GetByExpressionAsync(u => u.EmailAddress == _userProvider.EmailAddress, cancellationToken);
 
         return new UserRegistrationStatus(
-            user == null ? RegistrationStatus.NotRegistered : RegistrationStatus.Registered, 
-            user == null ? null : new UserInfo(user.Name, user.EmailAddress));
+            user is null ? RegistrationStatus.NotRegistered : RegistrationStatus.Registered, 
+            user is null ? 
+                new UserInfo(null, _userProvider.Name!, _userProvider.EmailAddress!)
+                : 
+                new UserInfo(user.Id, user.Name, user.EmailAddress));
     }
 }
 
@@ -43,7 +46,7 @@ public class GetUserRegistrationStatusQueryHandlerValidator : AbstractValidator<
     public GetUserRegistrationStatusQueryHandlerValidator(ICurrentUserProvider userProvider)
     {
         RuleFor(q => q)
-            .Must(q => userProvider.CurrentEmailAddress != null)
+            .Must(q => userProvider.EmailAddress != null)
             .WithMessage("Not logged in with a valid email address");
     }
 }

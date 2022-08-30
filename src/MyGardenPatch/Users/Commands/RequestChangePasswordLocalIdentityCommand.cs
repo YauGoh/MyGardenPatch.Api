@@ -22,7 +22,7 @@ namespace MyGardenPatch.Users.Commands
             RequestChangePasswordLocalIdentityCommand command, 
             CancellationToken cancellationToken = default)
         {
-            await _localIdentityManager.RequestPasswordResetAsync(_currentUser.CurrentEmailAddress!);
+            await _localIdentityManager.RequestPasswordResetAsync(_currentUser.EmailAddress!);
         }
     }
 
@@ -34,11 +34,11 @@ namespace MyGardenPatch.Users.Commands
         {
             RuleFor(c => c)
                 .Cascade(CascadeMode.Stop)
-                .Must(c => !string.IsNullOrWhiteSpace(currentUser.CurrentEmailAddress))
+                .Must(c => !string.IsNullOrWhiteSpace(currentUser.EmailAddress))
                     .WithMessage("Not logged in")
-                .MustAsync(async (c, cancellationToken) => await localIdentityManager.DoesEmailExistAsync(currentUser.CurrentEmailAddress!))
+                .MustAsync(async (c, cancellationToken) => await localIdentityManager.DoesEmailExistAsync(currentUser.EmailAddress!))
                     .WithMessage("Not a valid local identity user")
-                .MustAsync(async (c, cancellationToken) => await localIdentityManager.IsEmailAddressVerifiedAsync(currentUser.CurrentEmailAddress!))
+                .MustAsync(async (c, cancellationToken) => await localIdentityManager.IsEmailAddressVerifiedAsync(currentUser.EmailAddress!))
                     .WithMessage("Not a verified local identity");
 
         }

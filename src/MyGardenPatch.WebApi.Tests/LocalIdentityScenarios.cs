@@ -58,7 +58,8 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                     _.Post
                         .Json(new { 
                             Name = "Peter",
-                            ReceivesEmails = true
+                            ReceivesEmails = true,
+                            AcceptsUserAgreement = true,
                         })
                         .ToUrl("/commands/RegisterUserCommand");
 
@@ -67,6 +68,28 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
     }
 
     [Fact, Order(3)]
+    public async Task GetLoggedInIdentity()
+    {
+        var response = await _fixture
+            .Scenario(
+                _ =>
+                {
+                    _.Post
+                        .Json(new { })
+                        .ToUrl("/queries/GetLoggedInIdentityQuery");
+
+                    _.StatusCodeShouldBeOk();
+                });
+
+        var identity = response.ReadAsJson<LoggedInIdentity>()!;
+
+        identity.UserId.Should().NotBeNull();
+        identity.Name.Should().Be("Peter Parker");
+        identity.EmailAddress.Should().Be("peter.parker@email.com");
+
+    }
+
+    [Fact, Order(4)]
     public async Task DontAllowMultipleRegistrations()
     {
         var response = await _fixture
@@ -85,7 +108,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(4)]
+    [Fact, Order(5)]
     public async Task RequestChangePassword()
     {
         var emailTokenExtractor = new EmailTokenExtractor(
@@ -124,7 +147,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(5)]
+    [Fact, Order(6)]
     public async Task LoginWithNewPassowrd()
     {
         var response = await _fixture
@@ -144,7 +167,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
         content.Status.Should().Be(RegistrationStatus.Registered);
     }
 
-    [Fact, Order(6)]
+    [Fact, Order(7)]
     public async Task ForgotPassword()
     {
         var emailTokenExtractor = new EmailTokenExtractor(
@@ -187,7 +210,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(7)]
+    [Fact, Order(8)]
     public async Task LoginWithNewPassowrdAfterForgottenPasswordChange()
     {
         var response = await _fixture

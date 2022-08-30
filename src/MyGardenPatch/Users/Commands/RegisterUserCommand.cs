@@ -3,7 +3,8 @@
 [Role(WellKnownRoles.Gardener)]
 public record RegisterUserCommand(
     string Name, 
-    bool ReceivesEmails) : ICommand;
+    bool ReceivesEmails,
+    bool AcceptsUserAgreement) : ICommand;
 
 public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
 {
@@ -24,7 +25,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
     {
         var user = new User(
                 command.Name,
-                _userProvider.CurrentEmailAddress!.ToLower());
+                _userProvider.EmailAddress!.ToLower());
 
         user!.Register(
             _dateTime.Now, 
@@ -38,10 +39,15 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 {
     public RegisterUserCommandValidator(ICurrentUserProvider userProvider, IRepository<User, UserId> users)
     {
+
+        RuleFor(command => command.AcceptsUserAgreement)
+            .Must(aceepts => aceepts == true)
+            .WithMessage("You must agree to the Terms and Conditions");
+
         RuleFor(command => command)
-            .Must(command => !string.IsNullOrEmpty(userProvider.CurrentEmailAddress))
+            .Must(command => !string.IsNullOrEmpty(userProvider.EmailAddress))
                 .WithMessage("Must be logged in with a valid email address")
-            .MustAsync(async(command, cancellationToken) => !(await users.AnyAsync(u => u.EmailAddress.ToLower() == userProvider.CurrentEmailAddress!.ToLower())))
+            .MustAsync(async(command, cancellationToken) => !(await users.AnyAsync(u => u.EmailAddress.ToLower() == userProvider.EmailAddress!.ToLower())))
                 .WithMessage("User with email address is already registered");
 
         RuleFor(command => command.Name)
