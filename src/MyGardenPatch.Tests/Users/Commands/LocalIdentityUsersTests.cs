@@ -12,8 +12,6 @@ public class LocalIdentityUsersTests : TestBase
     [Fact]
     public async Task StartNewLocalIdentity()
     {
-        var identity2 = await GetIdentityAsync<LocalIdentityUser>(u => u.Email == EmailAddress);
-
         var command = new StartNewLocalIdentityCommand(
             FullName,
             EmailAddress);
@@ -32,6 +30,32 @@ public class LocalIdentityUsersTests : TestBase
                     e.To.First().Address == command.EmailAddress &&
                     e.Subject.Like(new Regex("Please verify your email address")) &&
                     e.HtmlBody.Contains(command.Name)
+                    )),
+                Times.Once);
+    }
+
+
+    [Fact]
+    public async Task ResendLocalIdentityVerificationEmail()
+    {
+        await StartNewLocalIdentity();
+
+        var command = new ResendLocalIdentityVerificationEmailCommand(
+            EmailAddress);
+
+        MockEmailSender.Reset();
+
+        await ExecuteCommandAsync(command);
+
+        var identity = (await GetIdentityAsync<LocalIdentityUser>(u => u.Email == EmailAddress))!;
+
+        MockEmailSender.Verify(
+            s => s.SendAsync(
+                It.Is<Email>(e =>
+                    e.To.First().Name == identity.FullName &&
+                    e.To.First().Address == command.EmailAddress &&
+                    e.Subject.Like(new Regex("Please verify your email address")) &&
+                    e.HtmlBody.Contains(identity.FullName)
                     )),
                 Times.Once);
     }

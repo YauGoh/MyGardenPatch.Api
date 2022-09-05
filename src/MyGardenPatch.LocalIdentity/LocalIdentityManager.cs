@@ -42,6 +42,13 @@ internal class LocalIdentityMananger : ILocalIdentityManager
         await SendEmailConfirmationRequestAsync(user);
     }
 
+    public async Task RequestRegistrationResetAsync(string emailAddress, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByEmailAsync(emailAddress);
+
+        await SendEmailConfirmationRequestAsync(user!);
+    }
+
     public async Task<bool> IsEmailAddressVerifiedAsync(string emailAddress)
     {
         var user = await _userManager.FindByEmailAsync(emailAddress);
@@ -163,6 +170,4 @@ internal class LocalIdentityMananger : ILocalIdentityManager
                 subject,
                 htmlBody));
     }
-
-    
 }

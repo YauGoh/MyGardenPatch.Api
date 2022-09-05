@@ -6,6 +6,8 @@ public interface ILocalIdentityManager
 
     Task StartLocalIdentityRegistrationAsync(string fullName, string emailAddress, CancellationToken cancellationToken);
 
+    Task RequestRegistrationResetAsync(string emailAddress, CancellationToken cancellationToken);
+
     Task<bool> IsEmailAddressVerifiedAsync(string emailAddress);
 
     Task VerifyEmailAddressAsync(string emailAddress, string password, string verificationToken);
