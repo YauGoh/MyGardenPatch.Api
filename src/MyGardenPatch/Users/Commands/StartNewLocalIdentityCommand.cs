@@ -27,7 +27,7 @@ public class StartNewLocalIdentityCommandValidator : AbstractValidator<StartNewL
 {
     public StartNewLocalIdentityCommandValidator(
         ILocalIdentityManager localIdentityManager, 
-        IRepository<User, UserId> users)
+        IRepository<Gardener, GardenerId> gardeners)
     {
         RuleFor(c => c.Name)
             .NotEmpty()
@@ -36,7 +36,7 @@ public class StartNewLocalIdentityCommandValidator : AbstractValidator<StartNewL
         RuleFor(c => c.EmailAddress)
             .MustAsync(async (emailAddress, cancellationToken) => !(await localIdentityManager.DoesEmailExistAsync(emailAddress)))
                 .WithMessage("Email is already registered")
-            .MustAsync(async (emailAddress, cancellationToken) => !(await users.AnyAsync(u => u.EmailAddress == emailAddress, cancellationToken)))
+            .MustAsync(async (emailAddress, cancellationToken) => !(await gardeners.AnyAsync(u => u.EmailAddress == emailAddress, cancellationToken)))
                 .WithMessage("Email is already registered");
     }
 }

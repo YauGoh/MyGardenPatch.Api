@@ -13,7 +13,7 @@
 
             result!.EmailAddress.Should().Be(UserTestData.PeterParker.EmailAddress);
             result!.Name.Should().Be(UserTestData.PeterParker.Name);
-            result!.UserId.Should().Be(UserTestData.PeterParker.Id);
+            result!.GardenerId.Should().Be(UserTestData.PeterParker.Id);
         }
 
     }

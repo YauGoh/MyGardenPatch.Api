@@ -3,7 +3,7 @@
 [Role(WellKnownRoles.Gardener)]
 public record GetLoggedInIdentityQuery : IQuery<LoggedInIdentity>;
 
-public record LoggedInIdentity(UserId? UserId, string Name, string EmailAddress);
+public record LoggedInIdentity(GardenerId? GardenerId, string Name, string EmailAddress);
 
 public class GetLoggedInIdentityQueryHandler : IQueryHandler<GetLoggedInIdentityQuery, LoggedInIdentity>
 {
@@ -19,7 +19,7 @@ public class GetLoggedInIdentityQueryHandler : IQueryHandler<GetLoggedInIdentity
     {
         return Task.FromResult(
             new LoggedInIdentity(
-                _currentUser.UserId, 
+                _currentUser.GardenerId, 
                 _currentUser.Name!, 
                 _currentUser.EmailAddress!));
     }

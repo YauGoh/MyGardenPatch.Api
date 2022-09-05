@@ -12,9 +12,9 @@ public class RegisterUserCommandTests : TestBase
             .Setup(p => p.Now)
             .Returns(date);
 
-        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true, true));
+        await ExecuteCommandAsync(new RegisterGardenerCommand(UserTestData.UnregisteredUser.Name, true, true));
 
-        var user = await GetAsync<User, UserId>(u => u.EmailAddress == UserTestData.UnregisteredUser.EmailAddress);
+        var user = await GetAsync<Gardener, GardenerId>(u => u.EmailAddress == UserTestData.UnregisteredUser.EmailAddress);
 
         user!.Name.Should().Be(UserTestData.UnregisteredUser.Name);
         user.EmailAddress.Should().Be(UserTestData.UnregisteredUser.EmailAddress);
@@ -32,11 +32,11 @@ public class RegisterUserCommandTests : TestBase
            .Setup(p => p.Now)
            .Returns(date);
 
-        await ExecuteCommandAsync(new RegisterUserCommand(UserTestData.UnregisteredUser.Name, true, true));
+        await ExecuteCommandAsync(new RegisterGardenerCommand(UserTestData.UnregisteredUser.Name, true, true));
 
         MockDomainEventBus.Verify(
             _ => _.PublishAsync(
-                It.Is<NewUserRegistered>(
+                It.Is<NewGardenerRegistered>(
                     e => e.RegisteredAt == date),
                 default));
     }
@@ -61,10 +61,10 @@ public class RegisterUserCommandTests : TestBase
             .Setup(p => p.Now)
             .Returns(date);
 
-        Func<Task> task = () => ExecuteCommandAsync(new RegisterUserCommand(name, receivesEmails, acceptsUserAgreement));
+        Func<Task> task = () => ExecuteCommandAsync(new RegisterGardenerCommand(name, receivesEmails, acceptsUserAgreement));
 
         await task.Should()
-            .ThrowAsync<InvalidCommandException<RegisterUserCommand>>()
+            .ThrowAsync<InvalidCommandException<RegisterGardenerCommand>>()
             .WhereHasError(expectedErrorMessage, expectedErrorPropertyPath, because);
     }
 }

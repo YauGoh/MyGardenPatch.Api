@@ -132,26 +132,26 @@ public class TestBase
 
     protected TService GetService<TService>() where TService : notnull => _serviceProvider.GetRequiredService<TService>();
 
-    protected void SetCurrentUser(UserId? userId)
+    protected void SetCurrentUser(GardenerId? gardenerId)
     {
         MockCurrentUserProvider
-            .Setup(_ => _.UserId)
-            .Returns(userId);
+            .Setup(_ => _.GardenerId)
+            .Returns(gardenerId);
     }
 
-    protected void SetCurrentUser(User user)
+    protected void SetCurrentUser(Gardener gardener)
     {
         MockCurrentUserProvider
-            .Setup(_ => _.UserId)
-            .Returns(user.Id);
+            .Setup(_ => _.GardenerId)
+            .Returns(gardener.Id);
 
         MockCurrentUserProvider
             .Setup(_ => _.EmailAddress)
-            .Returns(user.EmailAddress);
+            .Returns(gardener.EmailAddress);
 
         MockCurrentUserProvider
             .Setup(_ => _.Name)
-            .Returns(user.Name);
+            .Returns(gardener.Name);
     }
 
     protected TestBase SeedWith<TAggregate>(params TAggregate[] aggregates)

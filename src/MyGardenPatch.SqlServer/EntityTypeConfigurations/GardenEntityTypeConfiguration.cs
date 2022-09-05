@@ -1,9 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyGardenPatch.Gardens;
-using MyGardenPatch.Users;
-
-namespace MyGardenPatch.SqlServer.EntityTypeConfigurations;
+﻿namespace MyGardenPatch.SqlServer.EntityTypeConfigurations;
 
 public class GardenEntityTypeConfiguration : IEntityTypeConfiguration<Garden>
 {
@@ -14,10 +9,10 @@ public class GardenEntityTypeConfiguration : IEntityTypeConfiguration<Garden>
             .HasConversion(id => id.Value, value => new GardenId(value));
 
         builder
-            .Property(e => e.UserId)
-            .HasConversion(id => id.Value, value => new UserId(value));
+            .Property(e => e.GardenerId)
+            .HasConversion(id => id.Value, value => new GardenerId(value));
 
-        builder.HasIndex(e => e.UserId);
+        builder.HasIndex(e => e.GardenerId);
 
         builder.HasName();
 

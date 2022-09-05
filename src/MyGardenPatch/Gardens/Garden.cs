@@ -2,10 +2,10 @@
 
 public partial record struct GardenId : IEntityId { }
 
-public class Garden : UserOwnedAggregate<GardenId>, INameable, ILocateable
+public class Garden : GardenerOwnedAggregate<GardenId>, INameable, ILocateable
 {
-    public Garden(GardenId id, UserId userId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
-        : base(id, userId)
+    public Garden(GardenId id, GardenerId gardenerId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
+        : base(id, gardenerId)
     {
         Name = name;
         Description = description;
@@ -14,8 +14,8 @@ public class Garden : UserOwnedAggregate<GardenId>, INameable, ILocateable
         CreatedAt = createdAt;
     }
 
-    public Garden(UserId userId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
-        : this(new(), userId, name, description, imageUri, imageDescription, createdAt)
+    public Garden(GardenerId gardenerId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
+        : this(new(), gardenerId, name, description, imageUri, imageDescription, createdAt)
     { }
 
 

@@ -106,7 +106,7 @@
                                ReceivesEmails = receivesEmails,
                                AcceptsUserAgreement = true
                            })
-                       .ToUrl("/commands/RegisterUserCommand");
+                       .ToUrl("/commands/RegisterGardenerCommand");
 
                    _.StatusCodeShouldBeOk();
                });

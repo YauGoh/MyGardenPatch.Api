@@ -18,7 +18,7 @@ internal class MyGardenPatchDbContext : DbContext
 
     public DbSet<GardenBed> GardenBeds { get; set; }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<Gardener> Gardeners { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

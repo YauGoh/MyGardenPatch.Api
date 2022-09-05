@@ -32,7 +32,7 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
         CancellationToken cancellationToken = default)
     {
         var garden = new Garden(
-            _currentUserProvider.UserId ?? throw new UserNotAuthenticatedException(),
+            _currentUserProvider.GardenerId ?? throw new UserNotAuthenticatedException(),
             command.Name,
             command.Description,
             command.ImageUri,

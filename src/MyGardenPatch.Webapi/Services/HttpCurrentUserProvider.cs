@@ -1,5 +1,6 @@
 ﻿using MyGardenPatch.Aggregates;
 using MyGardenPatch.Common;
+using MyGardenPatch.Gardeners;
 using MyGardenPatch.Users;
 using System.Security.Claims;
 
@@ -8,19 +9,19 @@ namespace MyGardenPatch.Webapi.Services;
 internal class HttpCurrentUserProvider : ICurrentUserProvider
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IRepository<User, UserId> _users;
+    private readonly IRepository<Gardener, GardenerId> _gardeners;
 
-    UserId? _userId = null;
+    GardenerId? _userId = null;
     string? _emailAddress = null;
     string? _name = null;
 
-    public HttpCurrentUserProvider(IHttpContextAccessor httpContextAccessor, IRepository<User, UserId> users)
+    public HttpCurrentUserProvider(IHttpContextAccessor httpContextAccessor, IRepository<Gardener, GardenerId> gardeners)
     {
         _httpContextAccessor = httpContextAccessor;
-        _users = users;
+        _gardeners = gardeners;
     }
 
-    public UserId? UserId => _userId ??= ResolveUserId();
+    public GardenerId? GardenerId => _userId ??= ResolveUserId();
 
     public string? EmailAddress => _emailAddress ??= _httpContextAccessor.HttpContext!.User.Identities!
             .SelectMany(i => i.Claims)
@@ -34,11 +35,11 @@ internal class HttpCurrentUserProvider : ICurrentUserProvider
             .Select(c => c.Value)
             .LastOrDefault();
 
-    private UserId? ResolveUserId()
+    private GardenerId? ResolveUserId()
     {
         if (EmailAddress is null) return null;
 
-        var user = _users.GetByExpressionAsync(u => u.EmailAddress == EmailAddress).Result;
+        var user = _gardeners.GetByExpressionAsync(u => u.EmailAddress == EmailAddress).Result;
 
         return user?.Id;
     }
