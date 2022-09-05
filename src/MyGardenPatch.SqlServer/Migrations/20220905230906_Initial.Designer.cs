@@ -12,7 +12,7 @@ using MyGardenPatch.SqlServer;
 namespace MyGardenPatch.SqlServer.Migrations
 {
     [DbContext(typeof(MyGardenPatchDbContext))]
-    [Migration("20220730091134_Initial")]
+    [Migration("20220905230906_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,9 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<Guid>("GardenId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("GardenerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImageDescription")
                         .HasColumnType("nvarchar(max)");
 
@@ -54,14 +57,11 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GardenId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("GardenerId");
 
                     b.ToTable("GardenBeds");
                 });
@@ -103,44 +103,7 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.ToTable("Plant");
                 });
 
-            modelBuilder.Entity("MyGardenPatch.Gardens.Garden", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUri")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Gardens");
-                });
-
-            modelBuilder.Entity("MyGardenPatch.Users.User", b =>
+            modelBuilder.Entity("MyGardenPatch.Gardeners.Gardener", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -166,7 +129,44 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.HasIndex("EmailAddress")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Gardeners");
+                });
+
+            modelBuilder.Entity("MyGardenPatch.Gardens.Garden", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("GardenerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUri")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GardenerId");
+
+                    b.ToTable("Gardens");
                 });
 
             modelBuilder.Entity("MyGardenPatch.GardenBeds.Plant", b =>

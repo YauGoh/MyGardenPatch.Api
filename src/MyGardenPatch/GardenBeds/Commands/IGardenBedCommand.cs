@@ -19,7 +19,7 @@ public abstract class GardenBedCommandValidator<T> : AbstractValidator<T>, IComm
             .MustAsync(async (gardenId, cancellationToken) => await gardens
                 .AnyAsync(
                     g => g.Id == gardenId &&
-                         g.UserId == currentUser.UserId,
+                         g.GardenerId == currentUser.GardenerId,
                     cancellationToken))
             .WithMessage("Garden does not exist");
 
@@ -28,7 +28,7 @@ public abstract class GardenBedCommandValidator<T> : AbstractValidator<T>, IComm
                 .AnyAsync(
                     g => g.Id == gardenBedId &&
                          g.GardenId == command.GardenId &&
-                         g.UserId == currentUser.UserId,
+                         g.GardenerId == currentUser.GardenerId,
                     cancellationToken))
             .WithMessage("Garden bed does not exist");
     }

@@ -1,43 +1,48 @@
-﻿namespace MyGardenPatch.Users.Commands;
+﻿namespace MyGardenPatch.Gardeners.Commands;
 
 [Role(WellKnownRoles.Gardener)]
-public record RegisterUserCommand(
-    string Name, 
+public record RegisterGardenerCommand(
+    string Name,
     bool ReceivesEmails,
     bool AcceptsUserAgreement) : ICommand;
 
-public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
+public class RegisterGardnerCommandHandler : ICommandHandler<RegisterGardenerCommand>
 {
     private readonly ICurrentUserProvider _userProvider;
     private readonly IDateTimeProvider _dateTime;
-    private readonly IRepository<User, UserId> _users;
+    private readonly IRepository<Gardener, GardenerId> _gardener;
 
-    public RegisterUserCommandHandler(ICurrentUserProvider userProvider, IDateTimeProvider dateTime, IRepository<User, UserId> users)
+    public RegisterGardnerCommandHandler(
+        ICurrentUserProvider userProvider, 
+        IDateTimeProvider dateTime, 
+        IRepository<Gardener, GardenerId> gardener)
     {
         _userProvider = userProvider;
         _dateTime = dateTime;
-        _users = users;
+        _gardener = gardener;
     }
 
     public async Task HandleAsync(
-        RegisterUserCommand command, 
+        RegisterGardenerCommand command,
         CancellationToken cancellationToken = default)
     {
-        var user = new User(
+        var user = new Gardener(
                 command.Name,
                 _userProvider.EmailAddress!.ToLower());
 
         user!.Register(
-            _dateTime.Now, 
+            _dateTime.Now,
             command.ReceivesEmails);
 
-        await _users.AddOrUpdateAsync(user);
+        await _gardener.AddOrUpdateAsync(user);
     }
 }
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>, ICommandValidator<RegisterUserCommand>
+public class RegisterGardenerCommandValidator : AbstractValidator<RegisterGardenerCommand>, ICommandValidator<RegisterGardenerCommand>
 {
-    public RegisterUserCommandValidator(ICurrentUserProvider userProvider, IRepository<User, UserId> users)
+    public RegisterGardenerCommandValidator(
+        ICurrentUserProvider userProvider, 
+        IRepository<Gardener, GardenerId> gardener)
     {
 
         RuleFor(command => command.AcceptsUserAgreement)
@@ -47,7 +52,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(command => command)
             .Must(command => !string.IsNullOrEmpty(userProvider.EmailAddress))
                 .WithMessage("Must be logged in with a valid email address")
-            .MustAsync(async(command, cancellationToken) => !(await users.AnyAsync(u => u.EmailAddress.ToLower() == userProvider.EmailAddress!.ToLower())))
+            .MustAsync(async (command, cancellationToken) => !await gardener.AnyAsync(u => u.EmailAddress.ToLower() == userProvider.EmailAddress!.ToLower()))
                 .WithMessage("User with email address is already registered");
 
         RuleFor(command => command.Name)

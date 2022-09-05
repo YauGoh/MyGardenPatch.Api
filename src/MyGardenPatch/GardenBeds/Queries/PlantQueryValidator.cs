@@ -11,7 +11,7 @@ public abstract class PlantQueryValidator<TQuery> : GardenBedQueryValidator<TQue
         RuleFor(q => q.GardenBedId)
             .MustAsync((gardenBedId, cancellationToken) => gardenBeds
                 .AnyAsync(g => g.Id == gardenBedId &&
-                               g.UserId == currentUser.UserId))
+                               g.GardenerId == currentUser.GardenerId))
             .WithMessage("Garden bed doesn't exist");
     }
 }

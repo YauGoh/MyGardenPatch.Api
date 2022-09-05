@@ -28,7 +28,7 @@ public class GetAllGardenBedDescriptionsQueryHandler : IQueryHandler<GetAllGarde
     public async Task<IEnumerable<GardenBedDescriptor>> HandleAsync(GetAllGardenBedDescriptionsQuery query, CancellationToken cancellationToken = default)
     {
         var gardenBeds = await _gardenBeds.WhereAsync(g => g.GardenId == query.GardenId &&
-                                                           g.UserId == _currentUser.UserId);
+                                                           g.GardenerId == _currentUser.GardenerId);
 
         return gardenBeds
             .Select(gb => new GardenBedDescriptor(

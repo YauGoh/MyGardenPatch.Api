@@ -34,7 +34,7 @@ public class AddGardenBedCommandTests : TestBase
         gardenBed.ImageDescription.Should().Be("A place");
         gardenBed.CreatedAt.Should().Be(new DateTime(2022, 1, 1));
 
-        gardenBed.UserId.Should().Be(UserTestData.PeterParker.Id);
+        gardenBed.GardenerId.Should().Be(UserTestData.PeterParker.Id);
     }
 
     [Theory]

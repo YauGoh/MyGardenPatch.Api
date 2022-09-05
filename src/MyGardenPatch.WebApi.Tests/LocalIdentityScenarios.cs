@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch.WebApi.Tests;
+﻿using MyGardenPatch.Gardeners.Queries;
+
+namespace MyGardenPatch.WebApi.Tests;
 
 [TestCaseOrderer("MyGardenPatch.WebApi.Tests.OrderedByDependantTests", "MyGardenPatch.WebApi.Tests")]
 public class LocalIdentityScenarios : IClassFixture<TestFixture>
@@ -20,7 +22,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                 {
                     _.Post
                         .Json(new { })
-                        .ToUrl("/queries/GetUserRegistrationStatusQuery");
+                        .ToUrl("/queries/GetGardenerRegistrationStatusQuery");
 
                     _.StatusCodeShouldBe(HttpStatusCode.Unauthorized);
                 });
@@ -38,12 +40,12 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                 {
                     _.Post
                         .Json(new {})
-                        .ToUrl("/queries/GetUserRegistrationStatusQuery");
+                        .ToUrl("/queries/GetGardenerRegistrationStatusQuery");
 
                     _.StatusCodeShouldBeOk();
                 });
 
-        var content = response.ReadAsJson<UserRegistrationStatus>()!;
+        var content = response.ReadAsJson<GardenerRegistrationStatus>()!;
 
         content.Status.Should().Be(RegistrationStatus.NotRegistered);
     }
@@ -61,7 +63,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                             ReceivesEmails = true,
                             AcceptsUserAgreement = true,
                         })
-                        .ToUrl("/commands/RegisterUserCommand");
+                        .ToUrl("/commands/RegisterGardenerCommand");
 
                     _.StatusCodeShouldBeOk();
                 });
@@ -83,7 +85,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
 
         var identity = response.ReadAsJson<LoggedInIdentity>()!;
 
-        identity.UserId.Should().NotBeNull();
+        identity.GardenerId.Should().NotBeNull();
         identity.Name.Should().Be("Peter Parker");
         identity.EmailAddress.Should().Be("peter.parker@email.com");
 
@@ -102,7 +104,7 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                             Name = "Peter",
                             ReceivesEmails = false
                         })
-                        .ToUrl("/commands/RegisterUserCommand");
+                        .ToUrl("/commands/RegisterGardenerCommand");
 
                     _.StatusCodeShouldBe(400);
                 });
@@ -157,12 +159,12 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                 {
                     _.Post
                         .Json(new { })
-                        .ToUrl("/queries/GetUserRegistrationStatusQuery");
+                        .ToUrl("/queries/GetGardenerRegistrationStatusQuery");
 
                     _.StatusCodeShouldBeOk();
                 });
 
-        var content = response.ReadAsJson<UserRegistrationStatus>()!;
+        var content = response.ReadAsJson<GardenerRegistrationStatus>()!;
 
         content.Status.Should().Be(RegistrationStatus.Registered);
     }
@@ -220,12 +222,12 @@ public class LocalIdentityScenarios : IClassFixture<TestFixture>
                 {
                     _.Post
                         .Json(new { })
-                        .ToUrl("/queries/GetUserRegistrationStatusQuery");
+                        .ToUrl("/queries/GetGardenerRegistrationStatusQuery");
 
                     _.StatusCodeShouldBeOk();
                 });
 
-        var content = response.ReadAsJson<UserRegistrationStatus>()!;
+        var content = response.ReadAsJson<GardenerRegistrationStatus>()!;
 
         content.Status.Should().Be(RegistrationStatus.Registered);
     }

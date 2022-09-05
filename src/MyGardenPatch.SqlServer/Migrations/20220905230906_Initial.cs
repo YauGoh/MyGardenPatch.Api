@@ -21,11 +21,26 @@ namespace MyGardenPatch.SqlServer.Migrations
                     ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    GardenerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GardenBeds", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Gardeners",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    RegisteredAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ReceivesEmail = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gardeners", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,26 +54,11 @@ namespace MyGardenPatch.SqlServer.Migrations
                     ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    GardenerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Gardens", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    RegisteredAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReceivesEmail = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,42 +86,42 @@ namespace MyGardenPatch.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_GardenBeds_GardenerId",
+                table: "GardenBeds",
+                column: "GardenerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GardenBeds_GardenId",
                 table: "GardenBeds",
                 column: "GardenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GardenBeds_UserId",
-                table: "GardenBeds",
-                column: "UserId");
+                name: "IX_Gardeners_EmailAddress",
+                table: "Gardeners",
+                column: "EmailAddress",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Gardens_UserId",
+                name: "IX_Gardens_GardenerId",
                 table: "Gardens",
-                column: "UserId");
+                column: "GardenerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Plant_GardenBedId",
                 table: "Plant",
                 column: "GardenBedId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_EmailAddress",
-                table: "Users",
-                column: "EmailAddress",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Gardeners");
+
+            migrationBuilder.DropTable(
                 name: "Gardens");
 
             migrationBuilder.DropTable(
                 name: "Plant");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "GardenBeds");

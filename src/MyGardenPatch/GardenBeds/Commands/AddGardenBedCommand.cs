@@ -31,7 +31,7 @@ public class AddGardenBedCommandHandler : ICommandHandler<AddGardenBedCommand>
         CancellationToken cancellationToken = default)
     {
         var gardenBed = new GardenBed(
-            _currentUserProvider.UserId!.Value,
+            _currentUserProvider.GardenerId!.Value,
             command.GardenId,
             command.Name,
             command.Description,
@@ -58,7 +58,7 @@ public class AddGardenBedCommandValidator : AbstractValidator<AddGardenBedComman
             .MustAsync(async (gardenId, cancellationToken) => await gardens
                 .AnyAsync(
                     g => g.Id == gardenId &&
-                         g.UserId == currentUserProvider.UserId,
+                         g.GardenerId == currentUserProvider.GardenerId,
                     cancellationToken))
             .WithMessage("Garden does not exist");
 

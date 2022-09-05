@@ -1,14 +1,11 @@
-﻿using MyGardenPatch.Aggregates;
-using MyGardenPatch.Users.DomainEvents;
+﻿namespace MyGardenPatch.Gardeners;
 
-namespace MyGardenPatch.Users;
+public partial record struct GardenerId : IEntityId { }
 
-public partial record struct UserId : IEntityId { }
-
-public class User : Aggregate<UserId>, INameable
+public class Gardener : Aggregate<GardenerId>, INameable
 {
-    public User(
-        UserId id,
+    public Gardener(
+        GardenerId id,
         string name,
         string emailAddress,
         DateTime? registeredAt,
@@ -20,13 +17,13 @@ public class User : Aggregate<UserId>, INameable
         ReceivesEmail = receivesEmail;
     }
 
-    public User(
+    public Gardener(
         string name,
-        string emailAddress) : this(new UserId(), name, emailAddress, null, false)
+        string emailAddress) : this(new GardenerId(), name, emailAddress, null, false)
     { }
 
-    public User(
-        UserId id,
+    public Gardener(
+        GardenerId id,
         string name,
         string emailAddress) : base(id)
     {
@@ -49,6 +46,6 @@ public class User : Aggregate<UserId>, INameable
         this.RegisteredAt = dateTime;
         this.ReceivesEmail = recievesEmail;
 
-        this.Raise(new NewUserRegistered(this.Id, dateTime));
+        this.Raise(new NewGardenerRegistered(this.Id, dateTime));
     }
 }

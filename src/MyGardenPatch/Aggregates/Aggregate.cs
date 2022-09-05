@@ -1,7 +1,4 @@
-﻿using MyGardenPatch.Events;
-using MyGardenPatch.Users;
-
-namespace MyGardenPatch.Aggregates;
+﻿namespace MyGardenPatch.Aggregates;
 
 public abstract class Aggregate<TKey> : Entity<TKey> where TKey : struct, IEquatable<TKey>, IEntityId
 {
@@ -20,14 +17,14 @@ public abstract class Aggregate<TKey> : Entity<TKey> where TKey : struct, IEquat
         => _domainEvents.Add(domainEvent);
 }
 
-public abstract class UserOwnedAggregate<TKey> : Aggregate<TKey> where TKey : struct, IEquatable<TKey>, IEntityId
+public abstract class GardenerOwnedAggregate<TKey> : Aggregate<TKey> where TKey : struct, IEquatable<TKey>, IEntityId
 {
-    protected UserOwnedAggregate(TKey id, UserId userId) : base(id)
+    protected GardenerOwnedAggregate(TKey id, GardenerId gardenerId) : base(id)
     {
-        UserId = userId;
+        GardenerId = gardenerId;
     }
 
-    protected UserOwnedAggregate(UserId userId) : this(new(), userId) { }
+    protected GardenerOwnedAggregate(GardenerId userId) : this(new(), userId) { }
 
-    public UserId UserId { get; private set; }
+    public GardenerId GardenerId { get; private set; }
 }

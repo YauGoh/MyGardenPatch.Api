@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyGardenPatch.GardenBeds;
-using MyGardenPatch.Gardens;
-using MyGardenPatch.Users;
+﻿
 
 namespace MyGardenPatch.SqlServer.EntityTypeConfigurations;
 
@@ -15,9 +11,9 @@ internal class GardenBedEntityTypeConfiguration : IEntityTypeConfiguration<Garde
             .HasConversion(id => id.Value, value => new GardenBedId(value));
 
         builder
-            .Property(e => e.UserId)
-            .HasConversion(id => id.Value, value => new UserId(value));
-        builder.HasIndex(e => e.UserId);
+            .Property(e => e.GardenerId)
+            .HasConversion(id => id.Value, value => new GardenerId(value));
+        builder.HasIndex(e => e.GardenerId);
 
         builder
             .Property(e => e.GardenId)

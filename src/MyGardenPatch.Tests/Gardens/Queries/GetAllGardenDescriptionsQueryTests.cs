@@ -32,7 +32,7 @@ public class GetAllGardenDescriptionsQueryTests : TestBase
     [Fact]
     public async Task UnregisteredUser()
     {
-        SetCurrentUser((UserId?)null);
+        SetCurrentUser((GardenerId?)null);
 
         var query = new GetAllGardenDescriptionsQuery();
 

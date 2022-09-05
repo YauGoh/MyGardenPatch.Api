@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch.Tests.Users.Queries;
+﻿using MyGardenPatch.Gardeners.Queries;
+
+namespace MyGardenPatch.Tests.Users.Queries;
 
 public class GetUserRegistrationStatusQueryTests : TestBase
 {
@@ -14,7 +16,7 @@ public class GetUserRegistrationStatusQueryTests : TestBase
             .Setup(p => p.EmailAddress)
             .Returns(UserTestData.PeterParkerEmailAddress);
 
-        var response = await ExecuteQueryAsync(new GetUserRegistrationStatusQuery());
+        var response = await ExecuteQueryAsync(new GetGardenerRegistrationStatusQuery());
 
         response.Status.Should().Be(RegistrationStatus.Registered);
     }
@@ -26,7 +28,7 @@ public class GetUserRegistrationStatusQueryTests : TestBase
             .Setup(p => p.EmailAddress)
             .Returns(UserTestData.UnregisteredEmailAddress);
 
-        var response = await ExecuteQueryAsync(new GetUserRegistrationStatusQuery());
+        var response = await ExecuteQueryAsync(new GetGardenerRegistrationStatusQuery());
 
         response.Status.Should().Be(RegistrationStatus.NotRegistered);
     }

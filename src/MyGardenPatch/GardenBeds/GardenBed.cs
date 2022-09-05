@@ -1,13 +1,11 @@
-﻿
-
-namespace MyGardenPatch.GardenBeds;
+﻿namespace MyGardenPatch.GardenBeds;
 
 public partial record struct GardenBedId : IEntityId { }
 
-public class GardenBed : UserOwnedAggregate<GardenBedId>, INameable, ILocateable
+public class GardenBed : GardenerOwnedAggregate<GardenBedId>, INameable, ILocateable
 {
-    public GardenBed(GardenBedId id, UserId userId, GardenId gardenId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
-        : base(id, userId)
+    public GardenBed(GardenBedId id, GardenerId gardenerId, GardenId gardenId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
+        : base(id, gardenerId)
     {
         GardenId = gardenId;
         Name = name;
@@ -19,10 +17,10 @@ public class GardenBed : UserOwnedAggregate<GardenBedId>, INameable, ILocateable
         Plants = new HashSet<Plant>();
     }
 
-    public GardenBed(UserId userId, GardenId gardenId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
-        : this(new(), userId, gardenId, name, description, imageUri, imageDescription, createdAt)
+    public GardenBed(GardenerId gardenerId, GardenId gardenId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
+        : this(new(), gardenerId, gardenId, name, description, imageUri, imageDescription, createdAt)
     {
-        Raise(new GardenBedAdded(userId, gardenId, Id, createdAt));
+        Raise(new GardenBedAdded(gardenerId, gardenId, Id, createdAt));
     }
 
     public GardenId GardenId { get; private set; }

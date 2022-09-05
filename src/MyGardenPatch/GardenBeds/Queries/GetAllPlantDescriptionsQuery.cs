@@ -35,7 +35,7 @@ public class GetAllPlantDescriptionsQueryHandler : IQueryHandler<GetAllPlantDesc
             .GetByExpressionAsync(
                 gb => gb.Id == query.GardenBedId &&
                       gb.GardenId == query.GardenId &&
-                      gb.UserId == _currentUser.UserId,
+                      gb.GardenerId == _currentUser.GardenerId,
                 cancellationToken);
 
         return gardenBed!.Plants

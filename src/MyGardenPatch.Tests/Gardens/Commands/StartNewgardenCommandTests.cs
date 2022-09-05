@@ -33,7 +33,7 @@ public class StartNewGardenCommandTests : TestBase
         garden.Description.Should().Be("Going to grow lots of potatos");
         garden.Location.Should().BeEquivalentTo(new Location(LocationType.Point, new[] { new Point(20.0, 30.0) }));
         garden.CreatedAt.Should().Be(createdAt);
-        garden.UserId.Should().Be(UserTestData.PeterParker.Id);
+        garden.GardenerId.Should().Be(UserTestData.PeterParker.Id);
     }
 
     [Theory]

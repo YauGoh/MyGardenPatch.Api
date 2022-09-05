@@ -4,7 +4,7 @@ internal static class UserTestData
 {
     public const string UnknownUserId = "{B0129B1B-AE17-4BB3-BAFC-45448D687EF5}";
 
-    public static User UnregisteredUser => new User("John Doe", UnregisteredEmailAddress);
+    public static Gardener UnregisteredUser => new Gardener("John Doe", UnregisteredEmailAddress);
 
     public const string UnregisteredEmailAddress = "john.doe@email.com";
 
@@ -18,7 +18,7 @@ internal static class UserTestData
     /// <summary>
     /// A registered user
     /// </summary>
-    public static User PeterParker => new User(
+    public static Gardener PeterParker => new Gardener(
         new Guid(PeterParkerUserId),
         "Peter Parker",
         PeterParkerEmailAddress,
