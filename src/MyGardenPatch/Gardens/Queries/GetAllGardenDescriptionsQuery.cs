@@ -6,6 +6,7 @@ public record GetAllGardenDescriptionsQuery() : IQuery<IEnumerable<GardenDescrip
 
 public record GardenDescriptor(
     GardenId GardenId, 
+    GardenerId GardenerId,
     string Name, 
     string Description, 
     Point Center,
@@ -38,6 +39,7 @@ public class GetAllGardenDescriptionsQueryHandler : IQueryHandler<GetAllGardenDe
         return gardens
             .Select(g => new GardenDescriptor(
                 g.Id,
+                g.GardenerId,
                 g.Name,
                 g.Description,
                 g.Location.Center,
