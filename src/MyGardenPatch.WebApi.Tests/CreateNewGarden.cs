@@ -28,6 +28,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 "/commands/StartNewGardenCommand",
                 new
                 {
+                    GardenId = Guid.NewGuid(),
                     Name = "My first garden",
                     Description = "This is my first garden",
                     Location = new

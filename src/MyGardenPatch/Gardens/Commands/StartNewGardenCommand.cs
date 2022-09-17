@@ -2,6 +2,7 @@
 
 [Role(WellKnownRoles.Gardener)]
 public record StartNewGardenCommand(
+    GardenId GardenId,
     string Name, 
     string Description, 
     Location Location, 
@@ -32,6 +33,7 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
         CancellationToken cancellationToken = default)
     {
         var garden = new Garden(
+            command.GardenId,
             _currentUserProvider.GardenerId ?? throw new UserNotAuthenticatedException(),
             command.Name,
             command.Description,
@@ -53,6 +55,10 @@ public class StartNewGardenCommandValidator :
 {
     public StartNewGardenCommandValidator()
     {
+        RuleFor(command => command.GardenId)
+            .NotEmpty()
+            .WithMessage("A valid garden id is required");
+
         this.ValidateNameable();
         this.ValidateImageable();
     }
