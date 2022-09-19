@@ -38,6 +38,33 @@ public class StartNewGardenCommandTests : TestBase
         garden.GardenerId.Should().Be(UserTestData.PeterParker.Id);
     }
 
+    [Fact]
+    public async Task StartNewGardenWithImageAttachments()
+    {
+        var fileAttachments = GetService<IFileAttachments>();
+
+        var gardenId = new GardenId(new Guid("{4DC2CEEF-063A-4D33-BFD7-D8595DA0A092}"));
+        var imageId = new ImageId();
+
+        fileAttachments.Add(
+            new FileAttachment(
+                 new GardenId(new Guid("{4DC2CEEF-063A-4D33-BFD7-D8595DA0A092}")),
+                 imageId,
+                 "Test.jpg",
+                 "image/jpg",
+                 new MemoryStream()));
+
+        await StartsNewGarden();
+
+        MockFileStorage.Verify(fs => fs.SaveAsync(
+            UserTestData.PeterParker.Id,
+            gardenId,
+            imageId,
+            "Test.jpg",
+            "image/jpg",
+            It.IsAny<Stream>()));
+    }
+
     [Theory]
     [InlineData("4DC2CEEF-063A-4D33-BFD7-D8595DA0A092", "", "Going to grow lots of potatos", 20, 30, "2022/1/1", "Name is required", "Name")]
     [InlineData("4DC2CEEF-063A-4D33-BFD7-D8595DA0A092", Strings.Long201, "Going to grow lots of potatos", 20, 30, "2022/1/1", "Not more than 200 characters", "Name")]

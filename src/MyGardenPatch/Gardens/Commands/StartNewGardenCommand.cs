@@ -17,15 +17,21 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
     private readonly IRepository<Garden, GardenId> _gardens;
     private readonly ICurrentUserProvider _currentUserProvider;
     private readonly IDateTimeProvider _dateTime;
+    private readonly IFileAttachments _fileAttachments;
+    private readonly IFileStorage _fileStorage;
 
     public StartNewGardenCommandHandler(
         IRepository<Garden, GardenId> gardens, 
         ICurrentUserProvider currentUserProvider,
-        IDateTimeProvider dateTime)
+        IDateTimeProvider dateTime,
+        IFileAttachments fileAttachments,
+        IFileStorage fileStorage)
     {
         _gardens = gardens;
         _currentUserProvider = currentUserProvider;
         _dateTime = dateTime;
+        _fileAttachments = fileAttachments;
+        _fileStorage = fileStorage;
     }
 
     public async Task HandleAsync(
@@ -43,9 +49,25 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
 
         garden.SetLocation(command.Location);
 
+        await ProcessFileAttachments();
+
         await _gardens.AddOrUpdateAsync(
             garden, 
             cancellationToken);
+    }
+
+    private async Task ProcessFileAttachments()
+    {
+        foreach(var file in _fileAttachments.GetAll())
+        {
+            await _fileStorage.SaveAsync(
+                _currentUserProvider.GardenerId ?? throw new UserNotAuthenticatedException(),
+                file.GardenId,
+                file.ImageId,
+                file.Filename,
+                file.ContentType,
+                file.Stream);
+        }
     }
 }
 

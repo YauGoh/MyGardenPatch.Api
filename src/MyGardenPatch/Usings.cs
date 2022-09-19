@@ -4,6 +4,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using MyGardenPatch.Aggregates;
 global using MyGardenPatch.Commands;
 global using MyGardenPatch.Common;
+global using MyGardenPatch.Configurations;
 global using MyGardenPatch.Events;
 global using MyGardenPatch.GardenBeds.DomainEvents;
 global using MyGardenPatch.Gardeners;

@@ -13,6 +13,8 @@ public class TestBase
 
     protected Mock<IEmailSender> MockEmailSender { get; private set; }
 
+    protected Mock<IFileStorage> MockFileStorage { get; private set; }
+
     protected Mock<IHttpContextAccessor> MockHttpContextAccessor { get; private set; }
 
     protected EmailAssertions EmailAssertions { get; private set; }
@@ -64,6 +66,8 @@ public class TestBase
         MockDateTimeProvider = ReplaceWithMock<IDateTimeProvider>(services);
 
         MockEmailSender = ReplaceWithMock<IEmailSender>(services);
+
+        MockFileStorage = ReplaceWithMock<IFileStorage>(services);
 
         EmailAssertions = new EmailAssertions(MockEmailSender);
 

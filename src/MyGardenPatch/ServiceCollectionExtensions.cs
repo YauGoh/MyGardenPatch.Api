@@ -7,6 +7,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMyGardenPatch(this IServiceCollection services, IConfiguration config)
     {
         services.AddScoped<IDomainEventBus, InMemoryDomainEventBus>();
+        services.AddScoped<IFileAttachments, InMemoryFileAttachments>();
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
         services.Configure<EmailConfig>(config.GetSection("Email"));

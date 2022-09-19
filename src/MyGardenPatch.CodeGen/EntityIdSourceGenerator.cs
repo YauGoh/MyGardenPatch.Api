@@ -47,6 +47,8 @@ namespace ${Namespace}
         public Guid Value { get; }
 
         public static implicit operator ${Name}(Guid value) => new ${Name}(value);
+
+        public override string ToString() => Value.ToString();
     }
 
     public class ${Name}Converter : System.Text.Json.Serialization.JsonConverter<${Name}>

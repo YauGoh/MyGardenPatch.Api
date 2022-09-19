@@ -1,4 +1,5 @@
 ﻿using MyGardenPatch.GardenBeds.Queries;
+using MyGardenPatch.Gardeners;
 
 namespace MyGardenPatch.WebApi.Tests;
 
@@ -23,12 +24,15 @@ public class CreateNewGarden : IClassFixture<TestFixture>
     [Fact, Order(1)]
     public async Task T001_StartNewGarden()
     {
+        var gardenId = Guid.NewGuid();
+        var imageId = Guid.NewGuid();
+
         await _fixture
             .Command(
                 "/commands/StartNewGardenCommand",
                 new
                 {
-                    GardenId = Guid.NewGuid(),
+                    GardenId = gardenId,
                     Name = "My first garden",
                     Description = "This is my first garden",
                     Location = new
@@ -42,7 +46,30 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                             new { X = 0, Y = 1 },
                         }
                     }
-                });
+                },
+                
+                (
+                    Filename: "image.jpg",
+                    ContentType: "image/jpeg",
+                    Content: "Not really an image",
+                    Headers: new Dictionary<string, string>
+                    {
+                        { "gardenId", gardenId.ToString() },
+                        { "imageId", imageId.ToString() }
+                    }
+                ));
+
+
+        _fixture.MockFileStorage
+            .Verify(
+                fs => fs.SaveAsync(
+                    It.IsAny<GardenerId>(), 
+                    It.Is<GardenId>(id => id.Value == gardenId), 
+                    It.Is<ImageId>(id => id.Value == imageId), 
+                    "image.jpg", 
+                    "image/jpeg", 
+                    It.IsAny<Stream>()),
+                Times.Once);
     }
 
     [Fact, Order(2)]

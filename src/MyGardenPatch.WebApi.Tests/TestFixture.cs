@@ -8,7 +8,10 @@ public class TestFixture : IAsyncLifetime
 {
     private TestcontainerDatabase dbContainer;
     internal Mock<IEmailSender> MockEmailSender { get; }
-    internal IConfiguration Configuration { get; private set; }
+
+    internal Mock<IFileStorage> MockFileStorage { get; }
+
+    internal IConfiguration? Configuration { get; private set; }
 
     private Dictionary<string, object> state;
 
@@ -30,9 +33,11 @@ public class TestFixture : IAsyncLifetime
             .Build();
 
         MockEmailSender = new Mock<IEmailSender>();
+
+        MockFileStorage = new Mock<IFileStorage>();
     }
 
-    internal IAlbaHost Sut { get; private set; }
+    internal IAlbaHost? Sut { get; private set; }
 
     public async Task InitializeAsync()
     {
@@ -42,7 +47,8 @@ public class TestFixture : IAsyncLifetime
         {
             x.ConfigureServices((context, services) =>
             {
-                services.AddTransient<IEmailSender>(s => MockEmailSender.Object);
+                services.AddSingleton<IEmailSender>(s => MockEmailSender.Object);
+                services.AddSingleton<IFileStorage>(s => MockFileStorage.Object);
 
                 ReplaceWithTestContainerDb<LocalIdentityDbContext>(services);
                 ReplaceWithTestContainerDb<MyGardenPatchDbContext>(services);
@@ -87,7 +93,7 @@ public class TestFixture : IAsyncLifetime
         return await this.WithAuth(configure);
     }
 
-    public async Task Command(string url, dynamic command = null)
+    public async Task Command(string url, dynamic? command = null)
     {
         command = command ?? new { };
 
@@ -99,6 +105,26 @@ public class TestFixture : IAsyncLifetime
                     .ToUrl(url);
 
                 _.StatusCodeShouldBeOk();
+            });
+    }
+
+    public async Task Command(string url, dynamic? command, params (string Filename, string ContentType, string Content, Dictionary<string, string> Headers)[] files)
+    {
+        command = command ?? new { };
+
+        await Scenario(
+            _ =>
+            {
+                var builder = _.PostFiles();
+
+                foreach (var file in files)
+                {
+                    builder.WithFile(file.Filename, file.ContentType, file.Content, file.Headers);
+                }
+
+                builder
+                    .WithCommand(command)
+                    .To(url);
             });
     }
 
