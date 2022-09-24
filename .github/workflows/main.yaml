@@ -101,30 +101,30 @@ jobs:
               publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
               package: .
 
-         - name: Download MyGardenPatchDbContext migration script
-           uses: actions/download-artifact@v3
-           with:
-             name: ${{ env.MY_GARDEN_PATCH_ARTIFACT }}
-             path: ./scripts
+         #- name: Download MyGardenPatchDbContext migration script
+         #  uses: actions/download-artifact@v3
+         #  with:
+         #    name: ${{ env.MY_GARDEN_PATCH_ARTIFACT }}
+         #    path: ./scripts
 
-         - name: Migrate MyGardenPatchDbContext database
-           uses: azure/sql-action@v1.3
-           with: 
-              server-name: ${{ env.DATABASE_SERVER }}
-              connection-string: ${{ secrets.CONNECTION_STRING }}
-              sql-file: ./scripts/${{ env.MY_GARDEN_PATCH_SCRIPT }}
-              arguments: -I
+         #- name: Migrate MyGardenPatchDbContext database
+         #  uses: azure/sql-action@v1.3
+         #  with: 
+         #     server-name: ${{ env.DATABASE_SERVER }}
+         #     connection-string: ${{ secrets.CONNECTION_STRING }}
+         #     sql-file: ./scripts/${{ env.MY_GARDEN_PATCH_SCRIPT }}
+         #     arguments: -I
 
-         - name: Download LocalIdentityDbContext migration script
-           uses: actions/download-artifact@v3
-           with:
-             name: ${{ env.LOCAL_IDENTITY_ARTIFACT }}
-             path: ./scripts
+         #- name: Download LocalIdentityDbContext migration script
+         #  uses: actions/download-artifact@v3
+         #  with:
+         #    name: ${{ env.LOCAL_IDENTITY_ARTIFACT }}
+         #    path: ./scripts
 
-         - name: Migrate LocalIdentityDbContext Database
-           uses: azure/sql-action@v1.3
-           with: 
-              server-name: ${{ env.DATABASE_SERVER }}
-              connection-string: ${{ secrets.CONNECTION_STRING }}
-              sql-file: ./scripts/${{ env.LOCAL_IDENTITY_SCRIPT }}
-              arguments: -I
+         #- name: Migrate LocalIdentityDbContext Database
+         #  uses: azure/sql-action@v1.3
+         #  with: 
+         #     server-name: ${{ env.DATABASE_SERVER }}
+         #     connection-string: ${{ secrets.CONNECTION_STRING }}
+         #     sql-file: ./scripts/${{ env.LOCAL_IDENTITY_SCRIPT }}
+         #     arguments: -I
