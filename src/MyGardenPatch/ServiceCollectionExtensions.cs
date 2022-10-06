@@ -8,10 +8,12 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IDomainEventBus, InMemoryDomainEventBus>();
         services.AddScoped<IFileAttachments, InMemoryFileAttachments>();
+        services.AddScoped<IFileStorage, StubFileStorage>();
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
         services.Configure<EmailConfig>(config.GetSection("Email"));
         services.Configure<FrontEndConfig>(config.GetSection("FrontEnd"));
+        
 
         RegisterQueries(services);
 

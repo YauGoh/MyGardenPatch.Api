@@ -13,7 +13,7 @@ public enum RegistrationStatus
 
 public record GardnerInfo(GardenerId? GardenerId, string Name, string EmailAddress);
 
-public record GardenerRegistrationStatus(RegistrationStatus Status, GardnerInfo? User) { }
+public record GardenerRegistrationStatus(RegistrationStatus Status, GardnerInfo? Gardener) { }
 
 public class GetGardenerRegistrationStatusQueryHandler : IQueryHandler<GetGardenerRegistrationStatusQuery, GardenerRegistrationStatus>
 {
