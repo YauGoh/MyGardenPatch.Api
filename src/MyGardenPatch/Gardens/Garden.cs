@@ -23,11 +23,8 @@ public class Garden : GardenerOwnedAggregate<GardenId>, INameable, ILocateable
     public string Description { get; private set; }
     public Uri? ImageUri { get; private set; }
     public string? ImageDescription { get; private set; }
-    public Location Location { get; private set; } = Location.Default;
-
+    public Point Point { get; set; } = Point.Default;                  
     public DateTime CreatedAt { get; private set; }
-
-    Location ILocateable.Location => throw new NotImplementedException();
 
     internal void Describe(string name, string description, Uri imageUri, string imageDescription)
     {
@@ -37,17 +34,8 @@ public class Garden : GardenerOwnedAggregate<GardenId>, INameable, ILocateable
         ImageDescription = imageDescription;
     }
 
-    internal void Move(Transformation transformation, bool moveGardenBeds)
-    {
-        SetLocation(Location.Transform(transformation));
-
-        Raise(new GardenMoved(Id, transformation, moveGardenBeds));
-    }
-
     internal void Remove()
     {
         Raise(new GardenRemoved(Id));
     }
-
-    public void SetLocation(Location location) => Location = location;
 }

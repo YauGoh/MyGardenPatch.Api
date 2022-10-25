@@ -27,8 +27,7 @@ public class GetAllPlantDescriptionsQueryTests : TestBase
                     first.PlantId.Should().Be(plant.Id);
                     first.Name.Should().Be(plant.Name);
                     first.Description.Should().Be(plant.Description);
-                    first.Center.Should().Be(plant.Location.Center);
-                    first.Location.Should().BeEquivalentTo(plant.Location);
+                    first.Center.Should().Be(plant.Shape.Point);
                     first.ImageUri.Should().Be(plant.ImageUri);
                     first.ImageDescription.Should().Be(plant.ImageDescription);
                 });

@@ -6,22 +6,15 @@ internal static class GardenTestData
 
     public const string PeterGardenId = "{1928CCB7-D1C9-4EBD-B917-21CFC313730D}";
 
-    public static Garden PeterGarden
+    public static Garden PeterGarden => new Garden (
+        new Guid(PeterGardenId),
+        new Guid(UserTestData.PeterParkerUserId),
+        "Peter's Garden",
+        "Growing veges",
+        new Uri("https://cdn/image.jpg"),
+        "My garden",
+        new DateTime(2022, 1, 1))
     {
-        get
-        {
-            var garden = new Garden(
-                new Guid(PeterGardenId),
-                new Guid(UserTestData.PeterParkerUserId),
-                "Peter's Garden",
-                "Growing veges",
-                new Uri("https://cdn/image.jpg"),
-                "My garden",
-                new DateTime(2022, 1, 1));
-
-            garden.SetLocation(new Location(1, 1));
-
-            return garden;
-        }
-    }
+        Point = new Point(1, 1)
+    };
 }

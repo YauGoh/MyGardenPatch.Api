@@ -6,9 +6,9 @@ public record AddPlantCommand(
     GardenBedId GardenBedId,
     string Name,
     string Description,
-    Location Location,
+    Shape Shape,
     Uri ImageUri,
-    string ImageDescription) : IGardenBedCommand, INameableCommand, ILocateableCommand, IImageableCommand;
+    string ImageDescription) : IGardenBedCommand, INameableCommand, IShapeableCommand, IImageableCommand;
 
 public class AddPlantCommandHandler : ICommandHandler<AddPlantCommand>
 {
@@ -34,7 +34,7 @@ public class AddPlantCommandHandler : ICommandHandler<AddPlantCommand>
         gardenBed!.AddPlant(
             command.Name,
             command.Description,
-            command.Location,
+            command.Shape,
             command.ImageUri,
             command.ImageDescription,
             _dateTime.Now);
@@ -54,7 +54,7 @@ public class AddPlantCommandValidator : GardenBedCommandValidator<AddPlantComman
         : base(currentUser, gardens, gardenBeds)
     {
         this.ValidateNameable();
-        this.ValidateLocatable();
+        this.ValidateShape();
         this.ValidateImageable();
     }
 }

@@ -2,7 +2,7 @@
 
 public partial record struct GardenBedId : IEntityId { }
 
-public class GardenBed : GardenerOwnedAggregate<GardenBedId>, INameable, ILocateable
+public class GardenBed : GardenerOwnedAggregate<GardenBedId>, INameable, IShapeable
 {
     public GardenBed(GardenBedId id, GardenerId gardenerId, GardenId gardenId, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt)
         : base(id, gardenerId)
@@ -23,13 +23,25 @@ public class GardenBed : GardenerOwnedAggregate<GardenBedId>, INameable, ILocate
         Raise(new GardenBedAdded(gardenerId, gardenId, Id, createdAt));
     }
 
+    internal void ReshapePlant(PlantId plantId, Shape shape)
+    {
+        var plant = Plants.First(p => p.Id == plantId);
+
+        plant.Shape = shape;
+    }
+
+    internal void Reshape(Shape shape)
+    {
+        Shape = shape;
+
+        // todo - relocate
+    }
+
     public GardenId GardenId { get; private set; }
 
     public string Name { get; private set; }
 
     public string Description { get; private set; }
-
-    public Location Location { get; private set; } = Location.Default;
 
     public Uri? ImageUri { get; private set; }
 
@@ -39,14 +51,14 @@ public class GardenBed : GardenerOwnedAggregate<GardenBedId>, INameable, ILocate
 
     public ICollection<Plant> Plants { get; private set; }
 
-    Location ILocateable.Location => throw new NotImplementedException();
+    public Shape Shape { get; set; }
 
-    public void SetLocation(Location location) => Location = location;
-
-    public void AddPlant(string name, string description, Location location, Uri? imageUri, string? imageDescription, DateTime createdAt)
+    public void AddPlant(string name, string description, Shape shape, Uri? imageUri, string? imageDescription, DateTime createdAt)
     {
-        var plant = new Plant(name, description, imageUri, imageDescription, createdAt);
-        plant.SetLocation(location);
+        var plant = new Plant(name, description, imageUri, imageDescription, createdAt)
+        {
+            Shape = shape
+        };
 
         this.Plants.Add(plant);
 
@@ -64,22 +76,6 @@ public class GardenBed : GardenerOwnedAggregate<GardenBedId>, INameable, ILocate
     internal void DescribePlant(PlantId plantId, string name, string description, Uri imageUri, string imageDescription)
     {
         Plants.Single(p => p.Id == plantId).Describe(name, description, imageUri, imageDescription);
-    }
-
-
-    public void Move(Transformation transformation)
-    {
-        SetLocation(Location.Transform(transformation));
-
-        foreach (var plant in Plants)
-        {
-            plant.Move(transformation);
-        }
-    }
-
-    internal void MovePlant(PlantId plantId, Transformation transformation)
-    {
-        Plants.First(p => p.Id == plantId).Move(transformation);
     }
 
     public void Remove()

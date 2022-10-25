@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyGardenPatch.SqlServer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,7 +20,7 @@ namespace MyGardenPatch.SqlServer.Migrations
                     ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Shape = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GardenerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -52,8 +52,8 @@ namespace MyGardenPatch.SqlServer.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Point = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GardenerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -68,10 +68,10 @@ namespace MyGardenPatch.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Shape = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GardenBedId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>

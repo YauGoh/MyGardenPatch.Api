@@ -14,7 +14,10 @@ internal static class GardenBedTestData
         "Nothing Yet, maybe just flowers",
         new Uri("https://images/font.jpg"),
         "My first garden bed",
-        new DateTime(2022, 1, 1));
+        new DateTime(2022, 1, 1))
+    {
+        Shape = Shapes.Rectangle_1x25
+    };
 
     public const string PeterGardenBedWithCarrotsId = "{038D8698-029B-4E0A-9149-4E64E2919175}";
 
@@ -22,32 +25,23 @@ internal static class GardenBedTestData
 
     public const string UnknownPlantId = "{D95BB64D-3F47-406A-A881-CBC6184781F1}";
 
-    public static GardenBed PeterGardenBedWithCarrots
+    public static GardenBed PeterGardenBedWithCarrots => new GardenBed(
+        new Guid(PeterGardenBedWithCarrotsId),
+        UserTestData.PeterParker.Id,
+        GardenTestData.PeterGarden.Id,
+        "Front",
+        "Carrots",
+        new Uri("https://images/font.jpg"),
+        "My first garden bed",
+        new DateTime(2022, 1, 1))
     {
-        get
+        Plants =
         {
-            var plant = new Plant(new Guid(CarrotId), "Carrots", "Trying dutch carrots", new Uri("https://cdn/image.jpg"), "looking good", new DateTime(2022, 1, 1));
-            plant.SetLocation(new Location(LocationType.Point, new[] { new Point(1, 2) }));
-
-            var gardenBed = new GardenBed(
-                new Guid(PeterGardenBedWithCarrotsId),
-                UserTestData.PeterParker.Id,
-                GardenTestData.PeterGarden.Id,
-                "Front",
-                "Carrots",
-                new Uri("https://images/font.jpg"),
-                "My first garden bed",
-                new DateTime(2022, 1, 1))
+            new Plant(new Guid(CarrotId), "Carrots", "Trying dutch carrots", new Uri("https://cdn/image.jpg"), "looking good", new DateTime(2022, 1, 1))
             {
-                Plants =
-                    {
-                        plant
-                    }
-            };
-
-            gardenBed.SetLocation(new Location(1, 1));
-
-            return gardenBed;
-        }
-    }
+                Shape = Shapes.Circular_2
+            }
+        },
+        Shape = Shapes.Rectangle_1x25
+    };
 }

@@ -1,33 +1,33 @@
 ﻿namespace MyGardenPatch.GardenBeds.Commands;
 
 [Role(WellKnownRoles.Gardener)]
-public record MovePlantCommand(
+public record ReshapePlantCommand(
     GardenId GardenId, 
     GardenBedId GardenBedId, 
     PlantId PlantId, 
-    Transformation Transformation) : IPlantCommand;
+    Shape Shape) : IPlantCommand, IShapeableCommand;
 
-public class MovePlantCommandHandler : ICommandHandler<MovePlantCommand>
+public class ReshapePlantCommandHandler : ICommandHandler<ReshapePlantCommand>
 {
     private readonly IRepository<GardenBed, GardenBedId> _gardenBeds;
 
-    public MovePlantCommandHandler(
+    public ReshapePlantCommandHandler(
         IRepository<GardenBed, GardenBedId> gardenBeds)
     {
         _gardenBeds = gardenBeds;
     }
 
     public async Task HandleAsync(
-        MovePlantCommand command, 
+        ReshapePlantCommand command, 
         CancellationToken cancellationToken = default)
     {
         var gardenBed = await _gardenBeds.GetAsync(
             command.GardenBedId, 
             cancellationToken);
 
-        gardenBed!.MovePlant(
-            command.PlantId, 
-            command.Transformation);
+        gardenBed!.ReshapePlant(
+            command.PlantId,
+            command.Shape);
 
         await _gardenBeds.AddOrUpdateAsync(
             gardenBed, 
@@ -35,13 +35,14 @@ public class MovePlantCommandHandler : ICommandHandler<MovePlantCommand>
     }
 }
 
-public class MovePlantCommandValidator : PlantCommandValidator<MovePlantCommand>, ICommandValidator<MovePlantCommand>
+public class ReshpaePlantCommandValidator : PlantCommandValidator<ReshapePlantCommand>, ICommandValidator<ReshapePlantCommand>
 {
-    public MovePlantCommandValidator(
+    public ReshpaePlantCommandValidator(
         ICurrentUserProvider currentUser, 
         IRepository<Garden, GardenId> gardens, 
         IRepository<GardenBed, GardenBedId> gardenBeds) :
         base(currentUser, gardens, gardenBeds)
     {
+        this.ValidateShape();
     }
 }

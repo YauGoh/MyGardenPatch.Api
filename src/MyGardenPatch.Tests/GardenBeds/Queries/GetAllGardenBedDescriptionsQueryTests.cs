@@ -25,8 +25,8 @@ public class GetAllGardenBedDescriptionsQueryTests : TestBase
                     first.GardenBedId.Should().Be(GardenBedTestData.PeterFrontGardenBed.Id);
                     first.Name.Should().Be(GardenBedTestData.PeterFrontGardenBed.Name);
                     first.Description.Should().Be(GardenBedTestData.PeterFrontGardenBed.Description);
-                    first.Center.Should().Be(GardenBedTestData.PeterFrontGardenBed.Location.Center);
-                    first.Location.Should().BeEquivalentTo(GardenBedTestData.PeterFrontGardenBed.Location);
+                    first.Center.Should().Be(GardenBedTestData.PeterFrontGardenBed.Shape.Point);
+                    first.Shape.Should().BeEquivalentTo(GardenBedTestData.PeterFrontGardenBed.Shape);
                     first.ImageUri.Should().Be(GardenBedTestData.PeterFrontGardenBed.ImageUri);
                     first.ImageDescription.Should().Be(GardenBedTestData.PeterFrontGardenBed.ImageDescription);
                 });

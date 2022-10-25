@@ -14,6 +14,6 @@ public class PlantEntityTypeConfiguration : IEntityTypeConfiguration<Plant>
 
         builder.HasName();
 
-        builder.HasLocation();
+        builder.HasShape();
     }
 }

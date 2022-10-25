@@ -1,6 +1,6 @@
 ﻿namespace MyGardenPatch.SqlServer.EntityTypeConfigurations;
 
-internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<Gardener>
+internal class GardenerEntityTypeConfiguration : IEntityTypeConfiguration<Gardener>
 {
     public void Configure(EntityTypeBuilder<Gardener> builder)
     {

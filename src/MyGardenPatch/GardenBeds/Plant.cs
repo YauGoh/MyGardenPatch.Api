@@ -2,7 +2,7 @@
 
 public partial record struct PlantId : IEntityId { }
 
-public class Plant : Entity<PlantId>, INameable, ILocateable
+public class Plant : Entity<PlantId>, INameable, IShapeable
 {
     public Plant(PlantId id, string name, string description, Uri? imageUri, string? imageDescription, DateTime createdAt) : base(id)
     {
@@ -22,7 +22,7 @@ public class Plant : Entity<PlantId>, INameable, ILocateable
 
     public string Description { get; private set; }
 
-    public Location Location { get; private set; } = Location.Default;
+    public Shape Shape { get; set; }
 
     public Uri? ImageUri { get; private set; }
 
@@ -30,20 +30,11 @@ public class Plant : Entity<PlantId>, INameable, ILocateable
 
     public DateTime CreatedAt { get; set; }
 
-    Location ILocateable.Location => throw new NotImplementedException();
-
     internal void Describe(string name, string description, Uri imageUri, string imageDescription)
     {
         Name = name;
         Description = description;
         ImageUri = imageUri;
         ImageDescription = imageDescription;
-    }
-
-    public void SetLocation(Location location) => Location = location;
-
-    internal void Move(Transformation transformation)
-    {
-        SetLocation(Location.Transform(transformation));
     }
 }

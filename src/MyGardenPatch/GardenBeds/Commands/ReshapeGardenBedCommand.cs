@@ -2,31 +2,31 @@
 
 
 [Role(WellKnownRoles.Gardener)]
-public record MoveGardenBedCommand(
+public record ReshapeGardenBedCommand(
     GardenId GardenId, 
     GardenBedId GardenBedId, 
-    Transformation Transformation)
+    Shape Shape)
    : IGardenBedCommand;
 
-public class MoveGardenBedCommandHandler : ICommandHandler<MoveGardenBedCommand>
+public class ReshapeGardenBedCommandHandler : ICommandHandler<ReshapeGardenBedCommand>
 {
     private readonly IRepository<GardenBed, GardenBedId> _gardenBeds;
 
-    public MoveGardenBedCommandHandler(
+    public ReshapeGardenBedCommandHandler(
         IRepository<GardenBed, GardenBedId> gardenBeds)
     {
         _gardenBeds = gardenBeds;
     }
 
     public async Task HandleAsync(
-        MoveGardenBedCommand command, 
+        ReshapeGardenBedCommand command, 
         CancellationToken cancellationToken = default)
     {
         var gardenBed = await _gardenBeds.GetAsync(
             command.GardenBedId,
             cancellationToken);
 
-        gardenBed!.Move(command.Transformation);
+        gardenBed!.Reshape(command.Shape);
 
         await _gardenBeds.AddOrUpdateAsync(
             gardenBed,
@@ -34,9 +34,9 @@ public class MoveGardenBedCommandHandler : ICommandHandler<MoveGardenBedCommand>
     }
 }
 
-public class MoveGardenBedCommandValidator : GardenBedCommandValidator<MoveGardenBedCommand>, ICommandValidator<MoveGardenBedCommand>
+public class ReshapeGardenBedCommandValidator : GardenBedCommandValidator<ReshapeGardenBedCommand>, ICommandValidator<ReshapeGardenBedCommand>
 {
-    public MoveGardenBedCommandValidator(
+    public ReshapeGardenBedCommandValidator(
         ICurrentUserProvider currentUser,
         IRepository<Garden, GardenId> gardens,
         IRepository<GardenBed, GardenBedId> gardenBeds)

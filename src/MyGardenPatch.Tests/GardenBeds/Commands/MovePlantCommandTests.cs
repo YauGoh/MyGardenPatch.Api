@@ -1,8 +1,8 @@
 ﻿namespace MyGardenPatch.Tests.GardenBeds.Commands;
 
-public class MovePlantCommandTests : TestBase
+public class ReshapePlantCommandTests : TestBase
 {
-    public MovePlantCommandTests()
+    public ReshapePlantCommandTests()
     {
         SeedWith(UserTestData.PeterParker);
         SeedWith(GardenTestData.PeterGarden);
@@ -10,27 +10,21 @@ public class MovePlantCommandTests : TestBase
         SetCurrentUser(UserTestData.PeterParker.Id);
     }
 
-    [Theory]
-    [InlineData(Transformations.Identity, "1,2")]
-    [InlineData(Transformations.Move1x, "2,2")]
-    [InlineData(Transformations.Move1y, "1,3")]
-    [InlineData(Transformations.Move2_3, "3,5")]
-    [InlineData(Transformations.RotateLeft90, "2,-1")]
-    public async Task MovePlant(string transformationStr, string expectedCarrotLocationStr)
+    [Fact]
+    public async Task ReshapePlant()
     {
-        Transformation transformation = transformationStr;
-        Location expectedCarrotLocation = expectedCarrotLocationStr;
+        var circle = Shapes.Circular_2;
 
-        var command = new MovePlantCommand(
+        var command = new ReshapePlantCommand(
             GardenTestData.PeterGarden.Id,
             GardenBedTestData.PeterGardenBedWithCarrots.Id,
             GardenBedTestData.PeterGardenBedWithCarrots.Plants.First().Id,
-            transformation);
+            circle);
 
         await ExecuteCommandAsync(command);
 
         var gardenBed = await GetAsync<GardenBed, GardenBedId>(GardenBedTestData.PeterGardenBedWithCarrots.Id);
 
-        gardenBed!.Plants.First().Location.Should().BeEquivalentTo(expectedCarrotLocation);
+        gardenBed!.Plants.First().Shape.Should().BeEquivalentTo(circle);
     }
 }

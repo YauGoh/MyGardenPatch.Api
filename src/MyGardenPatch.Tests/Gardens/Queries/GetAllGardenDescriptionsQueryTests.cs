@@ -24,8 +24,7 @@ public class GetAllGardenDescriptionsQueryTests : TestBase
                     first.Description.Should().Be(GardenTestData.PeterGarden.Description);
                     first.ImageUri.Should().Be(GardenTestData.PeterGarden.ImageUri);
                     first.ImageDescription.Should().Be(GardenTestData.PeterGarden.ImageDescription);
-                    first.Center.Should().Be(GardenTestData.PeterGarden.Location.Center);
-                    first.Location.Should().BeEquivalentTo(GardenTestData.PeterGarden.Location);
+                    first.Center.Should().Be(GardenTestData.PeterGarden.Point);
                 });
     }
 

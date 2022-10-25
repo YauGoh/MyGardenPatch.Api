@@ -1,7 +1,4 @@
-﻿using MyGardenPatch.Common;
-using MyGardenPatch.Events;
-
-namespace MyGardenPatch.Gardens.DomainEvents;
+﻿namespace MyGardenPatch.Gardens.DomainEvents;
 
 internal record GardenMoved(
     GardenId GardenId, 

@@ -3,8 +3,7 @@
 [Role(WellKnownRoles.Gardener)]
 public record MoveGardenCommand(
     GardenId GardenId, 
-    Transformation Transformation, 
-    bool MoveGardenBeds) : IGardenCommand;
+    Point Point) : IGardenCommand, ILocateableCommand;
 
 public class MoveGardenCommandHandler : ICommandHandler<MoveGardenCommand>
 {
@@ -23,9 +22,7 @@ public class MoveGardenCommandHandler : ICommandHandler<MoveGardenCommand>
             command.GardenId, 
             cancellationToken);
 
-        garden!.Move(
-            command.Transformation, 
-            command.MoveGardenBeds);
+        garden!.Point = command.Point;
 
         await _gardens.AddOrUpdateAsync(
             garden, 
@@ -39,5 +36,6 @@ public class MoveGardenCommandValidator : GardenCommandValidator<MoveGardenComma
         ICurrentUserProvider currentUser, 
         IRepository<Garden, GardenId> gardens) : base(currentUser, gardens)
     {
+        this.ValidateLocatable();
     }
 }

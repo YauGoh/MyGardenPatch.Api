@@ -46,14 +46,14 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<string>("ImageUri")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Shape")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -85,14 +85,14 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<string>("ImageUri")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Shape")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -151,14 +151,14 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<string>("ImageUri")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Point")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -17,5 +17,7 @@ public class GardenEntityTypeConfiguration : IEntityTypeConfiguration<Garden>
         builder.HasName();
 
         builder.HasLocation();
+
+        builder.HasLocation();
     }
 }

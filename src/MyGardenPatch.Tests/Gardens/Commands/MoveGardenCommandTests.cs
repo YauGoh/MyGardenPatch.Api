@@ -11,36 +11,20 @@ public class MoveGardenCommandTests : TestBase
         SetCurrentUser(UserTestData.PeterParker.Id);
     }
 
-    [Theory]
-    [InlineData(Transformations.Identity, "1,1")]
-    [InlineData(Transformations.Move1x, "2,1")]
-    [InlineData(Transformations.Move1y, "1,2")]
-    [InlineData(Transformations.Move2_3, "3,4")]
-    [InlineData(Transformations.RotateLeft90, "1,-1")]
-    public async Task MoveGardenBed(string transformationStr, string expectedLocation)
+    [Fact]
+    public async Task MoveGardenBed()
     {
-        Transformation transformation = transformationStr;
-        Location expectedGardenBedLocation = expectedLocation;
+        Point newLocation = new Point(10, 4);
 
         var command = new MoveGardenCommand(
             GardenTestData.PeterGarden.Id,
-            transformation,
-            true);
+            newLocation);
 
         await ExecuteCommandAsync(command);
 
         var garden = await GetAsync<Garden, GardenId>(GardenTestData.PeterGarden.Id);
 
-        garden!.Location.Should().BeEquivalentTo(expectedGardenBedLocation);
-
-        MockDomainEventBus.Verify(
-            bus => bus.PublishAsync(
-                It.Is<GardenMoved>(
-                    e => e.GardenId == command.GardenId &&
-                         e.MoveGardenBeds == command.MoveGardenBeds &&
-                         e.Transformation == command.Transformation),
-                It.IsAny<CancellationToken>()),
-            Times.Once);
+        garden!.Point.Should().BeEquivalentTo(newLocation);
     }
 
     [Theory]
@@ -51,8 +35,7 @@ public class MoveGardenCommandTests : TestBase
 
         var command = new MoveGardenCommand(
             gardenId,
-            transformation,
-            true);
+            new Point(0, 1));
 
         Func<Task> task = () => ExecuteCommandAsync(command);
 

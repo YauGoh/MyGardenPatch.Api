@@ -35,17 +35,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     GardenId = gardenId,
                     Name = "My first garden",
                     Description = "This is my first garden",
-                    Location = new
-                    {
-                        Type = 1,
-                        Points = new[]
-                        {
-                            new { X = 0, Y = 0 },
-                            new { X = 1, Y = 0 },
-                            new { X = 1, Y = 1 },
-                            new { X = 0, Y = 1 },
-                        }
-                    }
+                    Point = new { X = 0.5, Y = 0.5 }
                 },
                 
                 (
@@ -149,16 +139,12 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     GardenId = _fixture.GetGardenId().Value,
                     Name = "Front",
                     Description = "infront of master bedroom window",
-                    Location = new
+                    Shape = new 
                     {
-                        Type = 1,
-                        Points = new[]
-                        {
-                            new { X = 0, Y = 0 },
-                            new { X = 1, Y = 0 },
-                            new { X = 1, Y = 1 },
-                            new { X = 0, Y = 1 },
-                        }
+                        Type = ShapeType.Circular,
+                        Point = new Point(0.5, 0.5),
+                        Rotation = 0,
+                        Radius = 2.0
                     }
                 });
     }
@@ -239,13 +225,13 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     GardenBedId = _fixture.GetGardenBedId().Value,
                     Name = "Carrots",
                     Description = "Seedling",
-                    Location = new
+                    Shape = new 
                     {
-                        Type = 0,
-                        Points = new[] 
-                        {
-                            new { X = 0, Y = 0 }
-                        }
+                        Type = ShapeType.Rectangular,
+                        Point = new { X = 0, Y = 0 },
+                        Rotation = 0,
+                        Width = 0.2,
+                        Height = 0.2
                     }
                 });
     }
@@ -334,10 +320,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 new
                 {
                     GardenId = _fixture.GetGardenId().Value,
-                    Transformation = @"1 0 0
-                                       0 1 0
-                                       1 0 1",
-                    MoveGardenBeds = true
+                    Point = new Point(1.5, 0.5)
                 });
     }
 
@@ -359,60 +342,26 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(15)]
-    public async Task T015_GetAllGardenBeds_AfterMove()
-    {
-        var gardenBeds =
-            await _fixture
-                .Query<IEnumerable<GardenBedDescriptor>>(
-                    "/queries/GetAllGardenBedDescriptionsQuery",
-                    new { GardenId = _fixture.GetGardenId().Value });
-
-        gardenBeds
-            .Should()
-            .SatisfyRespectively(
-                first =>
-                {
-                    first.Center.Should().BeEquivalentTo(new { X = 1.5, Y = 0.5 });
-                });
-    }
-
-    [Fact, Order(16)]
-    public async Task T016_GetAllPlants_AfterMove()
-    {
-        var plants =
-            await _fixture
-                .Query<IEnumerable<PlantDescription>>(
-                    "/queries/GetAllPlantDescriptionsQuery",
-                    new 
-                    {
-                        GardenId = _fixture.GetGardenId().Value,
-                        GardenBedId = _fixture.GetGardenBedId().Value
-                    });
-
-        plants
-            .Should()
-            .SatisfyRespectively(
-                first =>
-                {
-                    first.Center.Should().BeEquivalentTo(new { X = 1.0, Y = 0.0 });
-                });
-    }
-
     [Fact, Order(17)]
     public async Task T017_MoveGardenBed()
     {
         await _fixture
             .Command(
-                "/commands/MoveGardenBedCommand",
+                "/commands/ReshapeGardenBedCommand",
                 new
                 {
                     GardenId = _fixture.GetGardenId().Value,
                     GardenBedId = _fixture.GetGardenBedId().Value,
-                    Transformation = @"1 0 0
-                                       0 1 0
-                                       1 0 1"
+                    Shape = new
+                    {
+                        Type = ShapeType.Rectangular,
+                        Point = new Point(2.5, 0.5),
+                        Rotation = 0,
+                        Width = 1.0,
+                        Height = 3.0
+                    }
                 });
+       ;
     }
 
     [Fact, Order(18)]
@@ -433,42 +382,24 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(19)]
-    public async Task T019_GetAllPlants_AfterMoveGardenBed()
-    {
-        var plants =
-            await _fixture
-                .Query<IEnumerable<PlantDescription>>(
-                    "/queries/GetAllPlantDescriptionsQuery",
-                    new
-                    {
-                        GardenId = _fixture.GetGardenId().Value,
-                        GardenBedId = _fixture.GetGardenBedId().Value
-                    });
-
-        plants
-            .Should()
-            .SatisfyRespectively(
-                first =>
-                {
-                    first.Center.Should().BeEquivalentTo(new { X = 2.0, Y = 0.0 });
-                });
-    }
-
     [Fact, Order(20)]
     public async Task T020_MovePlant()
     {
         await _fixture
             .Command(
-                "/commands/MovePlantCommand",
+                "/commands/ReshapePlantCommand",
                 new
                 {
                     GardenId = _fixture.GetGardenId().Value,
                     GardenBedId = _fixture.GetGardenBedId().Value,
                     PlantId = _fixture.GetPlantId().Value,
-                    Transformation = @"1 0 0
-                                       0 1 0
-                                       1 0 1"
+                    Shape = new 
+                    {
+                        Type = ShapeType.Circular,
+                        Point = new { X = 3.0, Y = 0 },
+                        Rotation = 0,
+                        Radius = 0.5,
+                    },
                 });
     }
 

@@ -18,13 +18,8 @@ public class StartNewGardenCommandTests : TestBase
             new StartNewGardenCommand(
                 new GardenId(new Guid("{4DC2CEEF-063A-4D33-BFD7-D8595DA0A092}")),
                 "A New Garden", 
-                "Going to grow lots of potatos", 
-                new Location(
-                    LocationType.Point, 
-                    new[] 
-                    { 
-                        new Point(20.0, 30.0) 
-                    }), 
+                "Going to grow lots of potatos",
+                new Point(20.0, 30.0),
                 new Uri("https://cdn/image.jpg"), 
                 ""));
 
@@ -33,7 +28,7 @@ public class StartNewGardenCommandTests : TestBase
         garden!.Id.Should().Be(new GardenId(new Guid("{4DC2CEEF-063A-4D33-BFD7-D8595DA0A092}")));
         garden.Name.Should().Be("A New Garden");
         garden.Description.Should().Be("Going to grow lots of potatos");
-        garden.Location.Should().BeEquivalentTo(new Location(LocationType.Point, new[] { new Point(20.0, 30.0) }));
+        garden.Point.Should().BeEquivalentTo(new Point(20.0, 30.0));
         garden.CreatedAt.Should().Be(createdAt);
         garden.GardenerId.Should().Be(UserTestData.PeterParker.Id);
     }
@@ -87,7 +82,7 @@ public class StartNewGardenCommandTests : TestBase
             .Setup(_ => _.Now)
             .Returns(createdAt);
 
-        Func<Task> task = () => ExecuteCommandAsync(new StartNewGardenCommand(gardenId, name, description, new Location(lat, lng), new Uri("https://cdn/image.jpg"), ""));
+        Func<Task> task = () => ExecuteCommandAsync(new StartNewGardenCommand(gardenId, name, description, new Point(lat, lng), new Uri("https://cdn/image.jpg"), ""));
 
         await task.Should()
             .ThrowAsync<InvalidCommandException<StartNewGardenCommand>>()

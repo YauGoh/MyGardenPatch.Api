@@ -18,7 +18,7 @@ public class AddPlantCommandTest : TestBase
             GardenBedTestData.PeterFrontGardenBed.Id,
             "Carrots",
             "Dutch",
-            new Location(LocationType.Point, new[] { new Point(0, 0) }),
+            Shapes.Rectangle_1x25,
             new Uri("https://cdn/image.jpg"),
             "");
 
@@ -34,7 +34,7 @@ public class AddPlantCommandTest : TestBase
 
         plant.Name.Should().Be(command.Name);
         plant.Description.Should().Be(command.Description);
-        plant.Location.Should().BeEquivalentTo(command.Location);
+        plant.Shape.Should().BeEquivalentTo(command.Shape);
         plant.ImageUri.Should().BeEquivalentTo(command.ImageUri);
         plant.ImageDescription.Should().BeEquivalentTo(command.ImageDescription);
         plant.CreatedAt.Should().Be(new DateTime(2022, 1, 1));
@@ -48,38 +48,37 @@ public class AddPlantCommandTest : TestBase
                               @event.PlantedAt == plant.CreatedAt),
                 It.IsAny<CancellationToken>()),
             Times.Once);
-
-
     }
 
     [Theory]
-    [InlineData(GardenTestData.UnknownGardenId, GardenBedTestData.PeterFrontGardenBedId, "Carrots", "Dutch", "https://cdn/images.jpg", "", "2022/01/01", "Garden does not exist", "GardenId", "0,0")]
-    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.UnknownGardenBedId, "Carrots", "Dutch", "https://cdn/images.jpg", "", "2022/01/01", "Garden bed does not exist", "GardenBedId", "0,0")]
-    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, Strings.Long201, "Dutch", "https://cdn/images.jpg", "", "2022/01/01", "Not more than 200 characters", "Name", "0,0")]
+    [InlineData(GardenTestData.UnknownGardenId, GardenBedTestData.PeterFrontGardenBedId, "Carrots", "Dutch", "R 0,0 0 1,1", "https://cdn/images.jpg", "", "2022/01/01", "Garden does not exist", "GardenId")]
+    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.UnknownGardenBedId, "Carrots", "Dutch", "R 0,0 0 1,1", "https://cdn/images.jpg", "", "2022/01/01", "Garden bed does not exist", "GardenBedId")]
+    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, Strings.Long201, "Dutch", "R 0,0 0 1,1", "https://cdn/images.jpg", "", "2022/01/01", "Not more than 200 characters", "Name")]
 
-    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, "", "Dutch", "https://cdn/images.jpg", "", "2022/01/01", "Name is required", "Name", "0,0")]
-    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, null, "Dutch", "https://cdn/images.jpg", "", "2022/01/01", "Name is required", "Name", "0,0")]
+    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, "", "Dutch", "R 0,0 0 1,1", "https://cdn/images.jpg", "", "2022/01/01", "Name is required", "Name")]
+    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, null, "Dutch", "R 0,0 0 1,1", "https://cdn/images.jpg", "", "2022/01/01", "Name is required", "Name")]
 
-    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, "Carrots", "Dutch", "https://cdn/images.jpg", "", "2022/01/01", "A valid point or boundary is required", "Location")]
-    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, "Carrots", "Dutch", Strings.LongUri201, "", "2022/01/01", "Not more than 200 characters", "ImageUri", "0,0")]
+    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, "Carrots", "Dutch", null, "https://cdn/images.jpg", "", "2022/01/01", "A shape is required", "Shape")]
+    [InlineData(GardenTestData.PeterGardenId, GardenBedTestData.PeterFrontGardenBedId, "Carrots", "Dutch", "R 0,0 0 1,1", Strings.LongUri201, "", "2022/01/01", "Not more than 200 characters", "ImageUri")]
     public async Task InvalidCommand(
         Guid gardenId,
         Guid gardenBedId,
         string name,
         string description,
+        string shapeStr,
         string imageUri,
         string imageDescription,
         DateTime createdAt,
         string expectedErrorMessage,
-        string expectedErrorPropertyPath,
-        params string[] points)
+        string expectedErrorPropertyPath)
     {
+        var shape = (Shape?)shapeStr;
         var command = new AddPlantCommand(
             gardenId,
             gardenBedId,
             name,
             description,
-            new Location(LocationType.Point, points.Select(p => (Point)p).ToArray()),
+            shape,
             new Uri(imageUri, UriKind.Absolute),
             imageDescription);
 

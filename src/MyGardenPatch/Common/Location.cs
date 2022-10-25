@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace MyGardenPatch.Common;
 
@@ -9,17 +8,9 @@ public enum LocationType
     Boundary
 }
 
-public record Point
+public record Point(double X, double Y)
 {
-    public double X { get; }
-    public double Y { get; }
-
-    [JsonConstructor]
-    public Point(double x, double y)
-    {
-        X = x;
-        Y = y;
-    }
+    public static Point Default => new Point(0, 0);
 
     public static implicit operator Point(string str)
     {
@@ -53,7 +44,9 @@ public record Location
         this.Points = Points;
     }
 
-    public Location(double lat, double lng) : this(LocationType.Point, new[] { new Point(lat, lng) }) { }
+    public static Location FromPoint(double lat, double lng) => new(LocationType.Point, new[] { new Point(lat, lng) });
+
+    public static Location FromPoint(Point point) => new(LocationType.Point, new[] { point });
 
     public static Location Default => new Location(LocationType.Point, new[] { new Point(0, 0) });
 
@@ -84,8 +77,14 @@ public record Location
             var match = coordinateRegex.Match(str);
 
             return new Location(
-                double.Parse(match.Groups[1].Value),
-                double.Parse(match.Groups[3].Value));
+                LocationType.Point,
+                new[] 
+                { 
+                    new Point(
+                    double.Parse(match.Groups[1].Value),
+                    double.Parse(match.Groups[3].Value)) 
+                } 
+            );
         }
 
         throw new ArgumentException($"Cannot convert given string '{str}' to location");

@@ -5,7 +5,7 @@ public record StartNewGardenCommand(
     GardenId GardenId,
     string Name, 
     string Description, 
-    Location Location, 
+    Point Point, 
     Uri? ImageUri, 
     string? ImageDescription) : 
         ICommand, 
@@ -45,9 +45,10 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
             command.Description,
             command.ImageUri,
             command.ImageDescription,
-            _dateTime.Now);
-
-        garden.SetLocation(command.Location);
+            _dateTime.Now)
+        {
+            Point = command.Point
+        };
 
         await ProcessFileAttachments();
 

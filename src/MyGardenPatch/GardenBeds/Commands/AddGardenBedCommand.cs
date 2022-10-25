@@ -5,10 +5,10 @@ public record AddGardenBedCommand(
     GardenId GardenId, 
     string Name, 
     string Description, 
-    Location Location, 
+    Shape Shape, 
     Uri? ImageUri, 
     string? ImageDescription)
-    : ICommand, INameableCommand, ILocateableCommand, IImageableCommand;
+    : ICommand, INameableCommand, IShapeableCommand, IImageableCommand;
 
 public class AddGardenBedCommandHandler : ICommandHandler<AddGardenBedCommand>
 {
@@ -37,9 +37,10 @@ public class AddGardenBedCommandHandler : ICommandHandler<AddGardenBedCommand>
             command.Description,
             command.ImageUri,
             command.ImageDescription,
-            _dateTime.Now);
-
-        gardenBed.SetLocation(command.Location);
+            _dateTime.Now)
+        {
+            Shape = command.Shape
+        };
 
         await _gardenBeds.AddOrUpdateAsync(
             gardenBed, 
@@ -64,7 +65,7 @@ public class AddGardenBedCommandValidator : AbstractValidator<AddGardenBedComman
 
         this.ValidateNameable();
 
-        this.ValidateLocatable();
+        this.ValidateShape();
 
         this.ValidateImageable();
     }

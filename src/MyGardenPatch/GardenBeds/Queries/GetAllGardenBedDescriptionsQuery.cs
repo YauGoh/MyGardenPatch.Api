@@ -8,9 +8,9 @@ public record GardenBedDescriptor(
     string Name, 
     string Description, 
     Point Center,
-    Location Location,
+    Shape Shape,
     Uri? ImageUri, 
-    string? ImageDescription) : Descriptor(Name, Description, Center, Location, ImageUri, ImageDescription);
+    string? ImageDescription) : Descriptor(Name, Description, Center, ImageUri, ImageDescription);
 
 public class GetAllGardenBedDescriptionsQueryHandler : IQueryHandler<GetAllGardenBedDescriptionsQuery, IEnumerable<GardenBedDescriptor>>
 {
@@ -35,8 +35,8 @@ public class GetAllGardenBedDescriptionsQueryHandler : IQueryHandler<GetAllGarde
                 gb.Id,
                 gb.Name,
                 gb.Description,
-                gb.Location.Center,
-                gb.Location,
+                gb.Shape.Point,
+                gb.Shape,
                 gb.ImageUri,
                 gb.ImageDescription))
             .AsEnumerable();

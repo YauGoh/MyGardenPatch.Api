@@ -12,8 +12,8 @@ using MyGardenPatch.SqlServer;
 namespace MyGardenPatch.SqlServer.Migrations
 {
     [DbContext(typeof(MyGardenPatchDbContext))]
-    [Migration("20220905230906_Initial")]
-    partial class Initial
+    [Migration("20221020222754_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,14 +48,14 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<string>("ImageUri")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Shape")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -87,14 +87,14 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<string>("ImageUri")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Shape")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -153,14 +153,14 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<string>("ImageUri")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Point")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

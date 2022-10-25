@@ -24,11 +24,11 @@ internal class OnGardenMovedMoveGardenBedsHandler : IDomainEventHandler<GardenMo
 
         foreach (var gardenBed in affectedGardenBeds)
         {
-            gardenBed.Move(domainEvent.Transformation);
+            //gardenBed.Move(domainEvent.Transformation);
 
-            await _gardenBeds.AddOrUpdateAsync(
-                gardenBed, 
-                cancellationToken);
+            //await _gardenBeds.AddOrUpdateAsync(
+            //    gardenBed, 
+            //    cancellationToken);
         }
     }
 }

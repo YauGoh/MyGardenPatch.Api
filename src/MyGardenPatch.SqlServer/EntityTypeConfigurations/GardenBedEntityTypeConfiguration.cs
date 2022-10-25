@@ -22,7 +22,7 @@ internal class GardenBedEntityTypeConfiguration : IEntityTypeConfiguration<Garde
 
         builder.HasName();
 
-        builder.HasLocation();
+        builder.HasShape();
 
         builder.HasMany(e => e.Plants).WithOne().OnDelete(DeleteBehavior.Cascade);
     }
