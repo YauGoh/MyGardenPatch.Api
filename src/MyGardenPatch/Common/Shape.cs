@@ -29,14 +29,8 @@ public class ShapeJsonConverter : DescriminatedJsonConverter<Shape>
 }
 
 [JsonConverter(typeof(ShapeJsonConverter))]
-public record Shape
+public record Shape(ShapeType Type, Point Point, double Rotation)
 {
-    public ShapeType Type { get; init; }
-
-    public Point Point { get; init; }
-
-    public double Rotation { get; init; }  
-
     private static Regex rectangleRegex = new Regex(@"R\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*(-?\d+(\.\d+)?)\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*");
     private static Regex circleRegex = new Regex(@"C\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*(-?\d+(\.\d+)?)\s*(-?\d+(\.\d+)?)\s*");
 
@@ -54,14 +48,13 @@ public record Shape
             var width = double.Parse(match.Groups[7].Value);
             var height = double.Parse(match.Groups[9].Value);
 
-            return new Rectangular 
-            {
-                Type = ShapeType.Rectangular,
-                Point = new Point(x, y),
-                Rotation = rotation,
-                Width = width,
-                Height = height
-            };
+            return new Rectangular(
+                ShapeType.Rectangular,
+                new Point(x, y),
+                rotation,
+                width,
+                height
+            );
         }
 
         if (circleRegex.IsMatch(str))
@@ -73,13 +66,12 @@ public record Shape
             var rotation = double.Parse(match.Groups[5].Value);
             var radius = double.Parse(match.Groups[7].Value);
 
-            return new Circular 
-            {
-                Type = ShapeType.Circular,
-                Point = new Point(x, y),
-                Rotation = rotation,
-                Radius = radius 
-            };
+            return new Circular(
+                ShapeType.Circular,
+                new Point(x, y),
+                rotation,
+                radius 
+            );
         }
 
         throw new ArgumentException("Can't convert shape to string");
@@ -96,11 +88,21 @@ public record Shape
 
 public record Rectangular : Shape
 {
-    public double Width { get; init; }
-    public double Height { get;  init; }
+    public Rectangular(ShapeType type, Point point, double rotation, double width, double height) : base(type, point, rotation)
+    {
+        Width = width;
+        Height = height;
+    }
+    public double Width { get; }
+    public double Height { get; }
 }
 
 public record Circular : Shape
 {
-    public double Radius { get; init; }
+    public Circular(ShapeType type, Point point, double rotation, double radius) : base(type, point, rotation)
+    {
+        Radius = radius;
+    }
+
+    public double Radius { get; }
 }
