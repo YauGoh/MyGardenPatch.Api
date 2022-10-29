@@ -1,7 +1,4 @@
-﻿using MyGardenPatch.GardenBeds.Queries;
-using MyGardenPatch.Gardeners;
-
-namespace MyGardenPatch.WebApi.Tests;
+﻿namespace MyGardenPatch.WebApi.Tests;
 
 [TestCaseOrderer("MyGardenPatch.WebApi.Tests.OrderedByDependantTests", "MyGardenPatch.WebApi.Tests")]
 public class CreateNewGarden : IClassFixture<TestFixture>
@@ -21,8 +18,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             .Setup();
     }
 
-    [Fact, Order(1)]
-    public async Task T001_StartNewGarden()
+    [Fact, Order(1.0)]
+    public async Task T10000_StartNewGarden()
     {
         var gardenId = Guid.NewGuid();
         var imageId = Guid.NewGuid();
@@ -62,8 +59,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 Times.Once);
     }
 
-    [Fact, Order(2)]
-    public async Task T002_GetAllGardens()
+    [Fact, Order(2.0)]
+    public async Task T20000_GetAllGardens()
     {
         var gardens = await _fixture
             .Query<IEnumerable<GardenDescriptor>>(
@@ -86,8 +83,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(3)]
-    public async Task T003_DescribeGarden()
+    [Fact, Order(2.1)]
+    public async Task T21000_DescribeGarden()
     {
         await _fixture
             .Scenario(
@@ -108,8 +105,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(4)]
-    public async Task T004_GetAllGardens_AfterDescribe()
+    [Fact, Order(2.2)]
+    public async Task T22000_GetAllGardens_AfterDescribe()
     {
         var gardens = await _fixture
             .Query<IEnumerable<GardenDescriptor>>(
@@ -128,8 +125,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(5)]
-    public async Task T005_AddGardenBed()
+    [Fact, Order(3.0)]
+    public async Task T30000_AddGardenBed()
     {
         await _fixture
             .Command(
@@ -149,8 +146,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(6)]
-    public async Task T006_GetAllGardenBeds()
+    [Fact, Order(3.1)]
+    public async Task T31000_GetAllGardenBeds()
     {
         var gardenBeds =
             await _fixture
@@ -175,8 +172,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(7)]
-    public async Task T007_DescribeGardenBed()
+    [Fact, Order(3.2)]
+    public async Task T32000_DescribeGardenBed()
     {
         await _fixture
             .Command(
@@ -192,8 +189,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(8)]
-    public async Task T008_GetAllGardenBeds_AfterDescribe()
+    [Fact, Order(3.3)]
+    public async Task T33000_GetAllGardenBeds_AfterDescribe()
     {
         var gardenBeds =
             await _fixture
@@ -213,8 +210,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(9)]
-    public async Task T009_AddPlant()
+    [Fact, Order(4.0)]
+    public async Task T40000_AddPlant()
     {
         await _fixture
             .Command(
@@ -236,8 +233,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(10)]
-    public async Task T010_GetAllPlants()
+    [Fact, Order(4.1)]
+    public async Task T41000_GetAllPlants()
     {
         var plants =
             await _fixture
@@ -266,8 +263,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(11)]
-    public async Task T011_DescribePlant()
+    [Fact, Order(4.2)]
+    public async Task T42000_DescribePlant()
     {
         await _fixture
             .Command(
@@ -284,8 +281,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(12)]
-    public async Task T012_GetAllPlants_AfterDescribe()
+    [Fact, Order(4.3)]
+    public async Task T43000_GetAllPlants_AfterDescribe()
     {
         var plants =
             await _fixture
@@ -311,8 +308,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(13)]
-    public async Task T013_MoveGarden()
+    [Fact, Order(5.0)]
+    public async Task T50000_MoveGarden()
     {
         await _fixture
             .Command(
@@ -324,8 +321,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(14)]
-    public async Task T014_GetGardens_AfterMove()
+    [Fact, Order(5.1)]
+    public async Task T51000_GetGardens_AfterMove()
     {
         var gardens =
             await _fixture
@@ -342,8 +339,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(17)]
-    public async Task T017_MoveGardenBed()
+    [Fact, Order(5.2)]
+    public async Task T52000_MoveGardenBed()
     {
         await _fixture
             .Command(
@@ -364,8 +361,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
        ;
     }
 
-    [Fact, Order(18)]
-    public async Task T018_GetAllGardenBeds_AfterMoveGardenBed()
+    [Fact, Order(5.3)]
+    public async Task T53000_GetAllGardenBeds_AfterMoveGardenBed()
     {
         var gardenBeds =
             await _fixture
@@ -382,8 +379,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(20)]
-    public async Task T020_MovePlant()
+    [Fact, Order(5.4)]
+    public async Task T54000_MovePlant()
     {
         await _fixture
             .Command(
@@ -403,8 +400,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(21)]
-    public async Task T021_GetAllPlants_AfterMovePlant()
+    [Fact, Order(5.5)]
+    public async Task T55000_GetAllPlants_AfterMovePlant()
     {
         var plants =
             await _fixture
@@ -425,8 +422,23 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(22)]
-    public async Task T022_RemovePlant()
+    [Fact, Order(6.0)]
+    public async Task T60000_GetGardenMap()
+    {
+        var map =
+            await _fixture
+                .Query<GardenMap>(
+                    "/queries/GetGardenMapQuery",
+                    new
+                    {
+                        GardenId = _fixture.GetGardenId().Value
+                    });
+
+        map.Should().NotBeNull();
+    }
+
+    [Fact, Order(7.0)]
+    public async Task T70000_RemovePlant()
     {
         await _fixture
             .Command(
@@ -439,8 +451,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(23)]
-    public async Task T023_GetAllPlants_AfterRemovePlant()
+    [Fact, Order(7.1)]
+    public async Task T71000_GetAllPlants_AfterRemovePlant()
     {
         var plants =
             await _fixture
@@ -457,8 +469,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             .BeEmpty();
     }
 
-    [Fact, Order(24)]
-    public async Task T024_RemoveGardenBed()
+    [Fact, Order(7.2)]
+    public async Task T72000_RemoveGardenBed()
     {
         await _fixture
             .Command(
@@ -470,8 +482,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(25)]
-    public async Task T025_GetAllGardenBeds_AfterRemoveGardenBed()
+    [Fact, Order(7.3)]
+    public async Task T73000_GetAllGardenBeds_AfterRemoveGardenBed()
     {
         var gardenBeds =
             await _fixture
@@ -487,8 +499,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
             .BeEmpty();
     }
 
-    [Fact, Order(26)]
-    public async Task T026_RemoveGarden()
+    [Fact, Order(7.4)]
+    public async Task T74000_RemoveGarden()
     {
         await _fixture
             .Command(
@@ -499,8 +511,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 });
     }
 
-    [Fact, Order(27)]
-    public async Task T027_GetAllGardens_AfterRemoveGarden()
+    [Fact, Order(7.5)]
+    public async Task T75000_GetAllGardens_AfterRemoveGarden()
     {
         var gardens =
             await _fixture

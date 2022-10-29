@@ -37,11 +37,19 @@ internal static class GardenBedTestData
     {
         Plants =
         {
-            new Plant(new Guid(CarrotId), "Carrots", "Trying dutch carrots", new Uri("https://cdn/image.jpg"), "looking good", new DateTime(2022, 1, 1))
-            {
-                Shape = Shapes.Circular_2
-            }
+            Carrots
         },
         Shape = Shapes.Rectangle_1x25
+    };
+
+    public static Plant Carrots => new Plant(
+                new Guid(CarrotId),
+                "Carrots",
+                "Trying dutch carrots",
+                new Uri("https://cdn/image.jpg"),
+                "looking good",
+                new DateTime(2022, 1, 1))
+    {
+        Shape = Shapes.Circular_2
     };
 }

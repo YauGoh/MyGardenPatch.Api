@@ -10,10 +10,10 @@ internal class OrderedByDependantTests : ITestCaseOrderer
 
 public class OrderAttribute : Attribute
 {
-    public OrderAttribute(int order)
+    public OrderAttribute(double order)
     {
         Order = order;
     }
 
-    public int Order { get; }
+    public double Order { get; }
 }

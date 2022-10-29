@@ -9,6 +9,8 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Moq;
 global using MyGardenPatch.Common;
 global using MyGardenPatch.GardenBeds;
+global using MyGardenPatch.GardenBeds.Queries;
+global using MyGardenPatch.Gardeners;
 global using MyGardenPatch.Gardens;
 global using MyGardenPatch.Gardens.Queries;
 global using MyGardenPatch.LocalIdentity;

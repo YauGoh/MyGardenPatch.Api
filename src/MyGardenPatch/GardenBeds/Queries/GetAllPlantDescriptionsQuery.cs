@@ -10,6 +10,7 @@ public record PlantDescription(
     string Name,
     string Description,
     Point Center,
+    Shape Shape,
     Uri? ImageUri,
     string? ImageDescription) : Descriptor(Name, Description, Center, ImageUri, ImageDescription);
 
@@ -44,6 +45,7 @@ public class GetAllPlantDescriptionsQueryHandler : IQueryHandler<GetAllPlantDesc
                     p.Name,
                     p.Description,
                     p.Shape.Point,
+                    p.Shape,
                     p.ImageUri,
                     p.ImageDescription))
             .AsEnumerable();
