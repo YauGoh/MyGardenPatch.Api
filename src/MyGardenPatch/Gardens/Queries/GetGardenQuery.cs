@@ -75,7 +75,7 @@ public class GetGardenMapCommandQueryHandler : IQueryHandler<GetGardenMapQuery, 
             garden.GardenerId,
             garden.Name,
             garden.Description,
-            garden.Point,
+            garden.Center,
             garden.ImageUri,
             garden.ImageDescription,
             gardenBeds.Select(gb =>

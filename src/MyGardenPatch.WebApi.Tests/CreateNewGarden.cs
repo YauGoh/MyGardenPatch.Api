@@ -32,7 +32,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                     GardenId = gardenId,
                     Name = "My first garden",
                     Description = "This is my first garden",
-                    Point = new { X = 0.5, Y = 0.5 }
+                    Center = new { X = 0.5, Y = 0.5 }
                 },
                 
                 (
@@ -317,7 +317,7 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 new
                 {
                     GardenId = _fixture.GetGardenId().Value,
-                    Point = new Point(1.5, 0.5)
+                    Center = new Point(1.5, 0.5)
                 });
     }
 

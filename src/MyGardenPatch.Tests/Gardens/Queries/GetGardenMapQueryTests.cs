@@ -22,7 +22,7 @@ public class GetGardenMapQueryTests : TestBase
         map.GardenerId.Should().Be(GardenTestData.PeterGarden.GardenerId);
         map.Name.Should().Be(GardenTestData.PeterGarden.Name);
         map.Description.Should().Be(GardenTestData.PeterGarden.Description);
-        map.Center.Should().Be(GardenTestData.PeterGarden.Point);
+        map.Center.Should().Be(GardenTestData.PeterGarden.Center);
         map.ImageUri.Should().Be(GardenTestData.PeterGarden.ImageUri);
         map.ImageDescription.Should().Be(GardenTestData.PeterGarden.ImageDescription);
 

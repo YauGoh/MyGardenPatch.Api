@@ -28,7 +28,7 @@ public class StartNewGardenCommandTests : TestBase
         garden!.Id.Should().Be(new GardenId(new Guid("{4DC2CEEF-063A-4D33-BFD7-D8595DA0A092}")));
         garden.Name.Should().Be("A New Garden");
         garden.Description.Should().Be("Going to grow lots of potatos");
-        garden.Point.Should().BeEquivalentTo(new Point(20.0, 30.0));
+        garden.Center.Should().BeEquivalentTo(new Point(20.0, 30.0));
         garden.CreatedAt.Should().Be(createdAt);
         garden.GardenerId.Should().Be(UserTestData.PeterParker.Id);
     }

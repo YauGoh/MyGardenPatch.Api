@@ -3,7 +3,7 @@
 [Role(WellKnownRoles.Gardener)]
 public record MoveGardenCommand(
     GardenId GardenId, 
-    Point Point) : IGardenCommand, ILocateableCommand;
+    Point Center) : IGardenCommand, ILocateableCommand;
 
 public class MoveGardenCommandHandler : ICommandHandler<MoveGardenCommand>
 {
@@ -22,7 +22,7 @@ public class MoveGardenCommandHandler : ICommandHandler<MoveGardenCommand>
             command.GardenId, 
             cancellationToken);
 
-        garden!.Point = command.Point;
+        garden!.Center = command.Center;
 
         await _gardens.AddOrUpdateAsync(
             garden, 

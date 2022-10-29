@@ -24,7 +24,7 @@ public class MoveGardenCommandTests : TestBase
 
         var garden = await GetAsync<Garden, GardenId>(GardenTestData.PeterGarden.Id);
 
-        garden!.Point.Should().BeEquivalentTo(newLocation);
+        garden!.Center.Should().BeEquivalentTo(newLocation);
     }
 
     [Theory]

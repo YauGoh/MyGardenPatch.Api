@@ -15,6 +15,6 @@ internal static class GardenTestData
         "My garden",
         new DateTime(2022, 1, 1))
     {
-        Point = new Point(1, 1)
+        Center = new Point(1, 1)
     };
 }

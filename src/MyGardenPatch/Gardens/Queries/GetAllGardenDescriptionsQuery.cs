@@ -41,7 +41,7 @@ public class GetAllGardenDescriptionsQueryHandler : IQueryHandler<GetAllGardenDe
                 g.GardenerId,
                 g.Name,
                 g.Description,
-                g.Point,
+                g.Center,
                 g.ImageUri,
                 g.ImageDescription))
             .AsEnumerable();

@@ -23,7 +23,7 @@ public class Garden : GardenerOwnedAggregate<GardenId>, INameable, ILocateable
     public string Description { get; private set; }
     public Uri? ImageUri { get; private set; }
     public string? ImageDescription { get; private set; }
-    public Point Point { get; set; } = Point.Default;                  
+    public Point Center { get; set; } = Point.Default;                  
     public DateTime CreatedAt { get; private set; }
 
     internal void Describe(string name, string description, Uri imageUri, string imageDescription)

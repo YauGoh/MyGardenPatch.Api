@@ -12,8 +12,8 @@ using MyGardenPatch.SqlServer;
 namespace MyGardenPatch.SqlServer.Migrations
 {
     [DbContext(typeof(MyGardenPatchDbContext))]
-    [Migration("20221020222754_initial")]
-    partial class initial
+    [Migration("20221029070237_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -137,6 +137,10 @@ namespace MyGardenPatch.SqlServer.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Center")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -157,10 +161,6 @@ namespace MyGardenPatch.SqlServer.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Point")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

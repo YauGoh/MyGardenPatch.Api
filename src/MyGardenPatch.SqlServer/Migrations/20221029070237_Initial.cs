@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyGardenPatch.SqlServer.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,7 +52,7 @@ namespace MyGardenPatch.SqlServer.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Point = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Center = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GardenerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
