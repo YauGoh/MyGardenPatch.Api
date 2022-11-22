@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿
+
+using System.Text.Json.Serialization;
+using System.Web;
 
 namespace MyGardenPatch.WebApiExtensions;
 
@@ -24,13 +27,13 @@ internal static class CommandDelegateFactory
     }
 
     internal static Delegate GetDelegate<TCommand>() where TCommand : ICommand
-        => async (HttpRequest request, ICommandExecutor commandExecutor, IFileAttachments fileAttachments, CancellationToken cancellationToken) =>
+        => async (HttpRequest request, ICommandExecutor commandExecutor, ICurrentUserProvider currentUser, IFileStorage fileStorage, CancellationToken cancellationToken) =>
         {
             return await ExceptionHandler.Try<TCommand>(async () =>
             {
                 if (request.HasFormContentType)
                 {
-                    await ProcessFromFormContent<TCommand>(request, commandExecutor, fileAttachments, cancellationToken);
+                    await ProcessFromFormContent<TCommand>(request, commandExecutor, currentUser, fileStorage, cancellationToken);
                 }
 
                 if (request.HasJsonContentType())
@@ -40,32 +43,60 @@ internal static class CommandDelegateFactory
             });
         };
 
-    private static async Task ProcessFromFormContent<TCommand>(HttpRequest request, ICommandExecutor commandExecutor, IFileAttachments fileAttachments, CancellationToken cancellationToken) where TCommand : ICommand
+    private static async Task ProcessFromFormContent<TCommand>(HttpRequest request, ICommandExecutor commandExecutor, ICurrentUserProvider currentUser, IFileStorage fileStorage, CancellationToken cancellationToken) where TCommand : ICommand
     {
-        foreach (var file in request.Form.Files.Where(f => f.ContentType != "application/json"))
+        if (currentUser.GardenerId is null) throw new UserNotAuthenticatedException();
+
+        var gardenerId = currentUser.GardenerId.Value;
+
+        
+
+        var commandFile = request.Form.Files.FirstOrDefault(f => f.Name == "command" && f.ContentType == "application/json");
+        if (commandFile is null) throw new ArgumentException("Command expected");
+        
+        using var stream = commandFile.OpenReadStream();
+        var command = await JsonSerializer.DeserializeAsync<TCommand>(
+            stream,
+
+            // todo get options from system
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters =
+                {
+                    new JsonStringEnumConverter(allowIntegerValues: true)
+                }
+            },
+            cancellationToken: cancellationToken);
+
+        await commandExecutor.HandleAsync(command!, cancellationToken);
+        
+
+        foreach (var file in request.Form.Files.Where(f => f.Name != "command" && f.ContentType != "application/json"))
         {
-            var filename = file.FileName;
-            var contentType = file.ContentType;
-            var stream = file.OpenReadStream();
-
-            fileAttachments.Add(
-                new FileAttachment(
-                    new Guid(file.Headers["gardenId"]),
-                    new Guid(file.Headers["imageId"]),
-                    filename,
-                    contentType,
-                    stream));
+            await ProcessFileAttachments(gardenerId, file, fileStorage);
         }
+    }
 
-        var commandFile = request.Form.Files.FirstOrDefault(f => f.ContentType == "application/json");
-        if (commandFile is not null)
-        {
-            using var stream = commandFile.OpenReadStream();
 
-            var command = await JsonSerializer.DeserializeAsync<TCommand>(stream, cancellationToken: cancellationToken);
+    private static async Task ProcessFileAttachments(GardenerId gardenerId, IFormFile file, IFileStorage fileStorage)
+    {
+        var @params = HttpUtility.ParseQueryString(file.Name);
 
-            await commandExecutor.HandleAsync(command!, cancellationToken);
-        }
+        var gardenId = new Guid(@params["gardenId"]!);
+        var imageId = new Guid(@params["imageId"]!);
+
+        var filename = file.FileName;
+        var contentType = file.ContentType;
+        var stream = file.OpenReadStream();
+
+        await fileStorage.SaveAsync(
+                gardenerId,
+                gardenId,
+                imageId,
+                filename,
+                contentType,
+                stream);
     }
 
     private static async Task ProcessFromJsonContent<TCommand>(HttpRequest request, ICommandExecutor commandExecutor, CancellationToken cancellationToken) where TCommand : ICommand

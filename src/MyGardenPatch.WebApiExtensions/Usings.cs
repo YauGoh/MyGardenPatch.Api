@@ -4,5 +4,8 @@ global using Microsoft.AspNetCore.Routing;
 global using Microsoft.Extensions.DependencyInjection;
 global using MyGardenPatch.Commands;
 global using MyGardenPatch.Common;
+global using MyGardenPatch.Gardeners;
 global using MyGardenPatch.Queries;
+global using MyGardenPatch.Users.Exceptions;
 global using System.Reflection;
+global using System.Text.Json;

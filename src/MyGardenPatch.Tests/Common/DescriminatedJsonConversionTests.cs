@@ -125,7 +125,7 @@ public class DescriminatedJsonConversionTests
                 PropertyNameCaseInsensitive = true, 
                 Converters = 
                 {
-                new JsonStringEnumConverter(allowIntegerValues: true)
+                    new JsonStringEnumConverter(allowIntegerValues: true)
                 }
             })!;
 

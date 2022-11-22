@@ -8,7 +8,13 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IDomainEventBus, InMemoryDomainEventBus>();
         services.AddScoped<IFileAttachments, InMemoryFileAttachments>();
-        services.AddScoped<IFileStorage, StubFileStorage>();
+
+#if DEBUG
+        services.AddScoped<IFileStorage, FileSystemFileStorage>();
+#else
+        services.AddScoped<IFileStorage, AzureBlobFileStorage>();
+#endif
+
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
         services.Configure<EmailConfig>(config.GetSection("Email"));

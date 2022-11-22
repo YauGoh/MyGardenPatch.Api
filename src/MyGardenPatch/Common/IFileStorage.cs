@@ -18,6 +18,31 @@ public class StubFileStorage : IFileStorage
     }
 }
 
+public class FileSystemFileStorage : IFileStorage
+{
+    private readonly string _baseFolder;
+
+    public FileSystemFileStorage(IConfiguration configuration)
+    {
+        _baseFolder = configuration.GetValue<string>("StorageFolder");
+    }
+
+    public async Task SaveAsync(GardenerId gardenerId, GardenId gardenId, ImageId imageId, string filename, string contentType, Stream fileStream)
+    {
+        var path = Path.Join(_baseFolder, gardenerId.ToString(), gardenId.ToString(), imageId.ToString());
+
+        Directory.CreateDirectory(path);
+
+        var filePath = Path.Join(path, filename);
+
+        var fileInfo = new FileInfo(filePath);
+
+        using var file = fileInfo.OpenWrite();
+
+        await fileStream.CopyToAsync(file);
+    }
+}
+
 public class AzureBlobFileStorage : IFileStorage
 {
     private readonly AzureBlobStorageConfig _config;

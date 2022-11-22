@@ -50,25 +50,9 @@ public class StartNewGardenCommandHandler : ICommandHandler<StartNewGardenComman
             Center = command.Center
         };
 
-        await ProcessFileAttachments();
-
         await _gardens.AddOrUpdateAsync(
             garden, 
             cancellationToken);
-    }
-
-    private async Task ProcessFileAttachments()
-    {
-        foreach(var file in _fileAttachments.GetAll())
-        {
-            await _fileStorage.SaveAsync(
-                _currentUserProvider.GardenerId ?? throw new UserNotAuthenticatedException(),
-                file.GardenId,
-                file.ImageId,
-                file.Filename,
-                file.ContentType,
-                file.Stream);
-        }
     }
 }
 
