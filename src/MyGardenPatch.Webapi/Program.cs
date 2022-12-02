@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Identity.Web;
 using MyGardenPatch.Webapi;
 using MyGardenPatch.WebApiExtensions;
@@ -55,6 +57,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+#if DEBUG
+
+app.UseFileServer(new FileServerOptions { 
+    RequestPath = "/images",
+    FileProvider = new PhysicalFileProvider(builder.Configuration.GetValue<string>("StorageFolder")),
+    EnableDirectoryBrowsing = true
+    
+});
+
+#endif
 
 app.UseAuthentication();
 app.UseAuthorization();

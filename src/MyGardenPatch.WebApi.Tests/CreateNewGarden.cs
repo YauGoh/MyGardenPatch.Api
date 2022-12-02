@@ -36,7 +36,8 @@ public class CreateNewGarden : IClassFixture<TestFixture>
                 },
                 
                 (
-                    Filename: "image.jpg",
+                    Name: $"gardenId={gardenId}&imageId={imageId}",
+                    Filename: $"image.jpg",
                     ContentType: "image/jpeg",
                     Content: "Not really an image",
                     Headers: new Dictionary<string, string>
@@ -128,12 +129,15 @@ public class CreateNewGarden : IClassFixture<TestFixture>
     [Fact, Order(3.0)]
     public async Task T30000_AddGardenBed()
     {
+        var gardenBedId = Guid.NewGuid();
+
         await _fixture
             .Command(
                 "/commands/AddGardenBedCommand",
                 new
                 {
                     GardenId = _fixture.GetGardenId().Value,
+                    GardenBedId = gardenBedId,
                     Name = "Front",
                     Description = "infront of master bedroom window",
                     Shape = new 

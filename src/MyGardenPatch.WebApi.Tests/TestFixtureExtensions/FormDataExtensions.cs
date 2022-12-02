@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace MyGardenPatch.WebApi.Tests.TestFixtureExtensions;
 
-internal record FormDataFilePart(string Filename, string ContentType, string Content, Dictionary<string, string> Headers);
+internal record FormDataFilePart(string Name, string Filename, string ContentType, string Content, Dictionary<string, string> Headers);
 
 internal class FormDataRequestBuilder
 {
@@ -19,16 +19,16 @@ internal class FormDataRequestBuilder
         cookies = new Dictionary<string, string>();
     }
 
-    public FormDataRequestBuilder WithFile(string filename, string contentType, string content, Dictionary<string, string> headers)
+    public FormDataRequestBuilder WithFile(string name, string filename, string contentType, string content, Dictionary<string, string> headers)
     {
-        parts.Add(new FormDataFilePart(filename, contentType, content, headers));
+        parts.Add(new FormDataFilePart(name, filename, contentType, content, headers));
 
         return this;
     }
 
     public FormDataRequestBuilder WithCommand<T>(T command)
     {
-        parts.Add(new FormDataFilePart("command", "application/json", JsonSerializer.Serialize<T>(command), new Dictionary<string, string>()));
+        parts.Add(new FormDataFilePart("command", "command", "application/json", JsonSerializer.Serialize<T>(command), new Dictionary<string, string>()));
 
         return this;
     }
@@ -63,7 +63,7 @@ internal class FormDataRequestBuilder
             fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
                 FileName = part.Filename,
-                Name = part.Filename
+                Name = part.Name
             };
             foreach(var (name, value) in part.Headers)
             {

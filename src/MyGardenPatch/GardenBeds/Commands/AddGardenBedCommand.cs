@@ -2,6 +2,7 @@
 
 [Role(WellKnownRoles.Gardener)]
 public record AddGardenBedCommand(
+    GardenBedId GardenBedId,
     GardenId GardenId, 
     string Name, 
     string Description, 
@@ -31,6 +32,7 @@ public class AddGardenBedCommandHandler : ICommandHandler<AddGardenBedCommand>
         CancellationToken cancellationToken = default)
     {
         var gardenBed = new GardenBed(
+            command.GardenBedId,
             _currentUserProvider.GardenerId!.Value,
             command.GardenId,
             command.Name,

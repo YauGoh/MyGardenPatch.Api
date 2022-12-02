@@ -29,7 +29,7 @@ public class TestFixture : IAsyncLifetime
                 {
                     Password = "P@ssw0rd!2345",
                 })
-            .WithImage("ghcr.io/yaugoh/sqlserver:latest")
+            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
             .Build();
 
         MockEmailSender = new Mock<IEmailSender>();
@@ -108,7 +108,7 @@ public class TestFixture : IAsyncLifetime
             });
     }
 
-    public async Task Command(string url, dynamic? command, params (string Filename, string ContentType, string Content, Dictionary<string, string> Headers)[] files)
+    public async Task Command(string url, dynamic? command, params (string Name, string Filename, string ContentType, string Content, Dictionary<string, string> Headers)[] files)
     {
         command = command ?? new { };
 
@@ -119,7 +119,7 @@ public class TestFixture : IAsyncLifetime
 
                 foreach (var file in files)
                 {
-                    builder.WithFile(file.Filename, file.ContentType, file.Content, file.Headers);
+                    builder.WithFile(file.Name, file.Filename, file.ContentType, file.Content, file.Headers);
                 }
 
                 builder

@@ -13,6 +13,7 @@ public class AddGardenBedCommandTests : TestBase
     public async Task AddGardenBed()
     {
         var command = new AddGardenBedCommand(
+            new GardenBedId(),
             GardenTestData.PeterGarden.Id,
             "Carrots",
             "Growing Carrots here",
@@ -61,6 +62,7 @@ public class AddGardenBedCommandTests : TestBase
         var shape = (Shape?)shapeStr;
 
         var command = new AddGardenBedCommand(
+            new GardenBedId(),
             gardenId,
             name,
             description,
