@@ -29,11 +29,11 @@ jobs:
          - name: Build
            run: dotnet build --configuration Release --no-restore
 
-         - name: Log in to registry
-           run: echo "${{ secrets.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+         #- name: Log in to registry
+         #  run: echo "${{ secrets.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-         - name: Pull SqlServer image
-           run: docker pull ghcr.io/yaugoh/sqlserver:latest
+         #- name: Pull SqlServer image
+         #  run: docker pull ghcr.io/yaugoh/sqlserver:latest
 
          - name: Run Tests
            run: dotnet test --configuration Release --no-build
