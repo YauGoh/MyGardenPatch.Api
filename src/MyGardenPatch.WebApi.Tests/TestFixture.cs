@@ -47,8 +47,8 @@ public class TestFixture : IAsyncLifetime
         {
             x.ConfigureServices((context, services) =>
             {
-                services.AddSingleton<IEmailSender>(s => MockEmailSender.Object);
-                services.AddSingleton<IFileStorage>(s => MockFileStorage.Object);
+                ReplaceServiceWithMock<IEmailSender>(services, MockEmailSender);
+                ReplaceServiceWithMock<IFileStorage>(services, MockFileStorage);
 
                 ReplaceWithTestContainerDb<LocalIdentityDbContext>(services);
                 ReplaceWithTestContainerDb<MyGardenPatchDbContext>(services);
@@ -159,6 +159,17 @@ public class TestFixture : IAsyncLifetime
 
         services.AddDbContext<TDbContext>(options => options.UseSqlServer(dbContainer.ConnectionString));
 
+    }
+
+    private void ReplaceServiceWithMock<TService>(IServiceCollection services, Mock<TService> mock) where TService : class
+    {
+        var serviceDescriptions = services.Where(s => s.ServiceType == typeof(TService)).ToList();
+        foreach (var serviceDescription in serviceDescriptions)
+        {
+            services.Remove(serviceDescription);
+        }
+
+        services.AddSingleton(srv => mock.Object);
     }
 
     private async Task EnsureDbMigrated(IServiceProvider serviceProvider)
