@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
 #if DEBUG
         services.AddScoped<IFileStorage, FileSystemFileStorage>();
 #else
+        services.Configure<AzureBlobStorageConfig>(config.GetSection("AzureBlob"));
         services.AddScoped<IFileStorage, AzureBlobFileStorage>();
 #endif
 

@@ -58,6 +58,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Development CDN to server locally attached images and files
 #if DEBUG
 
 app.UseFileServer(new FileServerOptions { 
