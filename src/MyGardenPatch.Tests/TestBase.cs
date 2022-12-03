@@ -30,10 +30,7 @@ public class TestBase
 
 
         var mockCorsSection = new Mock<IConfigurationSection>();
-        //mockCorsSection
-        //    .Setup(_ => _.Get<string[]>())
-        //    .Returns(new[] { "https://localhost" });
-
+        
         mockConfiguration
             .Setup(c => c.GetSection("Cors:AllowedOrigins"))
             .Returns(mockCorsSection.Object);
@@ -49,6 +46,10 @@ public class TestBase
 
         mockConfiguration
             .Setup(c => c.GetSection("FrontEnd"))
+            .Returns(new Mock<IConfigurationSection>().Object);
+
+        mockConfiguration
+            .Setup(c => c.GetSection("AzureBlob"))
             .Returns(new Mock<IConfigurationSection>().Object);
 
         services.AddTransient<IOptions<FrontEndConfig>>(src => mockFrontEndConfig.Object);
