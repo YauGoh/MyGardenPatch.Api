@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Microsoft.Extensions.Options;
 
 namespace MyGardenPatch.Common;
 
@@ -45,16 +46,16 @@ public class FileSystemFileStorage : IFileStorage
 
 public class AzureBlobFileStorage : IFileStorage
 {
-    private readonly AzureBlobStorageConfig _config;
+    private readonly IOptions<AzureBlobStorageConfig> _config;
 
-    public AzureBlobFileStorage(AzureBlobStorageConfig config)
+    public AzureBlobFileStorage(IOptions<AzureBlobStorageConfig> config)
     {
         _config = config;
     }
 
     public async Task SaveAsync(GardenerId gardenerId, GardenId gardenId, ImageId imageId, string filename, string contentType, Stream fileStream)
     {
-        var serviceClient = new BlobServiceClient(_config.ConnectionString);
+        var serviceClient = new BlobServiceClient(_config.Value.ConnectionString);
 
         var container = await serviceClient.CreateBlobContainerAsync($"{gardenerId}/{gardenId}/{imageId}");
 
