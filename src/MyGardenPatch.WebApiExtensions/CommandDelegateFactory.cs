@@ -85,8 +85,8 @@ internal static class CommandDelegateFactory
 
         var gardenId = new Guid(@params["gardenId"]!);
         var imageId = new Guid(@params["imageId"]!);
+        var filename = @params["filename"]!;
 
-        var filename = file.FileName;
         var contentType = file.ContentType;
         var stream = file.OpenReadStream();
 
