@@ -53,9 +53,9 @@ public class GardenBed : GardenerOwnedAggregate<GardenBedId>, INameable, IShapea
 
     public Shape Shape { get; set; }
 
-    public void AddPlant(string name, string description, Shape shape, Uri? imageUri, string? imageDescription, DateTime createdAt)
+    public void AddPlant(PlantId plantId, string name, string description, Shape shape, Uri? imageUri, string? imageDescription, DateTime createdAt)
     {
-        var plant = new Plant(name, description, imageUri, imageDescription, createdAt)
+        var plant = new Plant(plantId, name, description, imageUri, imageDescription, createdAt)
         {
             Shape = shape
         };

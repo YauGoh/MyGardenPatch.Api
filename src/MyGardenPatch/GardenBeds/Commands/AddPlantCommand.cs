@@ -4,6 +4,7 @@
 public record AddPlantCommand(
     GardenId GardenId,
     GardenBedId GardenBedId,
+    PlantId PlantId,
     string Name,
     string Description,
     Shape Shape,
@@ -32,6 +33,7 @@ public class AddPlantCommandHandler : ICommandHandler<AddPlantCommand>
             cancellationToken);
 
         gardenBed!.AddPlant(
+            command.PlantId,
             command.Name,
             command.Description,
             command.Shape,
