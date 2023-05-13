@@ -1,7 +1,5 @@
 global using Alba;
 global using DotNet.Testcontainers.Builders;
-global using DotNet.Testcontainers.Configurations;
-global using DotNet.Testcontainers.Containers;
 global using FluentAssertions;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
@@ -19,6 +17,7 @@ global using MyGardenPatch.Users.Queries;
 global using MyGardenPatch.WebApi.Tests.TestFixtureExtensions;
 global using System.Net;
 global using System.Text.RegularExpressions;
+global using Testcontainers.MsSql;
 global using Xunit;
 global using Xunit.Abstractions;
 global using Xunit.Sdk;

@@ -1,34 +1,29 @@
-﻿using DotNet.Testcontainers.Images;
-
-namespace MyGardenPatch.WebApi.Tests;
+﻿namespace MyGardenPatch.WebApi.Tests;
 
 public record TestFixtureState();
 
 public class TestFixture : IAsyncLifetime
 {
     private IAlbaHost? sut;
-    private TestcontainerDatabase dbContainer;
+    private MsSqlContainer dbContainer;
     internal Mock<IEmailSender> MockEmailSender { get; }
 
     internal Mock<IFileStorage> MockFileStorage { get; }
 
     internal IConfiguration? Configuration { get; private set; }
 
-    private Dictionary<string, object> state;
+    private Dictionary<string, object?> state;
 
     private readonly string databaseName = Guid.NewGuid().ToString();
 
     public TestFixture()
     {
-        state = new Dictionary<string, object>();
+        state = new Dictionary<string, object?>();
 
-        dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
-            .WithDatabase(
-                new MsSqlTestcontainerConfiguration
-                {
-                    Password = "P@ssw0rd!2345",
-                })
+        dbContainer = new MsSqlBuilder()
+            .WithPassword("P@ssw0rd!2345")
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(1433))
             .Build();
 
         MockEmailSender = new Mock<IEmailSender>();
@@ -36,7 +31,7 @@ public class TestFixture : IAsyncLifetime
         MockFileStorage = new Mock<IFileStorage>();
     }
 
-    internal IAlbaHost? Sut => sut ?? throw new InvalidOperationException($"{nameof(sut)} is null");
+    internal IAlbaHost Sut => sut ?? throw new InvalidOperationException($"{nameof(sut)} is null");
 
     public async Task InitializeAsync()
     {
@@ -83,7 +78,7 @@ public class TestFixture : IAsyncLifetime
         return default(T);
     }
 
-    public T GetState<T>() => GetState<T>(typeof(T).FullName!);
+    public T GetState<T>() => GetState<T>(typeof(T).FullName!)!;
 
     public async Task<IScenarioResult> Scenario(Action<Scenario> configure)
     {
@@ -156,7 +151,7 @@ public class TestFixture : IAsyncLifetime
             services.Remove(serviceDescription);
         }
 
-        services.AddDbContext<TDbContext>(options => options.UseSqlServer(dbContainer.ConnectionString));
+        services.AddDbContext<TDbContext>(options => options.UseSqlServer(dbContainer.GetConnectionString()));
 
     }
 

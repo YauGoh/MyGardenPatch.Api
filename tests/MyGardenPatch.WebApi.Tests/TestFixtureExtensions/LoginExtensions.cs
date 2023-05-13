@@ -43,7 +43,7 @@
         internal static bool HasLogin(this TestFixture testFixture)
             => testFixture.GetState<bool>(hasLogin);
 
-        internal static string GetLoginCookie(this TestFixture testFixture)
+        internal static string? GetLoginCookie(this TestFixture testFixture)
             => testFixture.GetState<string>(loginCookie);
 
         internal static void SetLoginCookie(this TestFixture testFixture, string cookie)
@@ -73,7 +73,7 @@
 
             var cookies = result.Context.Response.Headers["Set-Cookie"];
             var cookieContainer = new CookieContainer();
-            cookieContainer.SetCookies(new Uri("https://localhost"), cookies);
+            cookieContainer.SetCookies(new Uri("https://localhost"), cookies!);
 
             testFixture.SetLoginCookie(cookieContainer.GetCookies(new Uri("https://localhost"))["my-garden-patch.auth"]!.Value);
         }
