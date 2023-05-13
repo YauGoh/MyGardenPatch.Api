@@ -13,9 +13,12 @@ public class AddPlantCommandTest : TestBase
     [Fact]
     public async Task AddPlant()
     {
+        var plantId = new PlantId();
+
         var command = new AddPlantCommand(
             GardenTestData.PeterGarden.Id,
             GardenBedTestData.PeterFrontGardenBed.Id,
+            plantId,
             "Carrots",
             "Dutch",
             Shapes.Rectangle_1x25,
@@ -73,9 +76,11 @@ public class AddPlantCommandTest : TestBase
         string expectedErrorPropertyPath)
     {
         var shape = (Shape?)shapeStr;
+
         var command = new AddPlantCommand(
             gardenId,
             gardenBedId,
+            new PlantId(),
             name,
             description,
             shape,

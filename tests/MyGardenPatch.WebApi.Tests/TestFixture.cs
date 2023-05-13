@@ -6,6 +6,7 @@ public record TestFixtureState();
 
 public class TestFixture : IAsyncLifetime
 {
+    private IAlbaHost? sut;
     private TestcontainerDatabase dbContainer;
     internal Mock<IEmailSender> MockEmailSender { get; }
 
@@ -21,8 +22,6 @@ public class TestFixture : IAsyncLifetime
     {
         state = new Dictionary<string, object>();
 
-        TestcontainersSettings.ResourceReaperImage = new DockerImage("ghcr.io/yaugoh/ryuk:latest");
-
         dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
             .WithDatabase(
                 new MsSqlTestcontainerConfiguration
@@ -37,13 +36,13 @@ public class TestFixture : IAsyncLifetime
         MockFileStorage = new Mock<IFileStorage>();
     }
 
-    internal IAlbaHost? Sut { get; private set; }
+    internal IAlbaHost? Sut => sut ?? throw new InvalidOperationException($"{nameof(sut)} is null");
 
     public async Task InitializeAsync()
     {
         await dbContainer.StartAsync();
 
-        Sut = await AlbaHost.For<global::Program>(x =>
+        sut = await AlbaHost.For<global::Program>(x =>
         {
             x.ConfigureServices((context, services) =>
             {

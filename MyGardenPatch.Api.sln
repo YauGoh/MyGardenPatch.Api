@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGardenPatch.CodeGen", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGardenPatch.SqlServer", "src\MyGardenPatch.SqlServer\MyGardenPatch.SqlServer.csproj", "{8C2FB4DB-D04B-4F65-8966-046AFFA81856}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGardenPatch.Tests", "src\MyGardenPatch.Tests\MyGardenPatch.Tests.csproj", "{DA126FB2-102D-4277-AC2D-48C5C849C6DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGardenPatch.Tests", "tests\MyGardenPatch.Tests\MyGardenPatch.Tests.csproj", "{DA126FB2-102D-4277-AC2D-48C5C849C6DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGardenPatch.Webapi", "src\MyGardenPatch.Webapi\MyGardenPatch.Webapi.csproj", "{A3BB5886-5546-40D1-B3AF-6B5BBDC47B2B}"
 EndProject
@@ -22,11 +22,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9D537AA7-61AC-46AB-AD2D-514A265CA1E6}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		readme.md = readme.md
 		.github\workflows\main.yaml = .github\workflows\main.yaml
+		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGardenPatch.WebApi.Tests", "src\MyGardenPatch.WebApi.Tests\MyGardenPatch.WebApi.Tests.csproj", "{70483F7A-4389-4758-B7DC-2714757978C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGardenPatch.WebApi.Tests", "tests\MyGardenPatch.WebApi.Tests\MyGardenPatch.WebApi.Tests.csproj", "{70483F7A-4389-4758-B7DC-2714757978C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BD313D54-5ACF-4E23-A99F-DD027119807E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,11 +76,11 @@ Global
 		{90D59103-9ABE-4D4F-BF06-2EEDC139D2D3} = {4F44B171-F984-4167-A252-610C48045834}
 		{B19C3511-7A3C-4CFB-A861-A828E333D3C0} = {4F44B171-F984-4167-A252-610C48045834}
 		{8C2FB4DB-D04B-4F65-8966-046AFFA81856} = {4F44B171-F984-4167-A252-610C48045834}
-		{DA126FB2-102D-4277-AC2D-48C5C849C6DF} = {4F44B171-F984-4167-A252-610C48045834}
+		{DA126FB2-102D-4277-AC2D-48C5C849C6DF} = {BD313D54-5ACF-4E23-A99F-DD027119807E}
 		{A3BB5886-5546-40D1-B3AF-6B5BBDC47B2B} = {4F44B171-F984-4167-A252-610C48045834}
 		{7DDB1B33-38B9-4577-99B7-45124076EA45} = {4F44B171-F984-4167-A252-610C48045834}
 		{1EB03014-F7B7-47AE-951A-0BB66DAE67EF} = {4F44B171-F984-4167-A252-610C48045834}
-		{70483F7A-4389-4758-B7DC-2714757978C2} = {4F44B171-F984-4167-A252-610C48045834}
+		{70483F7A-4389-4758-B7DC-2714757978C2} = {BD313D54-5ACF-4E23-A99F-DD027119807E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99BB4CF5-6870-4E19-B474-064381F08490}
