@@ -49,8 +49,6 @@ internal static class CommandDelegateFactory
 
         var gardenerId = currentUser.GardenerId.Value;
 
-        
-
         var commandFile = request.Form.Files.FirstOrDefault(f => f.Name == "command" && f.ContentType == "application/json");
         if (commandFile is null) throw new ArgumentException("Command expected");
         

@@ -1,4 +1,6 @@
-﻿namespace MyGardenPatch.LocalIdentity;
+﻿using System.Net;
+
+namespace MyGardenPatch.LocalIdentity;
 
 public static class ServiceCollectionExtensions
 {
@@ -75,8 +77,10 @@ public static class ServiceCollectionExtensions
                     
                     ac.Events.OnRedirectToLogin = context =>
                     {
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.StatusCode = context.Request.Method == "OPTIONS" ? StatusCodes.Status200OK : StatusCodes.Status401Unauthorized;
                         context.Response.Headers["access-control-allow-origin"] = context.Request.Headers["origin"].FirstOrDefault();
+                        //context.Response.Headers["access-control-allow-methods"] = $"POST, GET, OPTIONS";
+                        context.Response.Headers["access-control-allow-headers"] = $"content-type, {ApiKeyAuthentication.HeaderKey}";
                         context.Response.Headers["access-control-allow-credentials"] = $"true";
 
                         return Task.CompletedTask;

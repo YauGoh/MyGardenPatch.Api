@@ -14,7 +14,9 @@ var logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Logging.ClearProviders();
-builder.Logging.AddSerilog(logger);
+builder.Logging
+    .AddSerilog(logger)
+    .AddConsole();
 
 builder.Services
     .AddControllers()
@@ -44,7 +46,7 @@ builder.Services.AddCors(
             .AllowAnyHeader()
             .AllowCredentials()
     )
-); ;
+);
 
 var app = builder.Build();
 
