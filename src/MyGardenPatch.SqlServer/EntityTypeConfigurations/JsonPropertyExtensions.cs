@@ -36,4 +36,35 @@ internal static class JsonPropertyBuilderExtensions
 
         return propertyBuilder;
     }
+
+    public static PropertyBuilder<T> JsonRecordProperty<T>(this PropertyBuilder<T> propertyBuilder)
+    {
+        JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            AllowTrailingCommas = true,
+            PropertyNameCaseInsensitive = true,
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
+        ValueConverter<T, string> converter = new ValueConverter<T, string>
+        (
+            v => JsonSerializer.Serialize<T>(v, options),
+            json => JsonSerializer.Deserialize<T>(json, options)!
+        );
+
+        ValueComparer<T> comparer = new ValueComparer<T>
+        (
+            (l, r) => JsonSerializer.Serialize(l, options) == JsonSerializer.Serialize(r, options),
+            v => v == null ? 0 : JsonSerializer.Serialize(v, options).GetHashCode(),
+            v => JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(v, options), options)!
+        );
+
+        propertyBuilder.HasConversion(converter);
+        propertyBuilder.Metadata.SetValueConverter(converter);
+        propertyBuilder.Metadata.SetValueComparer(comparer);
+        propertyBuilder.HasColumnType("nvarchar(max)");
+
+        return propertyBuilder;
+    }
 }

@@ -16,7 +16,8 @@ var logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging
     .AddSerilog(logger)
-    .AddConsole();
+    .AddConsole()
+    .AddDebug();
 
 builder.Services
     .AddControllers()
@@ -35,7 +36,7 @@ builder.Services.AddMyGardenPatchWebApi(builder.Configuration);
 builder.Services.AddAuthentication();
 builder.Services.AddRoleBasedAuthorization();
 
-var allowedOrigins = builder.Configuration.GetSection($"Cors:AllowedOrigins").Get<string[]>();
+var allowedOrigins = builder.Configuration.GetSection($"Cors:AllowedOrigins").Get<string[]>() ?? throw new InvalidOperationException("Cors allowedOrigins are required. (Cors/AllowedOrigins - Array<string>)");
 
 builder.Services.AddCors(
     options => options.AddPolicy(
@@ -64,9 +65,8 @@ app.UseHttpsRedirection();
 
 app.UseFileServer(new FileServerOptions { 
     RequestPath = "/images",
-    FileProvider = new PhysicalFileProvider(builder.Configuration.GetValue<string>("StorageFolder")),
+    FileProvider = new PhysicalFileProvider(builder.Configuration.GetValue<string>("StorageFolder") ?? throw new InvalidOperationException("Storage folder is required for debug builds")),
     EnableDirectoryBrowsing = true
-    
 });
 
 #endif
